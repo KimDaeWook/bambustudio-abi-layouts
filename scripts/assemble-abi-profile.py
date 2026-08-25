@@ -32,6 +32,15 @@ def load(path: Path) -> dict:
     return value
 
 
+def merge(base, override):
+    if isinstance(base, dict) and isinstance(override, dict):
+        result = dict(base)
+        for key, value in override.items():
+            result[key] = merge(result[key], value) if key in result else value
+        return result
+    return override
+
+
 def canonical_layouts(probe: dict, requirements: dict) -> dict:
     result = {}
     extracted = probe.get("layouts", {})
@@ -75,8 +84,10 @@ def main() -> int:
         raise ValueError("only the validated macos-arm64 profile target is supported")
     if layout_upstream.get("commit") != function_upstream.get("source_commit"):
         raise ValueError("layout source commit and release source commit differ")
-    requirements = load(args.requirements)
-    target_requirements = requirements["targets"]["macos-arm64"]
+    target_requirements = load(args.requirements)
+    platform_requirements = args.requirements.with_name("requirements.macos-arm64.json")
+    if platform_requirements.exists():
+        target_requirements = merge(target_requirements, load(platform_requirements))
     expected_symbols = len(target_requirements.get("symbols", {}))
     analysis = functions.get("analysis", {})
     if analysis.get("resolved") != expected_symbols or len(functions.get("symbols", {})) != expected_symbols:
@@ -113,6 +124,8 @@ def main() -> int:
     catalogs = {}
     root = Path(__file__).resolve().parents[1]
     catalogs["requirements.json"] = file_sha256(args.requirements)
+    if platform_requirements.exists():
+        catalogs[platform_requirements.name] = file_sha256(platform_requirements)
     manifest = {
         "schema_version": 1,
         "kind": "bambustudio_abi_profile_manifest",

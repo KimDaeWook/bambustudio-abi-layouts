@@ -1,269 +1,265 @@
 {
   "kind": "bambustudio_abi_requirements",
-  "schema_version": 1,
-  "targets": {
-    "macos-arm64": {
-      "layouts": {
-        "Slic3r::GUI::GLToolbarItem::Data": {
-          "bases": [],
-          "members": [
-            "name",
-            "sprite_id",
-            "left",
-            "icon_filename_callback"
-          ]
-        },
-        "Slic3r::GUI::GLToolbarItem::Data::Option": {
-          "bases": [],
-          "members": [
-            "action_callback"
-          ]
-        },
-        "Slic3r::GUI::MenuFactory": {
-          "bases": [],
-          "members": [
-            "m_object_menu",
-            "m_part_menu"
-          ]
-        },
-        "Slic3r::GUI::Plater": {
-          "bases": [],
-          "members": [
-            "p"
-          ]
-        },
-        "Slic3r::GUI::Plater::priv": {
-          "bases": [],
-          "members": [
-            "menus"
-          ]
-        },
-        "Slic3r::GUI::PrinterWebView": {
-          "bases": [],
-          "members": []
-        },
-        "Slic3r::Model": {
-          "bases": [],
-          "members": [
-            "objects",
-            "model_info"
-          ]
-        },
-        "Slic3r::ModelConfig": {
-          "bases": [],
-          "members": [
-            "m_timestamp",
-            "m_data"
-          ]
-        },
-        "Slic3r::ModelConfigObject": {
-          "bases": [
-            "Slic3r::ModelConfig"
-          ],
-          "members": []
-        },
-        "Slic3r::ModelInfo": {
-          "bases": [],
-          "members": [
-            "metadata_items"
-          ]
-        },
-        "Slic3r::ModelInstance": {
-          "bases": [],
-          "members": [
-            "m_transformation",
-            "printable"
-          ]
-        },
-        "Slic3r::ModelObject": {
-          "bases": [],
-          "members": [
-            "name",
-            "instances",
-            "volumes",
-            "config"
-          ]
-        },
-        "Slic3r::ModelVolume": {
-          "bases": [],
-          "members": [
-            "name",
-            "m_mesh"
-          ]
-        },
-        "wxBookCtrlBase": {
-          "bases": [],
-          "members": [
-            "m_pages",
-            "m_bookctrl"
-          ]
-        },
-        "wxEvent": {
-          "bases": [],
-          "members": [
-            "m_eventObject",
-            "m_eventType"
-          ]
-        },
-        "wxEventFilter": {
-          "bases": [],
-          "members": [
-            "m_next"
-          ]
-        },
-        "wxMenuItemBase": {
-          "bases": [],
-          "members": [
-            "m_subMenu"
-          ]
-        },
-        "wxString": {
-          "bases": [],
-          "members": []
-        }
-      },
-      "record_probe": {
-        "compiler_args": [
-          "-fno-access-control"
-        ],
-        "headers": [
-          "src/slic3r/GUI/I18N.hpp",
-          "src/slic3r/pchheader.hpp"
-        ],
-        "source_slice": {
-          "path": "src/slic3r/GUI/Plater.cpp",
-          "suffix": "\n}} // namespace Slic3r::GUI\n",
-          "through_record": "struct Plater::priv"
-        }
-      },
-      "symbols": {
-        "ButtonsListCtrl::InsertPage(unsigned long, wxString const&, bool, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)": "_ZN15ButtonsListCtrl10InsertPageEmRK8wxStringbRKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESB_",
-        "Slic3r::ConfigBase::apply_only(Slic3r::ConfigBase const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&, bool)": "_ZN6Slic3r10ConfigBase10apply_onlyERKS0_RKNSt3__16vectorINS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS8_ISA_EEEEb",
-        "Slic3r::ConfigBase::opt_serialize(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&) const": "_ZNK6Slic3r10ConfigBase13opt_serializeERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE",
-        "Slic3r::ConfigBase::set(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, double, bool)": "_ZN6Slic3r10ConfigBase3setERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEdb",
-        "Slic3r::ConfigBase::set(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, int, bool)": "_ZN6Slic3r10ConfigBase3setERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEib",
-        "Slic3r::DynamicConfig::erase(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)": "__ZN6Slic3r13DynamicConfig5eraseERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE",
-        "Slic3r::DynamicConfig::keys() const": "_ZNK6Slic3r13DynamicConfig4keysEv",
-        "Slic3r::DynamicConfig::optptr(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&) const": "_ZNK6Slic3r13DynamicConfig6optptrERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE",
-        "Slic3r::DynamicPrintConfig::new_from_defaults_keys(std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&)": "_ZN6Slic3r18DynamicPrintConfig22new_from_defaults_keysERKNSt3__16vectorINS1_12basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEENS6_IS8_EEEE",
-        "Slic3r::DynamicPrintConfig::~DynamicPrintConfig()": "__ZN6Slic3r18DynamicPrintConfigD0Ev",
-        "Slic3r::GUI::EVT_GLCANVAS_INSTANCE_MOVED": "_ZN6Slic3r3GUI27EVT_GLCANVAS_INSTANCE_MOVEDE",
-        "Slic3r::GUI::EVT_GLCANVAS_INSTANCE_ROTATED": "_ZN6Slic3r3GUI29EVT_GLCANVAS_INSTANCE_ROTATEDE",
-        "Slic3r::GUI::EVT_GLCANVAS_INSTANCE_SCALED": "_ZN6Slic3r3GUI28EVT_GLCANVAS_INSTANCE_SCALEDE",
-        "Slic3r::GUI::EVT_GLCANVAS_OBJECT_SELECT": "_ZN6Slic3r3GUI26EVT_GLCANVAS_OBJECT_SELECTE",
-        "Slic3r::GUI::EVT_GLCANVAS_REDO": "_ZN6Slic3r3GUI17EVT_GLCANVAS_REDOE",
-        "Slic3r::GUI::EVT_GLCANVAS_REMOVE_OBJECT": "_ZN6Slic3r3GUI26EVT_GLCANVAS_REMOVE_OBJECTE",
-        "Slic3r::GUI::EVT_GLCANVAS_UNDO": "_ZN6Slic3r3GUI17EVT_GLCANVAS_UNDOE",
-        "Slic3r::GUI::EVT_GLCANVAS_UPDATE_GEOMETRY": "_ZN6Slic3r3GUI28EVT_GLCANVAS_UPDATE_GEOMETRYE",
-        "Slic3r::GUI::EVT_OBJ_LIST_OBJECT_SELECT": "_ZN6Slic3r3GUI26EVT_OBJ_LIST_OBJECT_SELECTE",
-        "Slic3r::GUI::GLCanvas3D::get_main_toolbar() const": "_ZNK6Slic3r3GUI10GLCanvas3D16get_main_toolbarEv",
-        "Slic3r::GUI::GLToolbar::add_item(Slic3r::GUI::GLToolbarItem::Data const&, Slic3r::GUI::GLToolbarItem::EType)": "_ZN6Slic3r3GUI9GLToolbar8add_itemERKNS0_13GLToolbarItem4DataENS2_5ETypeE",
-        "Slic3r::GUI::GLToolbar::get_item(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&) const": "_ZNK6Slic3r3GUI9GLToolbar8get_itemERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE",
-        "Slic3r::GUI::GLToolbar::get_item_id(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&) const": "_ZNK6Slic3r3GUI9GLToolbar11get_item_idERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE",
-        "Slic3r::GUI::GLToolbar::get_items() const": "_ZNK6Slic3r3GUI9GLToolbar9get_itemsEv",
-        "Slic3r::GUI::GLToolbar::set_icon_dirty()": "_ZN6Slic3r3GUI9GLToolbar14set_icon_dirtyEv",
-        "Slic3r::GUI::GLToolbar::set_tooltip(int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)": "_ZN6Slic3r3GUI9GLToolbar11set_tooltipEiRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE",
-        "Slic3r::GUI::GLToolbarItem::Data::Data()": "_ZN6Slic3r3GUI13GLToolbarItem4DataC1Ev",
-        "Slic3r::GUI::GLToolbarItem::Data::~Data()": "_ZN6Slic3r3GUI13GLToolbarItem4DataD2Ev",
-        "Slic3r::GUI::GLToolbarItem::get_data() const": "_ZNK6Slic3r3GUI13GLToolbarItem8get_dataEv",
-        "Slic3r::GUI::GLToolbarItem::get_icon_filename(bool) const": "_ZNK6Slic3r3GUI13GLToolbarItem17get_icon_filenameEb",
-        "Slic3r::GUI::GLToolbarItem::set_state(Slic3r::GUI::GLToolbarItem::EState)": "_ZN6Slic3r3GUI13GLToolbarItem9set_stateENS1_6EStateE",
-        "Slic3r::GUI::GLToolbarItem::set_visible(bool)": "_ZN6Slic3r3GUI13GLToolbarItem11set_visibleEb",
-        "Slic3r::GUI::GUI_App::dark_mode()": "_ZN6Slic3r3GUI7GUI_App9dark_modeEv",
-        "Slic3r::GUI::GUI_App::global_print_sequence() const": "_ZNK6Slic3r3GUI7GUI_App21global_print_sequenceEv",
-        "Slic3r::GUI::GUI_App::obj_list()": "_ZN6Slic3r3GUI7GUI_App8obj_listEv",
-        "Slic3r::GUI::GUI_App::plater()": "_ZN6Slic3r3GUI7GUI_App6platerEv",
-        "Slic3r::GUI::GUI_App::tab_panel() const": "_ZNK6Slic3r3GUI7GUI_App9tab_panelEv",
-        "Slic3r::GUI::MainFrame::load_config(Slic3r::DynamicPrintConfig const&)": "_ZN6Slic3r3GUI9MainFrame11load_configERKNS_18DynamicPrintConfigE",
-        "Slic3r::GUI::NotificationManager::push_notification(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, int)": "_ZN6Slic3r3GUI19NotificationManager17push_notificationERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEi",
-        "Slic3r::GUI::ObjectList::get_selected_item_indexes(int&, int&, wxDataViewItem const&)": "_ZN6Slic3r3GUI10ObjectList25get_selected_item_indexesERiS2_RK14wxDataViewItem",
-        "Slic3r::GUI::ObjectList::load_generic_subobject(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, Slic3r::ModelVolumeType)": "__ZN6Slic3r3GUI10ObjectList22load_generic_subobjectERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEENS_15ModelVolumeTypeE",
-        "Slic3r::GUI::ObjectList::object_config_options_changed(Slic3r::GUI::ObjectVolumeID const&)": "_ZN6Slic3r3GUI10ObjectList29object_config_options_changedERKNS0_14ObjectVolumeIDE",
-        "Slic3r::GUI::ObjectList::update_name_in_list(int, int) const": "_ZNK6Slic3r3GUI10ObjectList19update_name_in_listEii",
-        "Slic3r::GUI::ObjectList::update_printable_state(int, int)": "_ZN6Slic3r3GUI10ObjectList22update_printable_stateEii",
-        "Slic3r::GUI::PartPlateList::get_plate_count() const": "_ZNK6Slic3r3GUI13PartPlateList15get_plate_countEv",
-        "Slic3r::GUI::Plater::changed_mesh(int)": "_ZN6Slic3r3GUI6Plater12changed_meshEi",
-        "Slic3r::GUI::Plater::changed_object(Slic3r::ModelObject&)": "_ZN6Slic3r3GUI6Plater14changed_objectERNS_11ModelObjectE",
-        "Slic3r::GUI::Plater::config() const": "_ZNK6Slic3r3GUI6Plater6configEv",
-        "Slic3r::GUI::Plater::default_menu()": "__ZN6Slic3r3GUI6Plater12default_menuEv",
-        "Slic3r::GUI::Plater::get_notification_manager()": "_ZN6Slic3r3GUI6Plater24get_notification_managerEv",
-        "Slic3r::GUI::Plater::get_partplate_list()": "_ZN6Slic3r3GUI6Plater18get_partplate_listEv",
-        "Slic3r::GUI::Plater::get_selected_object_idx()": "_ZN6Slic3r3GUI6Plater23get_selected_object_idxEv",
-        "Slic3r::GUI::Plater::get_selection() const": "_ZNK6Slic3r3GUI6Plater13get_selectionEv",
-        "Slic3r::GUI::Plater::get_view3D_canvas3D()": "_ZN6Slic3r3GUI6Plater19get_view3D_canvas3DEv",
-        "Slic3r::GUI::Plater::is_single_full_object_selection() const": "_ZNK6Slic3r3GUI6Plater31is_single_full_object_selectionEv",
-        "Slic3r::GUI::Plater::load_files(std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&, Slic3r::LoadStrategy, bool)": "_ZN6Slic3r3GUI6Plater10load_filesERKNSt3__16vectorINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEENS7_IS9_EEEENS_12LoadStrategyEb",
-        "Slic3r::GUI::Plater::model()": "_ZN6Slic3r3GUI6Plater5modelEv",
-        "Slic3r::GUI::Plater::plate_menu()": "__ZN6Slic3r3GUI6Plater10plate_menuEv",
-        "Slic3r::GUI::Plater::priv::replace_volume_with_stl(int, int, boost::filesystem::path const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)": "_ZN6Slic3r3GUI6Plater4priv23replace_volume_with_stlEiiRKN5boost10filesystem4pathERKNSt3__112basic_stringIcNS8_11char_traitsIcEENS8_9allocatorIcEEEE",
-        "Slic3r::GUI::Plater::take_snapshot(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)": "_ZN6Slic3r3GUI6Plater13take_snapshotERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE",
-        "Slic3r::GUI::PrinterWebView::PrinterWebView(wxWindow*)": "_ZN6Slic3r3GUI14PrinterWebViewC1EP8wxWindow",
-        "Slic3r::GUI::PrinterWebView::load_url(wxString const&)": "_ZN6Slic3r3GUI14PrinterWebView8load_urlERK8wxString",
-        "Slic3r::GUI::Selection::get_instance_idx() const": "_ZNK6Slic3r3GUI9Selection16get_instance_idxEv",
-        "Slic3r::GUI::Selection::get_selected_single_volume(int&, int&)": "_ZN6Slic3r3GUI9Selection26get_selected_single_volumeERiS2_",
-        "Slic3r::GUI::Selection::is_single_full_instance() const": "_ZNK6Slic3r3GUI9Selection23is_single_full_instanceEv",
-        "Slic3r::GUI::SettingsFactory::get_options(bool)": "_ZN6Slic3r3GUI15SettingsFactory11get_optionsEb",
-        "Slic3r::GUI::wxGetApp()": "_ZN6Slic3r3GUI8wxGetAppEv",
-        "Slic3r::Geometry::Transformation::get_rotation() const": "_ZNK6Slic3r8Geometry14Transformation12get_rotationEv",
-        "Slic3r::Geometry::Transformation::get_scaling_factor() const": "_ZNK6Slic3r8Geometry14Transformation18get_scaling_factorEv",
-        "Slic3r::Geometry::Transformation::set_rotation(Eigen::Matrix<double, 3, 1, 2, 3, 1> const&)": "_ZN6Slic3r8Geometry14Transformation12set_rotationERKN5Eigen6MatrixIdLi3ELi1ELi2ELi3ELi1EEE",
-        "Slic3r::Geometry::Transformation::set_scaling_factor(Eigen::Matrix<double, 3, 1, 2, 3, 1> const&)": "_ZN6Slic3r8Geometry14Transformation18set_scaling_factorERKN5Eigen6MatrixIdLi3ELi1ELi2ELi3ELi1EEE",
-        "Slic3r::ModelConfig::s_last_timestamp": "_ZN6Slic3r11ModelConfig16s_last_timestampE",
-        "Slic3r::ModelObject::ensure_on_bed(bool)": "__ZN6Slic3r11ModelObject13ensure_on_bedEb",
-        "Slic3r::ModelObject::scale_mesh_after_creation(float)": "_ZN6Slic3r11ModelObject25scale_mesh_after_creationEf",
-        "Slic3r::ModelVolume::assign_new_unique_ids_recursive()": "__ZN6Slic3r11ModelVolume31assign_new_unique_ids_recursiveEv",
-        "Slic3r::ModelVolume::calculate_convex_hull()": "_ZN6Slic3r11ModelVolume21calculate_convex_hullEv",
-        "Slic3r::ModelVolume::ensure_part_guid(bool) const": "__ZNK6Slic3r11ModelVolume16ensure_part_guidEb",
-        "Slic3r::ModelVolume::set_mesh_keep_paint(Slic3r::TriangleMesh&&, std::__1::function<void (int, char const*)> const&, std::__1::function<bool ()> const&)": "_ZN6Slic3r11ModelVolume19set_mesh_keep_paintEONS_12TriangleMeshERKNSt3__18functionIFviPKcEEERKNS4_IFbvEEE",
-        "Slic3r::TriangleMesh::ReadSTLFile(char const*, bool, std::__1::function<void (int, int, bool&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&)>, int)": "_ZN6Slic3r12TriangleMesh11ReadSTLFileEPKcbNSt3__18functionIFviiRbRNS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESC_SC_SC_SC_EEEi",
-        "Slic3r::resources_dir()": "_ZN6Slic3r13resources_dirEv",
-        "Slic3r::save_object_mesh(Slic3r::ModelObject&)": "_ZN6Slic3r16save_object_meshERNS_11ModelObjectE",
-        "Slic3r::store_stl(char const*, Slic3r::ModelObject*, bool)": "_ZN6Slic3r9store_stlEPKcPNS_11ModelObjectEb",
-        "Slic3r::store_stl(char const*, Slic3r::TriangleMesh*, bool)": "_ZN6Slic3r9store_stlEPKcPNS_12TriangleMeshEb",
-        "append_menu_item(wxMenu*, int, wxString const&, wxString const&, std::__1::function<void (wxCommandEvent&)>, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, wxEvtHandler*, std::__1::function<bool ()>, wxWindow*, int)": "_Z16append_menu_itemP6wxMenuiRK8wxStringS3_NSt3__18functionIFvR14wxCommandEventEEERKNS4_12basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEP12wxEvtHandlerNS5_IFbvEEEP8wxWindowi",
-        "append_submenu(wxMenu*, wxMenu*, int, wxString const&, wxString const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, std::__1::function<bool ()>, wxWindow*, int)": "_Z14append_submenuP6wxMenuS0_iRK8wxStringS3_RKNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEENS4_8functionIFbvEEEP8wxWindowi",
-        "wxAppBase::GetTopWindow() const": "_ZNK9wxAppBase12GetTopWindowEv",
-        "wxBookCtrlBase::DeletePage(unsigned long)": "_ZN14wxBookCtrlBase10DeletePageEm",
-        "wxBookCtrlBase::FindPage(wxWindow const*) const": "_ZNK14wxBookCtrlBase8FindPageEPK8wxWindow",
-        "wxBookCtrlBase::InsertPage(unsigned long, wxWindow*, wxString const&, bool, int)": "_ZN14wxBookCtrlBase10InsertPageEmP8wxWindowRK8wxStringbi",
-        "wxDialog::Create(wxWindow*, int, wxString const&, wxPoint const&, wxSize const&, long, wxString const&)": "_ZN8wxDialog6CreateEP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelS4_",
-        "wxDialog::Show(bool)": "_ZN8wxDialog4ShowEb",
-        "wxDialog::wxCreateObject()": "_ZN8wxDialog14wxCreateObjectEv",
-        "wxEVT_DATAVIEW_SELECTION_CHANGED": "wxEVT_DATAVIEW_SELECTION_CHANGED",
-        "wxEvtHandler::AddFilter(wxEventFilter*)": "_ZN12wxEvtHandler9AddFilterEP13wxEventFilter",
-        "wxEvtHandler::RemoveFilter(wxEventFilter*)": "_ZN12wxEvtHandler12RemoveFilterEP13wxEventFilter",
-        "wxMenu::wxCreateObject()": "_ZN6wxMenu14wxCreateObjectEv",
-        "wxMenuBase::Destroy(wxMenuItem*)": "_ZN10wxMenuBase7DestroyEP10wxMenuItem",
-        "wxMenuBase::FindItem(int, wxMenu**) const": "_ZNK10wxMenuBase8FindItemEiPP6wxMenu",
-        "wxMenuBase::FindItem(wxString const&) const": "_ZNK10wxMenuBase8FindItemERK8wxString",
-        "wxMenuBase::FindItemByPosition(unsigned long) const": "_ZNK10wxMenuBase18FindItemByPositionEm",
-        "wxMenuBase::Insert(unsigned long, wxMenuItem*)": "_ZN10wxMenuBase6InsertEmP10wxMenuItem",
-        "wxMenuBase::Remove(wxMenuItem*)": "_ZN10wxMenuBase6RemoveEP10wxMenuItem",
-        "wxMenuItem::Enable(bool)": "_ZN10wxMenuItem6EnableEb",
-        "wxMenuItem::SetItemLabel(wxString const&)": "_ZN10wxMenuItem12SetItemLabelERK8wxString",
-        "wxString::wxString(char const*)": "_ZN8wxStringC2EPKc",
-        "wxString::~wxString()": "_ZN8wxStringD1Ev",
-        "wxTopLevelWindowBase::DoCentre(int)": "_ZN20wxTopLevelWindowBase8DoCentreEi",
-        "wxWindow::DoSetSize(int, int, int, int, int)": "_ZN8wxWindow9DoSetSizeEiiiii",
-        "wxWindow::Show(bool)": "_ZN8wxWindow4ShowEb",
-        "wxWindowBase::Destroy()": "_ZN12wxWindowBase7DestroyEv"
-      },
-      "vtable_probe": {
-        "headers": [
-          "src/libslic3r/Config.hpp"
-        ],
-        "probe_code": "struct ConfigOptionVtableProbe final : Slic3r::ConfigOption { Slic3r::ConfigOptionType type() const override { return Slic3r::coNone; } std::string serialize() const override { return {}; } bool deserialize(const std::string &, bool) override { return false; } ConfigOptionVtableProbe *clone() const override { return nullptr; } void set(const Slic3r::ConfigOption *) override {} bool operator==(const Slic3r::ConfigOption &) const override { return false; } size_t hash() const noexcept override { return 0; } }; ConfigOptionVtableProbe config_option_vtable_probe;"
-      },
-      "vtables": {
-        "Slic3r::ConfigOption": {
-          "dump_type": "ConfigOptionVtableProbe",
-          "methods": {
-            "deserialize(const std::string &, bool)": "ConfigOptionVtableProbe::deserialize(const std::string &, bool)",
-            "type() const": "ConfigOptionVtableProbe::type() const"
-          }
-        }
-      }
+  "layouts": {
+    "Slic3r::GUI::GLToolbarItem::Data": {
+      "bases": [],
+      "members": [
+        "name",
+        "sprite_id",
+        "left",
+        "icon_filename_callback"
+      ]
+    },
+    "Slic3r::GUI::GLToolbarItem::Data::Option": {
+      "bases": [],
+      "members": [
+        "action_callback"
+      ]
+    },
+    "Slic3r::GUI::MenuFactory": {
+      "bases": [],
+      "members": [
+        "m_object_menu",
+        "m_part_menu"
+      ]
+    },
+    "Slic3r::GUI::Plater": {
+      "bases": [],
+      "members": [
+        "p"
+      ]
+    },
+    "Slic3r::GUI::Plater::priv": {
+      "bases": [],
+      "members": [
+        "menus"
+      ]
+    },
+    "Slic3r::GUI::PrinterWebView": {
+      "bases": [],
+      "members": []
+    },
+    "Slic3r::Model": {
+      "bases": [],
+      "members": [
+        "objects",
+        "model_info"
+      ]
+    },
+    "Slic3r::ModelConfig": {
+      "bases": [],
+      "members": [
+        "m_timestamp",
+        "m_data"
+      ]
+    },
+    "Slic3r::ModelConfigObject": {
+      "bases": [
+        "Slic3r::ModelConfig"
+      ],
+      "members": []
+    },
+    "Slic3r::ModelInfo": {
+      "bases": [],
+      "members": [
+        "metadata_items"
+      ]
+    },
+    "Slic3r::ModelInstance": {
+      "bases": [],
+      "members": [
+        "m_transformation",
+        "printable"
+      ]
+    },
+    "Slic3r::ModelObject": {
+      "bases": [],
+      "members": [
+        "name",
+        "instances",
+        "volumes",
+        "config"
+      ]
+    },
+    "Slic3r::ModelVolume": {
+      "bases": [],
+      "members": [
+        "name",
+        "m_mesh"
+      ]
+    },
+    "wxBookCtrlBase": {
+      "bases": [],
+      "members": [
+        "m_pages",
+        "m_bookctrl"
+      ]
+    },
+    "wxEvent": {
+      "bases": [],
+      "members": [
+        "m_eventObject",
+        "m_eventType"
+      ]
+    },
+    "wxEventFilter": {
+      "bases": [],
+      "members": [
+        "m_next"
+      ]
+    },
+    "wxMenuItemBase": {
+      "bases": [],
+      "members": [
+        "m_subMenu"
+      ]
+    },
+    "wxString": {
+      "bases": [],
+      "members": []
     }
   },
-  "version": "02.08.02.61"
+  "record_probe": {
+    "compiler_args": [
+      "-fno-access-control"
+    ],
+    "headers": [
+      "src/slic3r/GUI/I18N.hpp",
+      "src/slic3r/pchheader.hpp"
+    ],
+    "source_slice": {
+      "path": "src/slic3r/GUI/Plater.cpp",
+      "suffix": "\n}} // namespace Slic3r::GUI\n",
+      "through_record": "struct Plater::priv"
+    }
+  },
+  "schema_version": 1,
+  "symbols": [
+    "ButtonsListCtrl::InsertPage(unsigned long, wxString const&, bool, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)",
+    "Slic3r::ConfigBase::apply_only(Slic3r::ConfigBase const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&, bool)",
+    "Slic3r::ConfigBase::opt_serialize(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&) const",
+    "Slic3r::ConfigBase::set(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, double, bool)",
+    "Slic3r::ConfigBase::set(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, int, bool)",
+    "Slic3r::DynamicConfig::erase(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)",
+    "Slic3r::DynamicConfig::keys() const",
+    "Slic3r::DynamicConfig::optptr(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&) const",
+    "Slic3r::DynamicPrintConfig::new_from_defaults_keys(std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&)",
+    "Slic3r::DynamicPrintConfig::~DynamicPrintConfig()",
+    "Slic3r::GUI::EVT_GLCANVAS_INSTANCE_MOVED",
+    "Slic3r::GUI::EVT_GLCANVAS_INSTANCE_ROTATED",
+    "Slic3r::GUI::EVT_GLCANVAS_INSTANCE_SCALED",
+    "Slic3r::GUI::EVT_GLCANVAS_OBJECT_SELECT",
+    "Slic3r::GUI::EVT_GLCANVAS_REDO",
+    "Slic3r::GUI::EVT_GLCANVAS_REMOVE_OBJECT",
+    "Slic3r::GUI::EVT_GLCANVAS_UNDO",
+    "Slic3r::GUI::EVT_GLCANVAS_UPDATE_GEOMETRY",
+    "Slic3r::GUI::EVT_OBJ_LIST_OBJECT_SELECT",
+    "Slic3r::GUI::GLCanvas3D::get_main_toolbar() const",
+    "Slic3r::GUI::GLToolbar::add_item(Slic3r::GUI::GLToolbarItem::Data const&, Slic3r::GUI::GLToolbarItem::EType)",
+    "Slic3r::GUI::GLToolbar::get_item(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&) const",
+    "Slic3r::GUI::GLToolbar::get_item_id(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&) const",
+    "Slic3r::GUI::GLToolbar::get_items() const",
+    "Slic3r::GUI::GLToolbar::set_icon_dirty()",
+    "Slic3r::GUI::GLToolbar::set_tooltip(int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)",
+    "Slic3r::GUI::GLToolbarItem::Data::Data()",
+    "Slic3r::GUI::GLToolbarItem::Data::~Data()",
+    "Slic3r::GUI::GLToolbarItem::get_data() const",
+    "Slic3r::GUI::GLToolbarItem::get_icon_filename(bool) const",
+    "Slic3r::GUI::GLToolbarItem::set_state(Slic3r::GUI::GLToolbarItem::EState)",
+    "Slic3r::GUI::GLToolbarItem::set_visible(bool)",
+    "Slic3r::GUI::GUI_App::dark_mode()",
+    "Slic3r::GUI::GUI_App::global_print_sequence() const",
+    "Slic3r::GUI::GUI_App::obj_list()",
+    "Slic3r::GUI::GUI_App::plater()",
+    "Slic3r::GUI::GUI_App::tab_panel() const",
+    "Slic3r::GUI::MainFrame::load_config(Slic3r::DynamicPrintConfig const&)",
+    "Slic3r::GUI::NotificationManager::push_notification(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, int)",
+    "Slic3r::GUI::ObjectList::get_selected_item_indexes(int&, int&, wxDataViewItem const&)",
+    "Slic3r::GUI::ObjectList::load_generic_subobject(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, Slic3r::ModelVolumeType)",
+    "Slic3r::GUI::ObjectList::object_config_options_changed(Slic3r::GUI::ObjectVolumeID const&)",
+    "Slic3r::GUI::ObjectList::update_name_in_list(int, int) const",
+    "Slic3r::GUI::ObjectList::update_printable_state(int, int)",
+    "Slic3r::GUI::PartPlateList::get_plate_count() const",
+    "Slic3r::GUI::Plater::changed_mesh(int)",
+    "Slic3r::GUI::Plater::changed_object(Slic3r::ModelObject&)",
+    "Slic3r::GUI::Plater::config() const",
+    "Slic3r::GUI::Plater::default_menu()",
+    "Slic3r::GUI::Plater::get_notification_manager()",
+    "Slic3r::GUI::Plater::get_partplate_list()",
+    "Slic3r::GUI::Plater::get_selected_object_idx()",
+    "Slic3r::GUI::Plater::get_selection() const",
+    "Slic3r::GUI::Plater::get_view3D_canvas3D()",
+    "Slic3r::GUI::Plater::is_single_full_object_selection() const",
+    "Slic3r::GUI::Plater::load_files(std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&, Slic3r::LoadStrategy, bool)",
+    "Slic3r::GUI::Plater::model()",
+    "Slic3r::GUI::Plater::plate_menu()",
+    "Slic3r::GUI::Plater::priv::replace_volume_with_stl(int, int, boost::filesystem::path const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)",
+    "Slic3r::GUI::Plater::take_snapshot(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)",
+    "Slic3r::GUI::PrinterWebView::PrinterWebView(wxWindow*)",
+    "Slic3r::GUI::PrinterWebView::load_url(wxString const&)",
+    "Slic3r::GUI::Selection::get_instance_idx() const",
+    "Slic3r::GUI::Selection::get_selected_single_volume(int&, int&)",
+    "Slic3r::GUI::Selection::is_single_full_instance() const",
+    "Slic3r::GUI::SettingsFactory::get_options(bool)",
+    "Slic3r::GUI::wxGetApp()",
+    "Slic3r::Geometry::Transformation::get_rotation() const",
+    "Slic3r::Geometry::Transformation::get_scaling_factor() const",
+    "Slic3r::Geometry::Transformation::set_rotation(Eigen::Matrix<double, 3, 1, 2, 3, 1> const&)",
+    "Slic3r::Geometry::Transformation::set_scaling_factor(Eigen::Matrix<double, 3, 1, 2, 3, 1> const&)",
+    "Slic3r::ModelConfig::s_last_timestamp",
+    "Slic3r::ModelObject::ensure_on_bed(bool)",
+    "Slic3r::ModelObject::scale_mesh_after_creation(float)",
+    "Slic3r::ModelVolume::assign_new_unique_ids_recursive()",
+    "Slic3r::ModelVolume::calculate_convex_hull()",
+    "Slic3r::ModelVolume::ensure_part_guid(bool) const",
+    "Slic3r::ModelVolume::set_mesh_keep_paint(Slic3r::TriangleMesh&&, std::__1::function<void (int, char const*)> const&, std::__1::function<bool ()> const&)",
+    "Slic3r::TriangleMesh::ReadSTLFile(char const*, bool, std::__1::function<void (int, int, bool&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&)>, int)",
+    "Slic3r::resources_dir()",
+    "Slic3r::save_object_mesh(Slic3r::ModelObject&)",
+    "Slic3r::store_stl(char const*, Slic3r::ModelObject*, bool)",
+    "Slic3r::store_stl(char const*, Slic3r::TriangleMesh*, bool)",
+    "append_menu_item(wxMenu*, int, wxString const&, wxString const&, std::__1::function<void (wxCommandEvent&)>, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, wxEvtHandler*, std::__1::function<bool ()>, wxWindow*, int)",
+    "append_submenu(wxMenu*, wxMenu*, int, wxString const&, wxString const&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, std::__1::function<bool ()>, wxWindow*, int)",
+    "wxAppBase::GetTopWindow() const",
+    "wxBookCtrlBase::DeletePage(unsigned long)",
+    "wxBookCtrlBase::FindPage(wxWindow const*) const",
+    "wxBookCtrlBase::InsertPage(unsigned long, wxWindow*, wxString const&, bool, int)",
+    "wxDialog::Create(wxWindow*, int, wxString const&, wxPoint const&, wxSize const&, long, wxString const&)",
+    "wxDialog::Show(bool)",
+    "wxDialog::wxCreateObject()",
+    "wxEVT_DATAVIEW_SELECTION_CHANGED",
+    "wxEvtHandler::AddFilter(wxEventFilter*)",
+    "wxEvtHandler::RemoveFilter(wxEventFilter*)",
+    "wxMenu::wxCreateObject()",
+    "wxMenuBase::Destroy(wxMenuItem*)",
+    "wxMenuBase::FindItem(int, wxMenu**) const",
+    "wxMenuBase::FindItem(wxString const&) const",
+    "wxMenuBase::FindItemByPosition(unsigned long) const",
+    "wxMenuBase::Insert(unsigned long, wxMenuItem*)",
+    "wxMenuBase::Remove(wxMenuItem*)",
+    "wxMenuItem::Enable(bool)",
+    "wxMenuItem::SetItemLabel(wxString const&)",
+    "wxString::wxString(char const*)",
+    "wxString::~wxString()",
+    "wxTopLevelWindowBase::DoCentre(int)",
+    "wxWindow::DoSetSize(int, int, int, int, int)",
+    "wxWindow::Show(bool)",
+    "wxWindowBase::Destroy()"
+  ],
+  "version": "02.08.02.61",
+  "vtable_probe": {
+    "headers": [
+      "src/libslic3r/Config.hpp"
+    ],
+    "probe_code": "struct ConfigOptionVtableProbe final : Slic3r::ConfigOption { Slic3r::ConfigOptionType type() const override { return Slic3r::coNone; } std::string serialize() const override { return {}; } bool deserialize(const std::string &, bool) override { return false; } ConfigOptionVtableProbe *clone() const override { return nullptr; } void set(const Slic3r::ConfigOption *) override {} bool operator==(const Slic3r::ConfigOption &) const override { return false; } size_t hash() const noexcept override { return 0; } }; ConfigOptionVtableProbe config_option_vtable_probe;"
+  },
+  "vtables": {
+    "Slic3r::ConfigOption": {
+      "dump_type": "ConfigOptionVtableProbe",
+      "methods": {
+        "deserialize(const std::string &, bool)": "ConfigOptionVtableProbe::deserialize(const std::string &, bool)",
+        "type() const": "ConfigOptionVtableProbe::type() const"
+      }
+    }
+  }
 }

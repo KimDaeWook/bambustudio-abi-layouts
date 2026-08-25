@@ -30,7 +30,7 @@ class MachoFunctionAbiTests(unittest.TestCase):
         symtab_command = struct.pack("<IIIIII", 0x2, 24, symbol_offset, 1, string_offset, len(strings))
         nlist = struct.pack("<IBBHQ", 1, 0x0F, 1, 0, 0x100004000)
         requirements = {
-            "symbols": {"test()": symbol},
+            "symbols": ["test()"],
         }
         with tempfile.TemporaryDirectory(prefix="bse-macho-test-") as temporary:
             binary = Path(temporary) / "fixture"

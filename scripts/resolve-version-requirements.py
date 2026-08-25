@@ -8,6 +8,7 @@
 import argparse
 import json
 import re
+import shutil
 from pathlib import Path
 
 
@@ -47,6 +48,8 @@ def main() -> int:
         document["inherited_from"] = inherited_from
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_text(json.dumps(document, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        for override in source.parent.glob("requirements.*.json"):
+            shutil.copyfile(override, destination.parent / override.name)
         print(f"created {destination} from {source}")
     document = json.loads(destination.read_text(encoding="utf-8"))
     if document.get("kind") != "bambustudio_abi_requirements" or document.get("version") != args.version:

@@ -10,7 +10,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shutil
 import struct
+import subprocess
 import uuid
 from pathlib import Path
 
@@ -100,6 +102,28 @@ def find_symbol(table: dict[str, int], requested: str) -> int | None:
     return table.get(requested) or table.get("_" + requested)
 
 
+def demangled_index(table: dict[str, int]) -> dict[str, list[str]]:
+    executable = shutil.which("llvm-cxxfilt") or shutil.which("c++filt")
+    if not executable:
+        raise ValueError("llvm-cxxfilt or c++filt is required to resolve C++ names")
+    raw_names = list(table)
+    # Mach-O adds one leading underscore to external Itanium symbols.
+    inputs = [name[1:] if name.startswith("__Z") else name for name in raw_names]
+    result = subprocess.run(
+        [executable, "-n"], input="\n".join(inputs) + "\n", text=True,
+        capture_output=True, check=True,
+    )
+    index: dict[str, list[str]] = {}
+    demangled = result.stdout.splitlines()
+    if len(demangled) != len(raw_names):
+        raise ValueError("C++ demangler returned an unexpected number of names")
+    for raw_name, cpp_name in zip(raw_names, demangled):
+        index.setdefault(cpp_name, []).append(raw_name)
+        if raw_name.startswith("_") and not raw_name.startswith("__Z"):
+            index.setdefault(raw_name[1:], []).append(raw_name)
+    return index
+
+
 def resolve(binary: Path, requirements: dict, architecture: str) -> dict:
     parsed = {item["architecture"]: item for item in map(parse_slice, macho_slices(binary.read_bytes()))}
     if architecture not in parsed:
@@ -107,8 +131,22 @@ def resolve(binary: Path, requirements: dict, architecture: str) -> dict:
     selected = parsed[architecture]
     table = selected["symbols"]
     methods = {}
-    for cpp_name, mangled in requirements["symbols"].items():
-        address = find_symbol(table, mangled)
+    index = demangled_index(table)
+    overrides = requirements.get("symbol_overrides", {})
+    for cpp_name in requirements["symbols"]:
+        requested = overrides.get(cpp_name)
+        candidates = [] if requested else index.get(cpp_name, [])
+        if requested:
+            address = find_symbol(table, requested)
+        elif len(candidates) == 1:
+            address = table[candidates[0]]
+        elif len(candidates) > 1:
+            raise ValueError(
+                f"C++ symbol is ambiguous and needs a platform override: {cpp_name}: "
+                + ", ".join(candidates)
+            )
+        else:
+            address = None
         if address is not None:
             methods[cpp_name] = f"0x{address:x}"
     if len(methods) != len(requirements["symbols"]):
