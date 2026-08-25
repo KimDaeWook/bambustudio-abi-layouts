@@ -130,13 +130,7 @@ def resolve(binary: Path, requirements: dict, architecture: str) -> dict:
             raise ValueError(f"required event ABI symbol is unavailable: {symbol}")
         return f"0x{address:x}"
 
-    events = {
-        "add_filter_symbol": event_requirements["add_filter_symbol"],
-        "add_filter_address": required_address(event_requirements["add_filter_symbol"]),
-        "remove_filter_symbol": event_requirements["remove_filter_symbol"],
-        "remove_filter_address": required_address(event_requirements["remove_filter_symbol"]),
-        "entries": [],
-    }
+    events = {"entries": []}
     for entry in event_requirements["entries"]:
         events["entries"].append({**entry, "address": required_address(entry["symbol"])})
     return {

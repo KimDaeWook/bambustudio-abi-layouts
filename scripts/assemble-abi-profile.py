@@ -32,13 +32,17 @@ def load(path: Path) -> dict:
     return value
 
 
-def nested_layouts(values: dict[str, int]) -> dict[str, dict[str, int]]:
-    result: dict[str, dict[str, int]] = {}
+def nested_layouts(values: dict[str, int], bindings: list[dict]) -> dict[str, dict[str, dict]]:
+    result: dict[str, dict[str, dict]] = {}
+    by_name = {item["name"]: item for item in bindings}
+    if len(by_name) != len(bindings) or set(by_name) != set(values):
+        raise ValueError("layout bindings must match extracted values exactly")
     for dotted, value in sorted(values.items()):
         group, separator, member = dotted.partition(".")
         if not separator or "." in member or not isinstance(value, int) or value < 0:
             raise ValueError(f"invalid layout value: {dotted}")
-        result.setdefault(group, {})[member] = value
+        descriptor = {key: item for key, item in by_name[dotted].items() if key != "name"}
+        result.setdefault(group, {})[member] = {"value": value, **descriptor}
     return result
 
 
@@ -76,27 +80,14 @@ def main() -> int:
     if analysis.get("resolved") != expected_symbols or len(functions.get("symbols", [])) != expected_symbols:
         raise ValueError("function ABI extraction is incomplete")
 
-    layouts = nested_layouts(values)
-    address_map = lambda value: {architecture: value}
+    layouts = nested_layouts(values, target_requirements["layout"]["bindings"])
+    for group, metadata in target_requirements.get("profile_metadata", {}).items():
+        layouts.setdefault(group, {}).update(metadata)
     symbols = [
-        {**{k: v for k, v in item.items() if k != "address"}, "addresses": address_map(item["address"])}
+        item
         for item in functions["symbols"]
     ]
     raw_events = functions["events"]
-    events = {
-        "add_filter_symbol": raw_events["add_filter_symbol"],
-        "remove_filter_symbol": raw_events["remove_filter_symbol"],
-        "add_filter_addresses": address_map(raw_events["add_filter_address"]),
-        "remove_filter_addresses": address_map(raw_events["remove_filter_address"]),
-        "expected_counts": {architecture: len(raw_events["entries"])},
-        "event_type_offset": layouts["events"]["event_type_offset"],
-        "filter_next_offset": layouts["events"]["filter_next_offset"],
-        "event_object_offset": layouts["events"]["event_object_offset"],
-        "entries": [
-            {**{k: v for k, v in item.items() if k != "address"}, "addresses": address_map(item["address"])}
-            for item in raw_events["entries"]
-        ],
-    }
     profile = {
         "schema_version": 1,
         "kind": "studio_generated_profile",
@@ -106,7 +97,7 @@ def main() -> int:
         "architecture": architecture,
         "binary": {
             "sha256": functions["binary"]["sha256"],
-            "uuids": {architecture: functions["binary"]["uuid"]},
+            "uuid": functions["binary"]["uuid"],
         },
         "release": {
             "tag": function_upstream["release_tag"],
@@ -114,7 +105,7 @@ def main() -> int:
             "asset": function_upstream["release_asset"],
         },
         "symbols": symbols,
-        "events": events,
+        "event_bindings": raw_events["entries"],
         "layouts": layouts,
     }
     version_dir = args.output_root / version
@@ -143,7 +134,7 @@ def main() -> int:
                 "binary_uuid": functions["binary"]["uuid"],
                 "layout_value_count": len(values),
                 "symbol_count": len(symbols),
-                "event_count": len(events["entries"]),
+                "event_binding_count": len(raw_events["entries"]),
                 "catalog_sha256": catalogs,
                 "generator_commit": args.project_commit,
                 "workflow": {"run_id": args.workflow_run_id, "url": args.workflow_run_url},
