@@ -4,7 +4,7 @@
 
 BambuStudio ABI Layouts is an independent, open-source build and analysis project that reconstructs C++ ABI layout evidence from the public [BambuStudio](https://github.com/bambulab/BambuStudio) source code.
 
-The project exists for extension runtimes, compatibility adapters, diagnostics, and other tools that must interoperate with an installed BambuStudio without rebuilding or replacing the application. Its first milestone builds a selected upstream revision with release optimization and standalone DWARF information, then preserves the resulting macOS dSYM together with enough provenance to audit how it was produced. A later, separate stage will turn that DWARF data into small, reviewable class and member layout manifests.
+The project exists for extension runtimes, compatibility adapters, diagnostics, and other tools that must interoperate with an installed BambuStudio without rebuilding or replacing the application. It extracts source-derived record/vtable layouts and reviewed function/event addresses from the exact official release binary, then combines both into a small versioned runtime profile. The earlier full dSYM build remains available as research evidence but is not required by the fast profile pipeline.
 
 This project is not affiliated with or endorsed by Bambu Lab.
 
@@ -20,7 +20,18 @@ This is evidence, not an automatic compatibility guarantee:
 - The source revision alone does not fully determine a C++ ABI. Xcode, Apple Clang, SDK, deployment target, CMake options, dependency revisions, generated headers, and compile definitions can all affect the result.
 - A layout manifest must remain unavailable when the build provenance is incomplete or validation against the target binary is ambiguous.
 
-## Pipeline
+## Complete profile pipeline
+
+The manual **Generate complete ABI profile** workflow is the publishing entry point. It invokes two reusable workflows in parallel:
+
+- **Extract layout ABI** runs on `macos-15`, restores the exact dependency-header cache, and extracts all 34 reviewed record/vtable values in consolidated compiler probes. It does not build or link BambuStudio.
+- **Extract function ABI** runs on `ubuntu-24.04`, downloads the official macOS DMG for the requested release, extracts its arm64 Mach-O, and resolves all reviewed function and event symbols directly from `LC_SYMTAB`. The extractor also records the release binary SHA-256 and `LC_UUID`.
+
+The final job accepts the results only when their version and exact upstream source commit agree. It then writes `abi-layouts/<version>/macos-arm64.json`, uploads it as an artifact, and commits the generated profile to this repository. The target JSON contains the complete runtime-facing `symbols`, `events`, and `layouts`; `manifest.json` holds provenance and hashes. A missing layout, function, required event, architecture, UUID, or commit match is a hard failure.
+
+Mach-O symbol values are image virtual addresses, not live process addresses. A consumer must first verify the exact binary hash and UUID, then apply the loaded image slide. The release asset cache avoids downloading the large DMG again on later runs.
+
+## dSYM research pipeline
 
 The work is intentionally divided so a layout-extraction failure does not force a costly rebuild.
 
@@ -80,17 +91,17 @@ code generation in the large `Plater.cpp` probe is slower than compiling the tin
 alongside the syntax-only record pass. The lower-level `extract-clang-layouts.py` and
 `extract-clang-vtables.py` tools remain independently usable.
 
-The manual **Extract macOS arm64 ABI layouts** workflow restores the exact dependency prefix cached
+The reusable/manual **Extract layout ABI** workflow restores the exact dependency prefix cached
 by Stage 1 and runs this source probe without building or linking BambuStudio. It fails on a cache
 miss rather than silently starting a long dependency build. The uploaded artifact contains the 34
 values together with the resolved upstream commit, dependency tree, runner image, compiler, probe
 arguments, and source-slice hashes.
 
 Reviewed outputs are stored under `abi-layouts/<BambuStudio-version>/`. A target file such as
-`macos-arm64.json` contains only the grouped numeric values needed by a runtime. Its neighboring
-`manifest.json` binds that file's SHA-256 to the upstream commit and dependency tree, catalog and
-probe hashes, compiler, runner image, source slice, generator commit, and workflow run. A target file
-is added only after extraction succeeds; unsupported platforms do not receive empty placeholders.
+`macos-arm64.json` is a complete runtime profile containing the exact release identity, reviewed
+symbols/events, and grouped numeric layouts. Its neighboring `manifest.json` binds that file's
+SHA-256 to source, release, catalog, generator, and workflow provenance. A target file is added only
+after both independent extractors succeed; unsupported platforms do not receive empty placeholders.
 
 ## Running Stage 1
 

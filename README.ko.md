@@ -4,7 +4,7 @@
 
 BambuStudio ABI Layouts는 공개된 [BambuStudio](https://github.com/bambulab/BambuStudio) 소스 코드로부터 C++ ABI 레이아웃 근거를 재구성하는 독립 오픈 소스 빌드·분석 프로젝트입니다.
 
-설치된 BambuStudio를 다시 빌드하거나 대체하지 않고 연동해야 하는 확장 런타임, 호환성 어댑터, 진단 도구 등을 위한 프로젝트입니다. 첫 번째 단계에서는 선택한 upstream revision을 Release 최적화와 독립적인 DWARF 정보가 포함되도록 빌드하고, 생성된 macOS dSYM과 빌드 과정을 감사할 수 있는 provenance를 함께 보존합니다. 이후 별도 단계에서 DWARF를 작고 검토 가능한 클래스·멤버 레이아웃 manifest로 변환합니다.
+설치된 BambuStudio를 다시 빌드하거나 대체하지 않고 연동해야 하는 확장 런타임, 호환성 어댑터, 진단 도구 등을 위한 프로젝트입니다. 소스 기반 record/vtable layout과 공식 릴리스 바이너리의 검토된 function/event 주소를 각각 추출한 뒤, 작고 버전이 명확한 런타임 프로파일로 합칩니다. 기존 전체 dSYM 빌드는 연구 근거로 유지하지만 빠른 프로파일 파이프라인에는 필요하지 않습니다.
 
 이 프로젝트는 Bambu Lab과 제휴 관계가 아니며 Bambu Lab의 보증을 받지 않습니다.
 
@@ -20,7 +20,18 @@ export symbol은 보통 설치된 바이너리에서 직접 확인할 수 있습
 - 소스 revision만으로 C++ ABI 전체가 결정되지는 않습니다. Xcode, Apple Clang, SDK, deployment target, CMake 옵션, dependency revision, 생성 헤더와 compile definition도 결과에 영향을 줍니다.
 - 빌드 provenance가 불완전하거나 대상 바이너리 검증이 모호하면 해당 레이아웃은 사용할 수 없는 상태로 남겨야 합니다.
 
-## 파이프라인
+## 완전한 프로파일 파이프라인
+
+수동 **Generate complete ABI profile** workflow가 배포 진입점입니다. 다음 두 reusable workflow를 병렬로 호출합니다.
+
+- **Extract layout ABI**는 `macos-15`에서 정확한 dependency header cache를 복원하고, 통합된 compiler probe로 검토된 record/vtable 값 34개를 추출합니다. BambuStudio를 build하거나 link하지 않습니다.
+- **Extract function ABI**는 `ubuntu-24.04`에서 요청한 공식 macOS DMG를 다운로드하고 arm64 Mach-O를 꺼낸 뒤, `LC_SYMTAB`에서 검토된 function/event symbol을 모두 해석합니다. 릴리스 바이너리 SHA-256과 `LC_UUID`도 기록합니다.
+
+마지막 job은 두 결과의 version과 정확한 upstream source commit이 같을 때만 결합합니다. 이후 `abi-layouts/<version>/macos-arm64.json`을 생성하고 artifact로 업로드한 뒤 저장소에 commit합니다. Target JSON에는 런타임이 사용하는 `symbols`, `events`, `layouts` 전체가 들어가고, `manifest.json`에는 provenance와 hash가 들어갑니다. Layout, function, 필수 event, architecture, UUID 또는 commit 일치 중 하나라도 빠지면 hard failure입니다.
+
+Mach-O symbol 값은 실행 중인 절대 주소가 아니라 image virtual address입니다. Consumer는 정확한 binary hash와 UUID를 먼저 검증하고 로드된 image slide를 적용해야 합니다. 큰 DMG는 release asset cache를 사용하므로 다음 실행에서는 다시 다운로드하지 않습니다.
+
+## dSYM 연구 파이프라인
 
 레이아웃 추출 문제 때문에 비용이 큰 빌드를 처음부터 반복하지 않도록 두 단계로 분리합니다.
 
@@ -79,16 +90,16 @@ python3 scripts/extract-bambustudio-abi.py \
 pass와 작은 `Config.hpp` probe를 나란히 실행하는 편이 더 빠릅니다. 하위 도구인
 `extract-clang-layouts.py`와 `extract-clang-vtables.py`도 각각 독립적으로 사용할 수 있습니다.
 
-수동 **Extract macOS arm64 ABI layouts** workflow는 1단계에서 cache한 정확한 dependency prefix를
+reusable/manual **Extract layout ABI** workflow는 1단계에서 cache한 정확한 dependency prefix를
 복원하고 BambuStudio를 빌드하거나 link하지 않은 채 이 소스 probe를 실행합니다. Cache miss 시 긴
 dependency 빌드를 암묵적으로 시작하지 않고 실패합니다. 업로드 artifact에는 34개 값과 함께 해석된
 upstream commit, dependency tree, runner image, compiler, probe 인자와 소스 slice hash가 들어갑니다.
 
 검토가 끝난 결과는 `abi-layouts/<BambuStudio-version>/` 아래에 저장합니다. `macos-arm64.json` 같은
-target 파일에는 런타임에 필요한 그룹별 숫자 값만 들어갑니다. 같은 위치의 `manifest.json`은 target
-파일 SHA-256을 upstream commit과 dependency tree, catalog·probe hash, compiler, runner image, source
-slice, generator commit 및 workflow run에 결합합니다. 추출에 성공한 target만 추가하며 지원하지 않는
-플랫폼의 빈 placeholder 파일은 만들지 않습니다.
+target 파일은 정확한 릴리스 identity, 검토된 symbol/event와 그룹별 숫자 layout을 포함하는 완전한
+런타임 프로파일입니다. 같은 위치의 `manifest.json`은 target 파일 SHA-256을 source, release, catalog,
+generator 및 workflow provenance와 결합합니다. 두 독립 extractor가 모두 성공한 target만 추가하며
+지원하지 않는 플랫폼의 빈 placeholder 파일은 만들지 않습니다.
 
 ## 1단계 실행 방법
 

@@ -1,0 +1,75 @@
+name: Extract function ABI
+
+on:
+  workflow_call:
+    inputs:
+      bambu_ref:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      bambu_ref:
+        description: Upstream BambuStudio release tag
+        required: true
+        type: string
+        default: v02.08.02.61
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Install DMG extraction support
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends p7zip-full
+      - name: Resolve release metadata
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BAMBU_REF: ${{ inputs.bambu_ref }}
+        run: |
+          [[ "$BAMBU_REF" =~ ^v[0-9A-Za-z._+-]+$ ]] || { echo "function ABI requires a release tag" >&2; exit 2; }
+          commit=$(gh api "repos/bambulab/BambuStudio/commits/$BAMBU_REF" --jq .sha)
+          echo "commit=$commit" >>"$GITHUB_OUTPUT"
+          echo "version=${BAMBU_REF#v}" >>"$GITHUB_OUTPUT"
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ github.workspace }}/.work/releases
+          key: bambustudio-release-macos-${{ inputs.bambu_ref }}
+      - name: Download and unpack official release
+        id: asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BAMBU_REF: ${{ inputs.bambu_ref }}
+        run: |
+          asset=$(./scripts/download-macos-release.sh "$BAMBU_REF" "$GITHUB_WORKSPACE/.work/releases")
+          echo "name=$asset" >>"$GITHUB_OUTPUT"
+          mkdir -p "$GITHUB_WORKSPACE/.work/unpacked"
+          7z x "$GITHUB_WORKSPACE/.work/releases/$asset" -o"$GITHUB_WORKSPACE/.work/unpacked" -y >/dev/null
+          binary=$(find "$GITHUB_WORKSPACE/.work/unpacked" -type f -path '*/BambuStudio.app/Contents/MacOS/BambuStudio' -print -quit)
+          [[ -n "$binary" ]] || { echo "BambuStudio executable not found in DMG" >&2; exit 3; }
+          echo "binary=$binary" >>"$GITHUB_OUTPUT"
+      - name: Extract reviewed symbols from release Mach-O
+        run: |
+          mkdir -p artifacts
+          python3 scripts/extract-macho-function-abi.py \
+            --binary '${{ steps.asset.outputs.binary }}' \
+            --requirements config/bambustudio-function-abi.json \
+            --architecture arm64 \
+            --version '${{ steps.release.outputs.version }}' \
+            --release-tag '${{ inputs.bambu_ref }}' \
+            --release-asset '${{ steps.asset.outputs.name }}' \
+            --source-commit '${{ steps.release.outputs.commit }}' \
+            --output artifacts/function-abi.json
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: function-abi-macos-arm64
+          path: artifacts/function-abi.json
+          if-no-files-found: error
+          retention-days: 30
+

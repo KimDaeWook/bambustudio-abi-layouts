@@ -1,0 +1,63 @@
+name: Generate complete ABI profile
+
+on:
+  workflow_dispatch:
+    inputs:
+      bambu_ref:
+        description: Upstream BambuStudio release tag
+        required: true
+        type: string
+        default: v02.08.02.61
+
+permissions:
+  contents: write
+
+concurrency:
+  group: complete-abi-${{ inputs.bambu_ref }}
+  cancel-in-progress: false
+
+jobs:
+  layout:
+    uses: ./.github/workflows/extract-layout-abi.yml
+    with:
+      bambu_ref: ${{ inputs.bambu_ref }}
+  functions:
+    uses: ./.github/workflows/extract-function-abi.yml
+    with:
+      bambu_ref: ${{ inputs.bambu_ref }}
+  assemble:
+    needs: [layout, functions]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e
+        with:
+          name: layout-abi-macos-arm64
+          path: artifacts/layout
+      - uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e
+        with:
+          name: function-abi-macos-arm64
+          path: artifacts/functions
+      - name: Assemble and validate runtime profile
+        run: |
+          python3 scripts/assemble-abi-profile.py \
+            --layout artifacts/layout/layout-abi.json \
+            --functions artifacts/functions/function-abi.json \
+            --output-root abi-layouts \
+            --project-commit "$GITHUB_SHA" \
+            --workflow-run-id "$GITHUB_RUN_ID" \
+            --workflow-run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: complete-abi-profile-${{ inputs.bambu_ref }}
+          path: abi-layouts
+          if-no-files-found: error
+          retention-days: 90
+      - name: Commit generated profile to repository
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add abi-layouts
+          git diff --cached --quiet && exit 0
+          git commit -m "Add BambuStudio ${{ inputs.bambu_ref }} ABI profile"
+          git push origin HEAD:${{ github.ref_name }}
