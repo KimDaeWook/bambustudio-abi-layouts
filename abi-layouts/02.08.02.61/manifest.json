@@ -10,14 +10,14 @@
         "requirements.macos-arm64.json": "fc0e2b8eed251be99a3a9848cc6172d030a4c50b90b8c82d2306f2ec77ce236f"
       },
       "file": "macos-arm64.json",
-      "generator_commit": "91c84df69ea5f365b32fa6d67aad0a4aa9e899c6",
+      "generator_commit": "78b4e9e46618634483719ee923d1f482eae76c98",
       "record_count": 18,
-      "sha256": "a2118b7cee6f11c739b94f2c1e864cd13e7c1a2c86ef02cb6d594c6081e536ce",
+      "sha256": "26ff40a75e040f2760b70584388110a2a712755da7eb177845bc14c8e2429756",
       "symbol_count": 110,
       "vtable_count": 1,
       "workflow": {
-        "run_id": "32826869664",
-        "url": "https://github.com/KimDaeWook/bambustudio-abi-layouts/actions/runs/32826869664"
+        "run_id": "32827741530",
+        "url": "https://github.com/KimDaeWook/bambustudio-abi-layouts/actions/runs/32827741530"
       }
     }
   },
