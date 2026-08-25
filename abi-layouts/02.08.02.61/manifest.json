@@ -6,17 +6,18 @@
       "binary_sha256": "1a79017b9f86fb6db92987f4a4c4a4834ac540cf36703d49c7c91ed1959c2026",
       "binary_uuid": "45e7bf14-5642-37e6-b6c8-6805711cae15",
       "catalog_sha256": {
-        "requirements.json": "6b9757899fd5dd15c1aa210e85e089cb1603b3fafb01fe94ace377b015f020af"
+        "requirements.json": "261f455a81e797566a2ea4eed8685553fb6530d4efaad121a8d32b5295d027e0"
       },
       "event_binding_count": 9,
       "file": "macos-arm64.json",
-      "generator_commit": "6cac6cbc01a76c30c72e573523c3d55e15eccc9a",
-      "layout_value_count": 34,
-      "sha256": "95654ac0e4158aa0f5e51564d880e6a8f60bc6f2244b9a8938e3575ceb72ddfd",
+      "generator_commit": "083c4cf2b898b96caa9b063668f0ce2bb3c7de4e",
+      "record_count": 18,
+      "sha256": "e401b1581a1dfcb39d46436ffbadaed82b4a82d54577244389aa2d85ed06c6df",
       "symbol_count": 101,
+      "vtable_count": 1,
       "workflow": {
-        "run_id": "32822968219",
-        "url": "https://github.com/KimDaeWook/bambustudio-abi-layouts/actions/runs/32822968219"
+        "run_id": "32824384380",
+        "url": "https://github.com/KimDaeWook/bambustudio-abi-layouts/actions/runs/32824384380"
       }
     }
   },

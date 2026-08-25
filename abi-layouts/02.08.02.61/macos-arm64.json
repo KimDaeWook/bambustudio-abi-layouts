@@ -63,251 +63,158 @@
   "id": "macos-02.08.02.61-arm64-1a79017b9f86",
   "kind": "studio_generated_profile",
   "layouts": {
-    "context_menu": {
-      "menu_factory_object_menu": {
-        "member": "m_object_menu",
-        "type": "Slic3r::GUI::MenuFactory",
-        "value": 8
+    "Slic3r::GUI::GLToolbarItem::Data": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "icon_filename_callback": 648,
+        "left": 400,
+        "name": 0,
+        "sprite_id": 392
       },
-      "menu_factory_part_menu": {
-        "member": "m_part_menu",
-        "type": "Slic3r::GUI::MenuFactory",
-        "value": 264
-      },
-      "native_parents": [
-        {
-          "id": "bambu.add-part",
-          "translation_key": "Add part"
-        },
-        {
-          "id": "bambu.add-negative-part",
-          "translation_key": "Add negative part"
-        },
-        {
-          "id": "bambu.add-modifier",
-          "translation_key": "Add modifier"
-        },
-        {
-          "id": "bambu.add-support-blocker",
-          "translation_key": "Add support blocker"
-        },
-        {
-          "id": "bambu.add-support-enforcer",
-          "translation_key": "Add support enforcer"
-        },
-        {
-          "id": "bambu.add-primitive",
-          "translation_key": "Add Primitive"
-        },
-        {
-          "id": "bambu.cube",
-          "translation_key": "Cube"
-        },
-        {
-          "id": "bambu.bambu-cube",
-          "translation_key": "Bambu Cube"
-        },
-        {
-          "id": "bambu.clone",
-          "translation_key": "Clone"
-        }
-      ],
-      "plater_private": {
-        "member": "p",
-        "type": "Slic3r::GUI::Plater",
-        "value": 768
-      },
-      "private_menu_factory": {
-        "member": "menus",
-        "type": "Slic3r::GUI::Plater::priv",
-        "value": 1112
-      },
-      "wx_menu_item_submenu": {
-        "member": "m_subMenu",
-        "type": "wxMenuItemBase",
-        "value": 32
-      },
-      "wx_string_alignment": {
-        "type": "wxString",
-        "value": 8
-      },
-      "wx_string_size": {
-        "type": "wxString",
-        "value": 40
-      }
+      "size": 720
     },
-    "events": {
-      "event_object_offset": {
-        "member": "m_eventObject",
-        "type": "wxEvent",
-        "value": 16
+    "Slic3r::GUI::GLToolbarItem::Data::Option": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "action_callback": 8
       },
-      "event_type_offset": {
-        "member": "m_eventType",
-        "type": "wxEvent",
-        "value": 24
-      },
-      "filter_next_offset": {
-        "member": "m_next",
-        "type": "wxEventFilter",
-        "value": 8
-      }
+      "size": 72
     },
-    "model": {
-      "instance_printable": {
-        "member": "printable",
-        "type": "Slic3r::ModelInstance",
-        "value": 747
+    "Slic3r::GUI::MenuFactory": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "m_object_menu": 8,
+        "m_part_menu": 264
       },
-      "instance_transformation": {
-        "member": "m_transformation",
-        "type": "Slic3r::ModelInstance",
-        "value": 16
-      },
-      "model_info_metadata_items": {
-        "member": "metadata_items",
-        "type": "Slic3r::ModelInfo",
-        "value": 144
-      },
-      "model_info_shared_ptr": {
-        "member": "model_info",
-        "type": "Slic3r::Model",
-        "value": 328
-      },
-      "object_config_timestamp": {
-        "path": [
-          {
-            "member": "config",
-            "type": "Slic3r::ModelObject"
-          },
-          {
-            "base": "Slic3r::ModelConfig",
-            "type": "Slic3r::ModelConfigObject"
-          },
-          {
-            "member": "m_timestamp",
-            "type": "Slic3r::ModelConfig"
-          }
-        ],
-        "value": 160
-      },
-      "object_dynamic_config": {
-        "path": [
-          {
-            "member": "config",
-            "type": "Slic3r::ModelObject"
-          },
-          {
-            "base": "Slic3r::ModelConfig",
-            "type": "Slic3r::ModelConfigObject"
-          },
-          {
-            "member": "m_data",
-            "type": "Slic3r::ModelConfig"
-          }
-        ],
-        "value": 168
-      },
-      "object_instances": {
-        "member": "instances",
-        "type": "Slic3r::ModelObject",
-        "value": 88
-      },
-      "object_name": {
-        "member": "name",
-        "type": "Slic3r::ModelObject",
-        "value": 16
-      },
-      "object_volumes": {
-        "member": "volumes",
-        "type": "Slic3r::ModelObject",
-        "value": 112
-      },
-      "objects": {
-        "member": "objects",
-        "type": "Slic3r::Model",
-        "value": 40
-      },
-      "volume_mesh_shared_ptr": {
-        "member": "m_mesh",
-        "type": "Slic3r::ModelVolume",
-        "value": 1392
-      },
-      "volume_name": {
-        "member": "name",
-        "type": "Slic3r::ModelVolume",
-        "value": 16
-      }
+      "size": 3144
     },
-    "panel": {
-      "buttons_control": {
-        "member": "m_bookctrl",
-        "type": "wxBookCtrlBase",
-        "value": 816
+    "Slic3r::GUI::Plater": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "p": 768
       },
-      "page_count": {
-        "member": "m_pages",
-        "type": "wxBookCtrlBase",
-        "value": 792
-      },
-      "printer_web_view_alignment": {
-        "type": "Slic3r::GUI::PrinterWebView",
-        "value": 8
-      },
-      "printer_web_view_size": {
-        "type": "Slic3r::GUI::PrinterWebView",
-        "value": 776
-      }
+      "size": 936
     },
-    "settings": {
-      "option_deserialize_vtable_index": {
-        "method": "ConfigOptionVtableProbe::deserialize(const std::string &, bool)",
-        "type": "Slic3r::ConfigOption",
-        "value": 4
+    "Slic3r::GUI::Plater::priv": {
+      "alignment": 16,
+      "bases": {},
+      "members": {
+        "menus": 1112
       },
-      "option_type_vtable_index": {
-        "method": "ConfigOptionVtableProbe::type() const",
-        "type": "Slic3r::ConfigOption",
-        "value": 2
-      }
+      "size": 54784
     },
-    "toolbar": {
-      "data_alignment": {
-        "type": "Slic3r::GUI::GLToolbarItem::Data",
-        "value": 8
+    "Slic3r::GUI::PrinterWebView": {
+      "alignment": 8,
+      "bases": {},
+      "members": {},
+      "size": 776
+    },
+    "Slic3r::Model": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "model_info": 328,
+        "objects": 40
       },
-      "data_size": {
-        "type": "Slic3r::GUI::GLToolbarItem::Data",
-        "value": 720
+      "size": 808
+    },
+    "Slic3r::ModelConfig": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "m_data": 16,
+        "m_timestamp": 8
       },
-      "icon_filename_callback": {
-        "member": "icon_filename_callback",
-        "type": "Slic3r::GUI::GLToolbarItem::Data",
-        "value": 648
+      "size": 48
+    },
+    "Slic3r::ModelConfigObject": {
+      "alignment": 8,
+      "bases": {
+        "Slic3r::ModelConfig": 16
       },
-      "left_action": {
-        "path": [
-          {
-            "member": "left",
-            "type": "Slic3r::GUI::GLToolbarItem::Data"
-          },
-          {
-            "member": "action_callback",
-            "type": "Slic3r::GUI::GLToolbarItem::Data::Option"
-          }
-        ],
-        "value": 408
+      "members": {},
+      "size": 64
+    },
+    "Slic3r::ModelInfo": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "metadata_items": 144
       },
-      "name": {
-        "member": "name",
-        "type": "Slic3r::GUI::GLToolbarItem::Data",
-        "value": 0
+      "size": 168
+    },
+    "Slic3r::ModelInstance": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "m_transformation": 16,
+        "printable": 747
       },
-      "sprite_id": {
-        "member": "sprite_id",
-        "type": "Slic3r::GUI::GLToolbarItem::Data",
-        "value": 392
-      }
+      "size": 808
+    },
+    "Slic3r::ModelObject": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "config": 136,
+        "instances": 88,
+        "name": 16,
+        "volumes": 112
+      },
+      "size": 720
+    },
+    "Slic3r::ModelVolume": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "m_mesh": 1392,
+        "name": 16
+      },
+      "size": 2856
+    },
+    "wxBookCtrlBase": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "m_bookctrl": 816,
+        "m_pages": 792
+      },
+      "size": 856
+    },
+    "wxEvent": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "m_eventObject": 16,
+        "m_eventType": 24
+      },
+      "size": 88
+    },
+    "wxEventFilter": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "m_next": 8
+      },
+      "size": 16
+    },
+    "wxMenuItemBase": {
+      "alignment": 8,
+      "bases": {},
+      "members": {
+        "m_subMenu": 32
+      },
+      "size": 128
+    },
+    "wxString": {
+      "alignment": 8,
+      "bases": {},
+      "members": {},
+      "size": 40
     }
   },
   "platform": "macos",
@@ -824,5 +731,13 @@
       "logical_name": "ChangedMesh",
       "symbol": "_ZN6Slic3r3GUI6Plater12changed_meshEi"
     }
-  ]
+  ],
+  "vtables": {
+    "Slic3r::ConfigOption": {
+      "methods": {
+        "ConfigOptionVtableProbe::deserialize(const std::string &, bool)": 4,
+        "ConfigOptionVtableProbe::type() const": 2
+      }
+    }
+  }
 }
