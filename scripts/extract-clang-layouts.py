@@ -92,6 +92,7 @@ def main() -> int:
     parser.add_argument("--source-dir", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--compiler", default=os.environ.get("CXX", "clang++"))
+    parser.add_argument("--std", default="c++20", help="C++ language standard used upstream")
     parser.add_argument(
         "--compiler-arg", action="append", default=[],
         help="additional compiler argument; repeat for multiple arguments",
@@ -109,7 +110,7 @@ def main() -> int:
             probe_path = Path(temp_dir) / "probe.cpp"
             probe_path.write_text(probe, encoding="utf-8")
             command = [
-                args.compiler, "-std=c++20", "-fsyntax-only",
+                args.compiler, f"-std={args.std}", "-fsyntax-only",
                 "-Xclang", "-fdump-record-layouts",
                 "-I", str(args.source_dir),
                 *unit.get("compiler_args", []), *args.compiler_arg, str(probe_path),

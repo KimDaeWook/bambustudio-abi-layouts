@@ -58,6 +58,7 @@ python3 scripts/extract-clang-layouts.py \
   --source-dir /path/to/BambuStudio \
   --output layouts.json \
   --compiler "$(xcrun --find clang++)" \
+  --std c++17 \
   --compiler-arg=-I/path/to/generated/includes \
   --compiler-arg=-I/path/to/dependency/includes
 ```
