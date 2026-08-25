@@ -1,0 +1,31 @@
+{
+  "kind": "bambustudio_abi_profile_manifest",
+  "schema_version": 1,
+  "targets": {
+    "macos-arm64": {
+      "binary_sha256": "bcb04702a835e138cf1850b40f9452cf87118df6cdfba77af95b3294c2dc3927",
+      "binary_uuid": "8117d0ba-43e4-3c07-828b-41948745a99b",
+      "catalog_sha256": {
+        "requirements.json": "05cdbfae9ca1a775c5e2cde488b5f55e32b60216af8d876a8e678a04d321b9d9",
+        "requirements.macos-arm64.json": "fc0e2b8eed251be99a3a9848cc6172d030a4c50b90b8c82d2306f2ec77ce236f"
+      },
+      "file": "macos-arm64.json",
+      "generator_commit": "620e834152994919bda2cc2489cb937a9ddabe6b",
+      "record_count": 18,
+      "sha256": "c5098bcf63dde957fa2bdbc3aac884d8c146bbb57043a201a71aec13d6903e03",
+      "symbol_count": 110,
+      "vtable_count": 1,
+      "workflow": {
+        "run_id": "32846847071",
+        "url": "https://github.com/KimDaeWook/bambustudio-abi-layouts/actions/runs/32846847071"
+      }
+    }
+  },
+  "upstream": {
+    "commit": "9a530f77c23d8c3430d1dbef02e103cd8bd6480e",
+    "deps_tree": "ff281d41e59773ecd48419d60b101529790735fa",
+    "release_tag": "v02.08.02.60",
+    "repository": "https://github.com/bambulab/BambuStudio.git"
+  },
+  "version": "02.08.02.60"
+}
