@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "translation_units": [
+    {
+      "name": "fixture",
+      "headers": ["fixture.hpp"],
+      "probe_code": "struct Concrete final : VtableFixture { int alpha() const override { return 0; } void beta(int) override {} }; Concrete concrete;",
+      "records": [
+        {"name": "fixture", "type": "VtableFixture", "dump_type": "Concrete", "methods": {"alpha": "Concrete::alpha() const", "beta": "Concrete::beta(int)"}}
+      ]
+    }
+  ]
+}

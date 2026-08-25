@@ -10,6 +10,8 @@
         {"name": "model.object", "type": "Slic3r::ModelObject", "members": {"name": "name", "instances": "instances", "volumes": "volumes", "config": "config", "printable": "printable"}},
         {"name": "model.volume", "type": "Slic3r::ModelVolume", "members": {"name": "name", "mesh": "m_mesh", "transformation": "m_transformation"}},
         {"name": "model.instance", "type": "Slic3r::ModelInstance", "members": {"transformation": "m_transformation", "printable": "printable"}}
+        ,{"name": "model.config_object", "type": "Slic3r::ModelConfigObject", "members": {}, "bases": {"model_config": "Slic3r::ModelConfig"}}
+        ,{"name": "model.config", "type": "Slic3r::ModelConfig", "members": {"timestamp": "m_timestamp", "data": "m_data"}}
       ]
     },
     {

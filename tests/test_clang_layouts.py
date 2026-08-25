@@ -44,6 +44,7 @@ class ClangLayoutTests(unittest.TestCase):
         self.assertEqual(layout["size"], 24)
         self.assertEqual(layout["alignment"], 8)
         self.assertEqual(layout["members"], {"enabled": 4, "ratio": 8, "marker": 16})
+        self.assertEqual(layout["bases"], {"fixture_base": 0})
 
 
 if __name__ == "__main__":

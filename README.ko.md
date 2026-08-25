@@ -74,6 +74,9 @@ python3 scripts/extract-clang-layouts.py \
 헤더가 필요합니다. 멤버가 없거나 record가 중복되면 hard failure로 처리하며 불완전한 layout을
 정상 결과처럼 출력하지 않습니다.
 
+가상 메서드 index는 별도의 ABI 산출물이므로 `extract-clang-vtables.py`가 검토된 concrete probe에
+대한 Clang Itanium vtable-layout 출력을 파싱합니다. 데이터 멤버 record layout에서 추측하지 않습니다.
+
 ## 1단계 실행 방법
 
 **Actions → Build macOS dSYM → Run workflow**에서 다음 값을 입력합니다.

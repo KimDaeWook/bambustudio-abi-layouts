@@ -12,7 +12,8 @@
             "enabled": "enabled",
             "ratio": "ratio",
             "marker": "marker"
-          }
+          },
+          "bases": {"fixture_base": "FixtureBase"}
         }
       ]
     }

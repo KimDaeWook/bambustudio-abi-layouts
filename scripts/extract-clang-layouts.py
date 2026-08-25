@@ -24,8 +24,13 @@ FIELD_RE = re.compile(r"^\s*(\d+)(?::\d+-\d+)? \|( +)(.+?)\s*$", re.MULTILINE)
 NAME_RE = re.compile(r"([A-Za-z_][A-Za-z0-9_]*)\s*(?:\[[^]]*\])?\s*$")
 
 
-def parse_layout_dump(output: str, requested: dict[str, list[str]]) -> dict[str, dict]:
+def parse_layout_dump(
+    output: str,
+    requested: dict[str, list[str]],
+    requested_bases: dict[str, list[str]] | None = None,
+) -> dict[str, dict]:
     """Parse exact requested records and direct fields, failing on ambiguity."""
+    requested_bases = requested_bases or {name: [] for name in requested}
     found: dict[str, list[dict]] = {name: [] for name in requested}
     for section in output.split(LAYOUT_MARKER)[1:]:
         record_match = RECORD_RE.search(section)
@@ -39,11 +44,20 @@ def parse_layout_dump(output: str, requested: dict[str, list[str]]) -> dict[str,
             raise ValueError(f"missing size/alignment summary for {record}")
 
         fields: dict[str, int] = {}
+        bases: dict[str, int] = {}
         for match in FIELD_RE.finditer(section):
             if len(match.group(2)) != 3:
                 continue
             description = match.group(3)
-            if "(base)" in description or "vtable pointer" in description:
+            if "(base)" in description:
+                base_match = re.match(r"(?:class|struct) (.+?) \([^)]*base\)", description)
+                if base_match and base_match.group(1) in requested_bases.get(record, []):
+                    base = base_match.group(1)
+                    if base in bases:
+                        raise ValueError(f"duplicate direct base {record}::{base}")
+                    bases[base] = int(match.group(1))
+                continue
+            if "vtable pointer" in description:
                 continue
             name_match = NAME_RE.search(description)
             if name_match and name_match.group(1) in requested[record]:
@@ -55,10 +69,14 @@ def parse_layout_dump(output: str, requested: dict[str, list[str]]) -> dict[str,
         missing = sorted(set(requested[record]) - fields.keys())
         if missing:
             raise ValueError(f"missing fields for {record}: {', '.join(missing)}")
+        missing_bases = sorted(set(requested_bases.get(record, [])) - bases.keys())
+        if missing_bases:
+            raise ValueError(f"missing bases for {record}: {', '.join(missing_bases)}")
         found[record].append({
             "size": int(summary.group(1)),
             "alignment": int(summary.group(2)),
             "members": fields,
+            "bases": bases,
         })
 
     result: dict[str, dict] = {}
@@ -105,6 +123,9 @@ def main() -> int:
 
     for unit in config["translation_units"]:
         requested = {item["type"]: list(item["members"].values()) for item in unit["records"]}
+        requested_bases = {
+            item["type"]: list(item.get("bases", {}).values()) for item in unit["records"]
+        }
         probe = build_probe(unit["headers"], unit["records"])
         with tempfile.TemporaryDirectory(prefix="bambu-abi-layout-") as temp_dir:
             probe_path = Path(temp_dir) / "probe.cpp"
@@ -128,7 +149,7 @@ def main() -> int:
                 f"layout probe {unit['name']} failed ({completed.returncode})\n"
                 + "\n".join(diagnostics[:40])
             )
-        parsed = parse_layout_dump(completed.stdout, requested)
+        parsed = parse_layout_dump(completed.stdout, requested, requested_bases)
         for record in unit["records"]:
             logical_name = record["name"]
             if logical_name in all_layouts:
@@ -141,6 +162,10 @@ def main() -> int:
                 "members": {
                     logical: raw["members"][cpp_name]
                     for logical, cpp_name in record["members"].items()
+                },
+                "bases": {
+                    logical: raw["bases"][cpp_name]
+                    for logical, cpp_name in record.get("bases", {}).items()
                 },
             }
         invocations.append({

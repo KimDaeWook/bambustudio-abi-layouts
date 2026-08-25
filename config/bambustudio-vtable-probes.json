@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "translation_units": [
+    {
+      "name": "config-option",
+      "headers": ["src/libslic3r/Config.hpp"],
+      "probe_code": "struct ConfigOptionVtableProbe final : Slic3r::ConfigOption { Slic3r::ConfigOptionType type() const override { return Slic3r::coNone; } std::string serialize() const override { return {}; } bool deserialize(const std::string &, bool) override { return false; } ConfigOptionVtableProbe *clone() const override { return nullptr; } void set(const Slic3r::ConfigOption *) override {} bool operator==(const Slic3r::ConfigOption &) const override { return false; } size_t hash() const noexcept override { return 0; } }; ConfigOptionVtableProbe config_option_vtable_probe;",
+      "records": [
+        {
+          "name": "settings.config_option",
+          "type": "Slic3r::ConfigOption",
+          "dump_type": "ConfigOptionVtableProbe",
+          "methods": {
+            "type": "ConfigOptionVtableProbe::type() const",
+            "deserialize": "ConfigOptionVtableProbe::deserialize(const std::string &, bool)"
+          }
+        }
+      ]
+    }
+  ]
+}

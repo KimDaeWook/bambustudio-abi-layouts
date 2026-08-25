@@ -74,6 +74,10 @@ only in implementation files and layouts owned by wxWidgets will require their a
 arguments or the matching dependency headers. A missing field or duplicate record is a hard failure;
 the tool never emits a partial layout as if it were valid.
 
+Virtual method indices are a different ABI artifact and are handled by
+`extract-clang-vtables.py`, which parses Clang's Itanium vtable-layout output from a reviewed concrete
+probe. They are not inferred from data-member record layouts.
+
 ## Running Stage 1
 
 Open **Actions → Build macOS dSYM → Run workflow** and provide:
