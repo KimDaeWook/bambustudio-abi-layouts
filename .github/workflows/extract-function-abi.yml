@@ -70,7 +70,7 @@ jobs:
             --release-asset '${{ steps.asset.outputs.name }}' \
             --source-commit '${{ steps.release.outputs.commit }}' \
             --output artifacts/function-abi.json
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: function-abi-macos-arm64
           path: artifacts/function-abi.json
