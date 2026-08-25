@@ -64,6 +64,17 @@ for include_dir in \
     fi
 done
 
+wx_public_count=0
+for include_dir in "$DEPENDENCY_PREFIX"/include/wx-*; do
+    [[ -d "$include_dir/wx" ]] || continue
+    compiler_args+=( -I"$include_dir" )
+    wx_public_count=$((wx_public_count + 1))
+done
+if [[ $wx_public_count -ne 1 ]]; then
+    echo "expected exactly one wxWidgets public include directory, found $wx_public_count" >&2
+    exit 1
+fi
+
 if [[ -d "$DEPENDENCY_PREFIX/lib/wx/include" ]]; then
     wx_config_count=0
     for include_dir in "$DEPENDENCY_PREFIX"/lib/wx/include/*; do
