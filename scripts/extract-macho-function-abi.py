@@ -155,7 +155,7 @@ def resolve(binary: Path, requirements: dict, architecture: str) -> dict:
         else:
             address = None
         if address is not None:
-            methods[cpp_name] = f"0x{address:x}"
+            methods[cpp_name] = address
     if len(methods) != len(requirements["symbols"]):
         missing = [name for name in requirements["symbols"] if name not in methods]
         raise ValueError("reviewed function ABI symbols are unavailable: " + ", ".join(missing))

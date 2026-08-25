@@ -37,7 +37,7 @@ class MachoFunctionAbiTests(unittest.TestCase):
             binary.write_bytes(header + uuid_command + symtab_command + nlist + strings)
             result = self.module.resolve(binary, requirements, "arm64")
         self.assertEqual(result["binary"]["uuid"], str(expected_uuid))
-        self.assertEqual(result["symbols"]["test()"], "0x100004000")
+        self.assertEqual(result["symbols"]["test()"], 0x100004000)
 
 if __name__ == "__main__":
     unittest.main()
