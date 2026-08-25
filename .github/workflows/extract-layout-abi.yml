@@ -75,7 +75,7 @@ jobs:
           d["runner"]={"image":os.getenv("ImageOS",""),"image_version":os.getenv("ImageVersion",""),"architecture":os.getenv("RUNNER_ARCH",""),"dependency_cache_key":"${{ steps.cache-key.outputs.key }}"}
           json.dump(d,open(path,"w"),indent=2,sort_keys=True);open(path,"a").write("\n")
           PY
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: layout-abi-macos-arm64
           path: ${{ github.workspace }}/artifacts/layout-abi.json
