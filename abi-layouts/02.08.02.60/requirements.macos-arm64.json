@@ -1,0 +1,9 @@
+{
+  "kind": "bambustudio_abi_requirements_override",
+  "schema_version": 1,
+  "symbol_overrides": {
+    "Slic3r::DynamicPrintConfig::~DynamicPrintConfig()": "__ZN6Slic3r18DynamicPrintConfigD0Ev",
+    "Slic3r::GUI::GLToolbarItem::Data::Data()": "_ZN6Slic3r3GUI13GLToolbarItem4DataC1Ev",
+    "Slic3r::GUI::PrinterWebView::PrinterWebView(wxWindow*)": "_ZN6Slic3r3GUI14PrinterWebViewC1EP8wxWindow"
+  }
+}

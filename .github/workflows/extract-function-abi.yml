@@ -6,13 +6,6 @@ on:
       bambu_ref:
         required: true
         type: string
-  workflow_dispatch:
-    inputs:
-      bambu_ref:
-        description: Upstream BambuStudio release tag
-        required: true
-        type: string
-        default: v02.08.02.61
 
 permissions:
   contents: read

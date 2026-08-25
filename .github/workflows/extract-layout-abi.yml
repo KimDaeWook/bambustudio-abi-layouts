@@ -6,13 +6,6 @@ on:
       bambu_ref:
         required: true
         type: string
-  workflow_dispatch:
-    inputs:
-      bambu_ref:
-        description: Upstream BambuStudio tag or full commit
-        required: true
-        type: string
-        default: v02.08.02.61
 
 permissions:
   contents: read
@@ -50,11 +43,24 @@ jobs:
           source ./scripts/lib/common.sh
           image_version=$(sanitize_cache_component "${ImageVersion:-unknown}")
           echo "key=bambustudio-deps-macos-15-arm64-${RUNNER_ARCH}-${image_version}-cmake-3.31.0-${DEPS_TREE}" >>"$GITHUB_OUTPUT"
-      - uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+      - id: deps-cache
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: ${{ env.BAMBU_SOURCE_DIR }}/deps/build
           key: ${{ steps.cache-key.outputs.key }}
-          fail-on-cache-miss: true
+      - name: Free runner disk space
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: |
+          df -h
+          sudo find /Applications -maxdepth 1 -type d -name "Xcode_*.app" ! -name "Xcode_15.4.app" -exec rm -rf {} +
+          sudo rm -rf "$HOME/Library/Developer/CoreSimulator/Caches"/* || true
+          df -h
+      - name: Set up dependency toolchain
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: ./scripts/setup-macos-toolchain.sh deps
+      - name: Build dependency headers
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: ./scripts/build-macos-deps.sh "$BAMBU_SOURCE_DIR"
       - name: Extract all layout requirements in one compiler invocation
         env:
           OUTPUT: ${{ github.workspace }}/artifacts/layout-abi.json
