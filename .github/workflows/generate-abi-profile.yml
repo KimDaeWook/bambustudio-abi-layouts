@@ -40,9 +40,13 @@ jobs:
           path: artifacts/functions
       - name: Assemble and validate runtime profile
         run: |
+          version='${{ inputs.bambu_ref }}'
+          version=${version#v}
+          python3 scripts/resolve-version-requirements.py --root abi-layouts --version "$version"
           python3 scripts/assemble-abi-profile.py \
             --layout artifacts/layout/layout-abi.json \
             --functions artifacts/functions/function-abi.json \
+            --requirements "abi-layouts/$version/requirements.json" \
             --output-root abi-layouts \
             --project-commit "$GITHUB_SHA" \
             --workflow-run-id "$GITHUB_RUN_ID" \

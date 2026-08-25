@@ -37,6 +37,13 @@ jobs:
           commit=$(gh api "repos/bambulab/BambuStudio/commits/$BAMBU_REF" --jq .sha)
           echo "commit=$commit" >>"$GITHUB_OUTPUT"
           echo "version=${BAMBU_REF#v}" >>"$GITHUB_OUTPUT"
+      - name: Resolve version requirements
+        run: |
+          python3 scripts/resolve-version-requirements.py \
+            --root abi-layouts --version '${{ steps.release.outputs.version }}'
+          python3 scripts/materialize-abi-requirements.py \
+            --requirements 'abi-layouts/${{ steps.release.outputs.version }}/requirements.json' \
+            --target macos-arm64 --output-dir "$GITHUB_WORKSPACE/.work/requirements"
       - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: ${{ github.workspace }}/.work/releases
@@ -50,7 +57,11 @@ jobs:
           asset=$(./scripts/download-macos-release.sh "$BAMBU_REF" "$GITHUB_WORKSPACE/.work/releases")
           echo "name=$asset" >>"$GITHUB_OUTPUT"
           mkdir -p "$GITHUB_WORKSPACE/.work/unpacked"
-          7z x "$GITHUB_WORKSPACE/.work/releases/$asset" -o"$GITHUB_WORKSPACE/.work/unpacked" -y >/dev/null
+          set +e
+          7z x "$GITHUB_WORKSPACE/.work/releases/$asset" -o"$GITHUB_WORKSPACE/.work/unpacked" -y
+          seven_zip_status=$?
+          set -e
+          [[ $seven_zip_status -eq 0 || $seven_zip_status -eq 2 ]] || exit "$seven_zip_status"
           binary=$(find "$GITHUB_WORKSPACE/.work/unpacked" -type f -path '*/BambuStudio.app/Contents/MacOS/BambuStudio' -print -quit)
           [[ -n "$binary" ]] || { echo "BambuStudio executable not found in DMG" >&2; exit 3; }
           echo "binary=$binary" >>"$GITHUB_OUTPUT"
@@ -59,7 +70,7 @@ jobs:
           mkdir -p artifacts
           python3 scripts/extract-macho-function-abi.py \
             --binary '${{ steps.asset.outputs.binary }}' \
-            --requirements config/bambustudio-function-abi.json \
+            --requirements "$GITHUB_WORKSPACE/.work/requirements/functions.json" \
             --architecture arm64 \
             --version '${{ steps.release.outputs.version }}' \
             --release-tag '${{ inputs.bambu_ref }}' \
@@ -72,4 +83,3 @@ jobs:
           path: artifacts/function-abi.json
           if-no-files-found: error
           retention-days: 30
-

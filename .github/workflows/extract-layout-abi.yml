@@ -35,6 +35,13 @@ jobs:
           BAMBU_REF: ${{ inputs.bambu_ref }}
         run: ./scripts/checkout-bambustudio.sh "$BAMBU_REF" "$BAMBU_SOURCE_DIR"
       - run: ./scripts/verify-upstream-build-contract.sh "$BAMBU_SOURCE_DIR"
+      - name: Resolve version requirements
+        run: |
+          python3 scripts/resolve-version-requirements.py \
+            --root abi-layouts --version '${{ steps.upstream.outputs.version }}'
+          python3 scripts/materialize-abi-requirements.py \
+            --requirements 'abi-layouts/${{ steps.upstream.outputs.version }}/requirements.json' \
+            --target macos-arm64 --output-dir "$GITHUB_WORKSPACE/.work/requirements"
       - id: cache-key
         shell: bash
         env:
@@ -54,7 +61,7 @@ jobs:
         run: |
           dependency_prefix="$BAMBU_SOURCE_DIR/deps/build/arm64/BambuStudio_deps/usr/local"
           mkdir -p "$(dirname "$OUTPUT")"
-          ./scripts/extract-macos-abi.sh "$BAMBU_SOURCE_DIR" "$dependency_prefix" "$OUTPUT"
+          ./scripts/extract-macos-abi.sh "$BAMBU_SOURCE_DIR" "$dependency_prefix" "$OUTPUT" "$GITHUB_WORKSPACE/.work/requirements"
           python3 - "$OUTPUT" <<'PY'
           import json, os, sys
           path=sys.argv[1]; d=json.load(open(path))
@@ -68,4 +75,3 @@ jobs:
           path: ${{ github.workspace }}/artifacts/layout-abi.json
           if-no-files-found: error
           retention-days: 30
-

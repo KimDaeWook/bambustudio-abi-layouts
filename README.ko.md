@@ -24,10 +24,12 @@ export symbol은 보통 설치된 바이너리에서 직접 확인할 수 있습
 
 수동 **Generate complete ABI profile** workflow가 배포 진입점입니다. 다음 두 reusable workflow를 병렬로 호출합니다.
 
-- **Extract layout ABI**는 `macos-15`에서 정확한 dependency header cache를 복원하고, 통합된 compiler probe로 검토된 record/vtable 값 34개를 추출합니다. BambuStudio를 build하거나 link하지 않습니다.
+- **Extract layout ABI**는 `macos-15`에서 정확한 dependency header cache를 복원하고, 통합된 compiler probe로 해당 버전이 요구하는 모든 record/vtable 값을 추출합니다. BambuStudio를 build하거나 link하지 않습니다.
 - **Extract function ABI**는 `ubuntu-24.04`에서 요청한 공식 macOS DMG를 다운로드하고 arm64 Mach-O를 꺼낸 뒤, `LC_SYMTAB`에서 검토된 function/event symbol을 모두 해석합니다. 릴리스 바이너리 SHA-256과 `LC_UUID`도 기록합니다.
 
 마지막 job은 두 결과의 version과 정확한 upstream source commit이 같을 때만 결합합니다. 이후 `abi-layouts/<version>/macos-arm64.json`을 생성하고 artifact로 업로드한 뒤 저장소에 commit합니다. Target JSON에는 런타임이 사용하는 `symbols`, `events`, `layouts` 전체가 들어가고, `manifest.json`에는 provenance와 hash가 들어갑니다. Layout, function, 필수 event, architecture, UUID 또는 commit 일치 중 하나라도 빠지면 hard failure입니다.
+
+각 버전은 `abi-layouts/<version>/requirements.json`을 소유합니다. 두 extractor 모두 이 파일에서 layout과 symbol catalog를 읽으며 workflow 이름과 검증 개수도 여기서 계산합니다. 요청 버전에 requirements가 아직 없으면 resolver가 숫자 기준으로 가장 가까운 이전 버전을 복사하고 `inherited_from`을 기록하며, complete workflow가 결과와 함께 새 버전 전용 파일을 commit합니다. 따라서 하나의 global catalog를 영구적으로 유효하다고 암묵적으로 취급하지 않고 상속 관계를 명시적으로 검토할 수 있습니다.
 
 Mach-O symbol 값은 실행 중인 절대 주소가 아니라 image virtual address입니다. Consumer는 정확한 binary hash와 UUID를 먼저 검증하고 로드된 image slide를 적용해야 합니다. 큰 DMG는 release asset cache를 사용하므로 다음 실행에서는 다시 다운로드하지 않습니다.
 
@@ -85,14 +87,14 @@ python3 scripts/extract-bambustudio-abi.py \
 별도의 바이너리 추출 대상으로 유지합니다.
 
 `extract-bambustudio-abi.py`는 단일 record-layout probe와 훨씬 작은 ConfigOption vtable probe를
-동시에 시작한 뒤 결과를 `config/bambustudio-abi-values.json`의 34개 값으로 병합합니다. vtable 생성을
+동시에 시작한 뒤 결과를 선택한 버전의 value catalog에 맞춰 병합합니다. vtable 생성을
 분리한 것은 의도적입니다. 큰 `Plater.cpp` probe에 코드 생성을 활성화하는 것보다 syntax-only record
 pass와 작은 `Config.hpp` probe를 나란히 실행하는 편이 더 빠릅니다. 하위 도구인
 `extract-clang-layouts.py`와 `extract-clang-vtables.py`도 각각 독립적으로 사용할 수 있습니다.
 
 reusable/manual **Extract layout ABI** workflow는 1단계에서 cache한 정확한 dependency prefix를
 복원하고 BambuStudio를 빌드하거나 link하지 않은 채 이 소스 probe를 실행합니다. Cache miss 시 긴
-dependency 빌드를 암묵적으로 시작하지 않고 실패합니다. 업로드 artifact에는 34개 값과 함께 해석된
+dependency 빌드를 암묵적으로 시작하지 않고 실패합니다. 업로드 artifact에는 요청된 모든 값과 함께 해석된
 upstream commit, dependency tree, runner image, compiler, probe 인자와 소스 slice hash가 들어갑니다.
 
 검토가 끝난 결과는 `abi-layouts/<BambuStudio-version>/` 아래에 저장합니다. `macos-arm64.json` 같은

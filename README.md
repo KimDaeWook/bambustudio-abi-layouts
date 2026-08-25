@@ -24,10 +24,12 @@ This is evidence, not an automatic compatibility guarantee:
 
 The manual **Generate complete ABI profile** workflow is the publishing entry point. It invokes two reusable workflows in parallel:
 
-- **Extract layout ABI** runs on `macos-15`, restores the exact dependency-header cache, and extracts all 34 reviewed record/vtable values in consolidated compiler probes. It does not build or link BambuStudio.
+- **Extract layout ABI** runs on `macos-15`, restores the exact dependency-header cache, and extracts every record/vtable value requested by that version in consolidated compiler probes. It does not build or link BambuStudio.
 - **Extract function ABI** runs on `ubuntu-24.04`, downloads the official macOS DMG for the requested release, extracts its arm64 Mach-O, and resolves all reviewed function and event symbols directly from `LC_SYMTAB`. The extractor also records the release binary SHA-256 and `LC_UUID`.
 
 The final job accepts the results only when their version and exact upstream source commit agree. It then writes `abi-layouts/<version>/macos-arm64.json`, uploads it as an artifact, and commits the generated profile to this repository. The target JSON contains the complete runtime-facing `symbols`, `events`, and `layouts`; `manifest.json` holds provenance and hashes. A missing layout, function, required event, architecture, UUID, or commit match is a hard failure.
+
+Each version owns `abi-layouts/<version>/requirements.json`. Both extractors read their layout and symbol catalogs from that file; workflow names and validation counts are derived from it. When a requested version has no requirements yet, the resolver copies the nearest earlier numeric version, records `inherited_from`, and the complete workflow commits the new version-specific file together with the result. This makes inheritance explicit and reviewable instead of silently treating one global catalog as valid forever.
 
 Mach-O symbol values are image virtual addresses, not live process addresses. A consumer must first verify the exact binary hash and UUID, then apply the loaded image slide. The release asset cache avoids downloading the large DMG again on later runs.
 
@@ -85,7 +87,7 @@ small versioned **ABI sysroot** of headers and generated configuration, then exe
 seconds or minutes. Symbol addresses remain a separate binary-extraction concern.
 
 `extract-bambustudio-abi.py` starts the single record-layout probe and a much smaller ConfigOption
-vtable probe concurrently, then merges their results into the 34-value catalog in
+vtable probe concurrently, then merges their results into the selected version's value catalog in
 `config/bambustudio-abi-values.json`. Keeping vtable generation separate is intentional: enabling
 code generation in the large `Plater.cpp` probe is slower than compiling the tiny `Config.hpp` probe
 alongside the syntax-only record pass. The lower-level `extract-clang-layouts.py` and
@@ -93,8 +95,8 @@ alongside the syntax-only record pass. The lower-level `extract-clang-layouts.py
 
 The reusable/manual **Extract layout ABI** workflow restores the exact dependency prefix cached
 by Stage 1 and runs this source probe without building or linking BambuStudio. It fails on a cache
-miss rather than silently starting a long dependency build. The uploaded artifact contains the 34
-values together with the resolved upstream commit, dependency tree, runner image, compiler, probe
+miss rather than silently starting a long dependency build. The uploaded artifact contains all
+requested values together with the resolved upstream commit, dependency tree, runner image, compiler, probe
 arguments, and source-slice hashes.
 
 Reviewed outputs are stored under `abi-layouts/<BambuStudio-version>/`. A target file such as

@@ -70,8 +70,8 @@ def main() -> int:
     if not VERSION_RE.fullmatch(version):
         raise SystemExit(f"invalid or missing upstream version: {version!r}")
     values = probe.get("values", {})
-    if len(values) != 34:
-        raise SystemExit(f"expected 34 ABI values, found {len(values)}")
+    if not values:
+        raise SystemExit("ABI extraction produced no layout values")
 
     version_dir = args.output_root / version
     layout_path = version_dir / f"{target}.json"

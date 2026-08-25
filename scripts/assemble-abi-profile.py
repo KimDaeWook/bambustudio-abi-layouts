@@ -47,6 +47,7 @@ def main() -> int:
     parser.add_argument("--layout", required=True, type=Path)
     parser.add_argument("--functions", required=True, type=Path)
     parser.add_argument("--output-root", required=True, type=Path)
+    parser.add_argument("--requirements", required=True, type=Path)
     parser.add_argument("--project-commit", required=True)
     parser.add_argument("--workflow-run-id", required=True)
     parser.add_argument("--workflow-run-url", required=True)
@@ -65,10 +66,14 @@ def main() -> int:
     if layout_upstream.get("commit") != function_upstream.get("source_commit"):
         raise ValueError("layout source commit and release source commit differ")
     values = layout.get("values", {})
-    if len(values) != 34:
-        raise ValueError(f"expected 34 layout values, found {len(values)}")
+    requirements = load(args.requirements)
+    target_requirements = requirements["targets"]["macos-arm64"]
+    expected_layouts = len(target_requirements["layout"]["values"].get("values", []))
+    expected_symbols = len(target_requirements["functions"].get("symbols", []))
+    if len(values) != expected_layouts:
+        raise ValueError(f"expected {expected_layouts} layout values, found {len(values)}")
     analysis = functions.get("analysis", {})
-    if analysis.get("resolved") != analysis.get("reviewed") or not functions.get("symbols"):
+    if analysis.get("resolved") != expected_symbols or len(functions.get("symbols", [])) != expected_symbols:
         raise ValueError("function ABI extraction is incomplete")
 
     layouts = nested_layouts(values)
@@ -119,9 +124,7 @@ def main() -> int:
     profile_path.write_bytes(profile_content)
     catalogs = {}
     root = Path(__file__).resolve().parents[1]
-    for name in ("bambustudio-function-abi.json", "bambustudio-abi-values.json", "bambustudio-layout-probes.json", "bambustudio-vtable-probes.json"):
-        path = root / "config" / name
-        catalogs[name] = file_sha256(path)
+    catalogs["requirements.json"] = file_sha256(args.requirements)
     manifest = {
         "schema_version": 1,
         "kind": "bambustudio_abi_profile_manifest",

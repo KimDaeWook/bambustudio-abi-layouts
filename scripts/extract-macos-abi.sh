@@ -7,7 +7,8 @@ set -euo pipefail
 
 readonly SOURCE_DIR=${1:?usage: extract-macos-abi.sh <BambuStudio-source> <dependency-prefix> <output-json>}
 readonly DEPENDENCY_PREFIX=${2:?usage: extract-macos-abi.sh <BambuStudio-source> <dependency-prefix> <output-json>}
-readonly OUTPUT_JSON=${3:?usage: extract-macos-abi.sh <BambuStudio-source> <dependency-prefix> <output-json>}
+readonly OUTPUT_JSON=${3:?usage: extract-macos-abi.sh <BambuStudio-source> <dependency-prefix> <output-json> <requirements-dir>}
+readonly REQUIREMENTS_DIR=${4:?usage: extract-macos-abi.sh <BambuStudio-source> <dependency-prefix> <output-json> <requirements-dir>}
 readonly SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 readonly TEMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/bambu-abi-generated.XXXXXX")
 readonly SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
@@ -102,6 +103,9 @@ command=(
     --output "$OUTPUT_JSON"
     --compiler "$(xcrun --find clang++)"
     --std c++17
+    --layout-config "$REQUIREMENTS_DIR/records.json"
+    --vtable-config "$REQUIREMENTS_DIR/vtables.json"
+    --values-config "$REQUIREMENTS_DIR/values.json"
 )
 for argument in "${compiler_args[@]}"; do
     command+=( "--compiler-arg=$argument" )
@@ -109,14 +113,15 @@ done
 
 "${command[@]}"
 
-python3 - "$OUTPUT_JSON" <<'PY'
+python3 - "$OUTPUT_JSON" "$REQUIREMENTS_DIR/values.json" <<'PY'
 import json
 import sys
 
 path = sys.argv[1]
 document = json.load(open(path, encoding="utf-8"))
 values = document.get("values", {})
-if len(values) != 34:
-    raise SystemExit(f"expected 34 ABI values, found {len(values)}")
+expected = len(json.load(open(sys.argv[2], encoding="utf-8")).get("values", []))
+if len(values) != expected:
+    raise SystemExit(f"expected {expected} ABI values, found {len(values)}")
 print(f"validated {len(values)} ABI values")
 PY
