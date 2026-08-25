@@ -31,6 +31,9 @@ The final job accepts the results only when their version and exact upstream sou
 
 Each version owns a platform-neutral `abi-layouts/<version>/requirements.json`. It lists record members/bases, canonical C++ function or global names, and vtable method signatures without a target tree or duplicated mangled names. An optional `requirements.<platform>-<architecture>.json` is recursively overlaid on the common document. Platform overrides are reserved for genuine ABI exceptions, such as constructor/destructor variants whose demangled C++ names are identical. The extractor demangles the release binary's own symbol table and requires every canonical name to resolve uniquely; the current macOS arm64 catalog needs only three explicit variant selectors. Inherited versions copy the common file and all neighboring platform overrides.
 
+See [Adding ABI requirements](docs/adding-abi-requirements.md) for the cross-repository workflow used
+when a BambuStudioEx feature needs a new function, global, member, base, or vtable entry.
+
 Mach-O symbol values are image virtual addresses, not live process addresses. A consumer must first verify the exact binary hash and UUID, then apply the loaded image slide. The release asset cache avoids downloading the large DMG again on later runs.
 
 ## dSYM research pipeline

@@ -31,6 +31,9 @@ export symbol은 보통 설치된 바이너리에서 직접 확인할 수 있습
 
 각 버전은 플랫폼 중립적인 `abi-layouts/<version>/requirements.json`을 소유합니다. 여기에는 target tree나 중복된 mangled name 없이 record member/base, canonical C++ 함수 또는 global 이름, vtable method signature가 들어갑니다. 선택적인 `requirements.<platform>-<architecture>.json`은 공통 문서 위에 재귀적으로 overlay됩니다. 플랫폼 override는 demangle된 C++ 이름이 같은 생성자/소멸자 variant처럼 실제 ABI 예외에만 사용합니다. Extractor는 release binary 자체의 symbol table을 demangle하고 모든 canonical 이름이 유일하게 해석되는지 검증합니다. 현재 macOS arm64 catalog에서 명시적 variant 선택이 필요한 항목은 세 개뿐입니다. 버전을 상속할 때는 공통 파일과 인접한 platform override를 모두 복사합니다.
 
+BambuStudioEx 기능에 새로운 함수, global, member, base 또는 vtable 항목이 필요할 때의 저장소 간
+작업 순서는 [ABI requirements 추가](docs/adding-abi-requirements.md)를 참고합니다.
+
 Mach-O symbol 값은 실행 중인 절대 주소가 아니라 image virtual address입니다. Consumer는 정확한 binary hash와 UUID를 먼저 검증하고 로드된 image slide를 적용해야 합니다. 큰 DMG는 release asset cache를 사용하므로 다음 실행에서는 다시 다운로드하지 않습니다.
 
 ## dSYM 연구 파이프라인
