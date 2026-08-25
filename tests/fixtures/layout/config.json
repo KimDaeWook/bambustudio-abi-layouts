@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "translation_units": [
+    {
+      "name": "fixture",
+      "headers": ["fixture.hpp"],
+      "records": [
+        {
+          "name": "fixture.probe",
+          "type": "FixtureProbe",
+          "members": {
+            "enabled": "enabled",
+            "ratio": "ratio",
+            "marker": "marker"
+          }
+        }
+      ]
+    }
+  ]
+}

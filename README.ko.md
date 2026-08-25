@@ -45,6 +45,34 @@ dependency 빌드와 애플리케이션 빌드는 서로 다른 job입니다. �
 
 GitHub Actions에서 유효한 dSYM이 생성되는 것을 확인하기 전까지 2단계를 빌드 workflow에 섞지 않습니다.
 
+### 빠른 소스 레이아웃 probe
+
+멤버 offset만 필요하다면 애플리케이션 전체 link와 dSYM이 항상 필요한 것은 아닙니다. 실험용
+`extract-clang-layouts.py`는 검토된 헤더만 포함하는 작은 translation unit을 컴파일하고, 선택한
+타입을 `sizeof`로 강제 구체화한 뒤 Clang 자체 record-layout 출력을 파싱합니다. Upstream 헤더를
+수정하거나 객체를 생성하지 않고도 private 데이터 멤버를 포함합니다.
+
+```bash
+python3 scripts/extract-clang-layouts.py \
+  --config config/bambustudio-layout-probes.json \
+  --source-dir /path/to/BambuStudio \
+  --output layouts.json \
+  --compiler "$(xcrun --find clang++)" \
+  --compiler-arg=-I/path/to/generated/includes \
+  --compiler-arg=-I/path/to/dependency/includes
+```
+
+선택한 record에 영향을 주는 정확한 compiler, SDK, 생성 헤더, compile definition과 dependency
+헤더는 여전히 필요합니다. 하지만 dependency library, 애플리케이션 object, link, package,
+`dsymutil`은 필요하지 않습니다. 따라서 runner에서는 헤더와 생성 설정만 담은 작은 버전별
+**ABI sysroot**를 cache하고 이 probe를 수초~수분 안에 실행하는 방향이 적합합니다. Symbol 주소는
+별도의 바이너리 추출 대상으로 유지합니다.
+
+현재 저장된 probe 목록은 이 경로를 검증하는 동안 의도적으로 일부 타입만 포함합니다. 구현
+파일에만 정의된 타입과 wxWidgets 소유 layout은 실제 translation unit 인자 또는 일치하는 dependency
+헤더가 필요합니다. 멤버가 없거나 record가 중복되면 hard failure로 처리하며 불완전한 layout을
+정상 결과처럼 출력하지 않습니다.
+
 ## 1단계 실행 방법
 
 **Actions → Build macOS dSYM → Run workflow**에서 다음 값을 입력합니다.
@@ -83,7 +111,8 @@ Actions artifact는 중간 빌드 근거이며 만료됩니다. 장기 보관 �
 
 ## 개발
 
-Shell script는 Bash strict mode를 사용하고 어느 working directory에서도 실행할 수 있도록 작성합니다. Xcode가 필요 없는 로컬 검사는 다음과 같이 실행합니다.
+Shell script는 Bash strict mode를 사용하고 어느 working directory에서도 실행할 수 있도록 작성합니다.
+private 멤버 추출을 확인하는 작은 Clang fixture를 포함한 로컬 검사는 다음과 같이 실행합니다.
 
 ```bash
 ./tests/test-scripts.sh

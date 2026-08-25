@@ -45,6 +45,34 @@ Stage 2 will consume a Stage 1 artifact without rebuilding BambuStudio. It will 
 
 Stage 2 has deliberately not been folded into the initial build workflow. It will be added only after Stage 1 produces a valid dSYM in GitHub Actions.
 
+### Fast source-layout probe
+
+For member offsets, a full application link and dSYM are not always necessary. The experimental
+`extract-clang-layouts.py` tool compiles tiny translation units that include only reviewed headers,
+forces `sizeof` for selected types, and parses Clang's own record-layout output. This includes private
+data members without changing the upstream headers or constructing any objects.
+
+```bash
+python3 scripts/extract-clang-layouts.py \
+  --config config/bambustudio-layout-probes.json \
+  --source-dir /path/to/BambuStudio \
+  --output layouts.json \
+  --compiler "$(xcrun --find clang++)" \
+  --compiler-arg=-I/path/to/generated/includes \
+  --compiler-arg=-I/path/to/dependency/includes
+```
+
+The probe still needs the exact compiler, SDK, generated headers, compile definitions, and dependency
+headers that affect the selected records. It does not need dependency libraries, application object
+files, linking, packaging, or `dsymutil`. The intended runner optimization is therefore to cache a
+small versioned **ABI sysroot** of headers and generated configuration, then execute these probes in
+seconds or minutes. Symbol addresses remain a separate binary-extraction concern.
+
+The checked-in probe list is deliberately incomplete while this path is being validated. Types defined
+only in implementation files and layouts owned by wxWidgets will require their actual translation-unit
+arguments or the matching dependency headers. A missing field or duplicate record is a hard failure;
+the tool never emits a partial layout as if it were valid.
+
 ## Running Stage 1
 
 Open **Actions → Build macOS dSYM → Run workflow** and provide:
@@ -83,7 +111,8 @@ Actions artifacts are intermediate build evidence and expire. The intended durab
 
 ## Development
 
-Shell scripts use Bash strict mode and are designed to run from any working directory. Local checks that do not require Xcode can be run with:
+Shell scripts use Bash strict mode and are designed to run from any working directory. Local checks,
+including a small Clang fixture that verifies private member extraction, can be run with:
 
 ```bash
 ./tests/test-scripts.sh

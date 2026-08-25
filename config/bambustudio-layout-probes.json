@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "translation_units": [
+    {
+      "name": "libslic3r-model",
+      "headers": ["src/libslic3r/Model.hpp"],
+      "records": [
+        {"name": "model.model", "type": "Slic3r::Model", "members": {"objects": "objects", "model_info": "model_info"}},
+        {"name": "model.info", "type": "Slic3r::ModelInfo", "members": {"metadata_items": "metadata_items"}},
+        {"name": "model.object", "type": "Slic3r::ModelObject", "members": {"name": "name", "instances": "instances", "volumes": "volumes", "config": "config", "printable": "printable"}},
+        {"name": "model.volume", "type": "Slic3r::ModelVolume", "members": {"name": "name", "mesh": "m_mesh", "transformation": "m_transformation"}},
+        {"name": "model.instance", "type": "Slic3r::ModelInstance", "members": {"transformation": "m_transformation", "printable": "printable"}}
+      ]
+    },
+    {
+      "name": "gui-toolbar",
+      "headers": ["src/slic3r/GUI/GLToolbar.hpp"],
+      "records": [
+        {"name": "gui.toolbar_item_data", "type": "Slic3r::GUI::GLToolbarItem::Data", "members": {"name": "name", "sprite_id": "sprite_id", "left": "left", "icon_filename_callback": "icon_filename_callback"}}
+      ]
+    },
+    {
+      "name": "gui-menu-factory",
+      "headers": ["src/slic3r/GUI/GUI_Factories.hpp"],
+      "records": [
+        {"name": "gui.menu_factory", "type": "Slic3r::GUI::MenuFactory", "members": {"object_menu": "m_object_menu", "part_menu": "m_part_menu"}}
+      ]
+    }
+  ]
+}
