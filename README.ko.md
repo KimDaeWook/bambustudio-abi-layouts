@@ -31,7 +31,7 @@ export symbol은 보통 설치된 바이너리에서 직접 확인할 수 있습
 1. upstream BambuStudio tag, branch 또는 전체 commit을 입력받습니다.
 2. 고정된 `bambulab/BambuStudio` 저장소에서 입력을 해석하고 정확한 commit을 기록합니다.
 3. 선택한 revision이 지원 대상 upstream macOS build contract를 그대로 선언하는지 확인합니다.
-4. 해당 contract와 같은 runner 계열에서 dependency를 빌드하고 캐시합니다.
+4. 해당 contract와 같은 runner 계열에서 arm64 dependency를 빌드하고 캐시합니다.
 5. upstream `BuildMac.sh`의 Release/Ninja 빌드에 `-g -fstandalone-debug`만 추가합니다.
 6. 결과 BambuStudio 실행 파일에 Apple `dsymutil`을 실행합니다.
 7. 바이너리와 dSYM의 UUID 집합이 서로 일치하는지 검증합니다.
@@ -54,13 +54,13 @@ GitHub Actions에서 유효한 dSYM이 생성되는 것을 확인하기 전까�
 
 workflow는 수동 실행만 허용합니다. Pull request나 일반 push로 임의 BambuStudio revision을 실행할 수 없습니다. upstream URL은 고정되어 있고 입력 ref를 검증하며 job의 저장소 권한은 read-only입니다.
 
-최초 workflow는 현재 BambuStudio universal macOS 빌드 조건인 `macos-15`, CMake 3.31.0, Ninja, Release, deployment target 10.15, `BuildMac.sh -a universal -1`을 따릅니다. Hosted runner image는 계속 바뀌므로 실제 image와 모든 tool version을 artifact manifest에 기록합니다.
+최초 workflow는 현재 BambuStudio macOS toolchain 조건인 `macos-15`, CMake 3.31.0, Ninja, Release, deployment target 10.15, `BuildMac.sh -1`을 따릅니다. 첫 ABI 대상이 Apple Silicon slice이므로 upstream universal 빌드에서 architecture만 의도적으로 `-a arm64`로 제한하며, 이 차이는 manifest에 기록합니다. Hosted runner image는 계속 바뀌므로 실제 image와 모든 tool version도 함께 기록합니다.
 
 선택한 revision의 workflow contract가 다르면 macOS 빌드를 시작하기 전에 1단계를 중단합니다. 새로운 contract 지원은 호환될 것이라고 추측하는 대신 이 프로젝트의 검토된 변경으로 추가해야 합니다.
 
 ## 산출물
 
-`bambustudio-macos-dsym-<commit>` artifact에는 다음 파일이 포함됩니다.
+`bambustudio-macos-arm64-dsym-<commit>` artifact에는 다음 파일이 포함됩니다.
 
 ```text
 BambuStudio.app.dSYM/

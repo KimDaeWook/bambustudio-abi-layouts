@@ -8,7 +8,7 @@ set -euo pipefail
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 readonly SOURCE_DIR=${1:?usage: collect-macos-dsym.sh <BambuStudio-source> <output-dir>}
 readonly OUTPUT_DIR=${2:?usage: collect-macos-dsym.sh <BambuStudio-source> <output-dir>}
-readonly BINARY="$SOURCE_DIR/build/universal/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio"
+readonly BINARY="$SOURCE_DIR/build/arm64/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio"
 readonly DSYM="$OUTPUT_DIR/BambuStudio.app.dSYM"
 readonly DWARF="$DSYM/Contents/Resources/DWARF/BambuStudio"
 
@@ -42,7 +42,7 @@ fi
     printf 'image_version=%s\n' "${ImageVersion:-unknown}"
     printf 'configuration=Release\n'
     printf 'generator=Ninja\n'
-    printf 'architectures=arm64,x86_64\n'
+    printf 'architectures=arm64\n'
     printf 'deployment_target=10.15\n'
     printf 'debug_flags=-g -fstandalone-debug\n'
     printf '\n[sw_vers]\n'

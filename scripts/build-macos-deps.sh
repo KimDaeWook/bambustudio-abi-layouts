@@ -8,10 +8,10 @@ set -euo pipefail
 readonly SOURCE_DIR=${1:?usage: build-macos-deps.sh <BambuStudio-source>}
 
 cd "$SOURCE_DIR"
-./BuildMac.sh -d -x -a universal -t 10.15 -1
+./BuildMac.sh -d -x -a arm64 -t 10.15 -1
 
 # Match the upstream workflow: retain only the installed dependency prefix.
-for arch in arm64 x86_64; do
+for arch in arm64; do
     build_dir="$SOURCE_DIR/deps/build/$arch"
     if [[ ! -d "$build_dir/BambuStudio_deps" ]]; then
         echo "dependency prefix was not produced for $arch" >&2

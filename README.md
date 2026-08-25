@@ -31,7 +31,7 @@ The `Build macOS dSYM` workflow:
 1. accepts an upstream BambuStudio tag, branch, or full commit;
 2. resolves it against the fixed `bambulab/BambuStudio` repository and records the exact commit;
 3. verifies that the selected revision still declares the supported upstream macOS build contract;
-4. builds and caches the upstream dependency tree on the same runner family used by that contract;
+4. builds and caches the arm64 upstream dependency tree on the same runner family used by that contract;
 5. runs the upstream `BuildMac.sh` Release/Ninja build with only `-g -fstandalone-debug` added;
 6. runs Apple's `dsymutil` on the resulting BambuStudio executable;
 7. verifies that the binary and dSYM UUID sets agree with each other; and
@@ -54,13 +54,13 @@ Open **Actions → Build macOS dSYM → Run workflow** and provide:
 
 The workflow is manual-only. Pull requests and ordinary pushes cannot make the repository execute arbitrary BambuStudio revisions. The upstream repository URL is fixed, input refs are validated, and jobs receive read-only repository permissions.
 
-The initial workflow tracks BambuStudio's current universal macOS build contract: `macos-15`, CMake 3.31.0, Ninja, Release, deployment target 10.15, and `BuildMac.sh -a universal -1`. Every concrete runner image and tool version is captured in the artifact manifest because hosted runner images change over time.
+The initial workflow tracks BambuStudio's current macOS toolchain contract: `macos-15`, CMake 3.31.0, Ninja, Release, deployment target 10.15, and `BuildMac.sh -1`. It deliberately narrows the upstream universal build to `-a arm64` because the first ABI target is the Apple Silicon slice. That deviation is recorded in the manifest. Every concrete runner image and tool version is also captured because hosted runner images change over time.
 
 If a selected revision declares a different workflow contract, Stage 1 stops before starting a macOS build. Supporting a new contract requires a reviewed project change rather than silently guessing compatible options.
 
 ## Artifact contents
 
-The `bambustudio-macos-dsym-<commit>` artifact contains:
+The `bambustudio-macos-arm64-dsym-<commit>` artifact contains:
 
 ```text
 BambuStudio.app.dSYM/

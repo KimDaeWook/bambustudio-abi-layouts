@@ -13,9 +13,9 @@ export CFLAGS="${CFLAGS:+$CFLAGS }-g -fstandalone-debug"
 export CXXFLAGS="${CXXFLAGS:+$CXXFLAGS }-g -fstandalone-debug"
 
 cd "$SOURCE_DIR"
-./BuildMac.sh -s -x -a universal -t 10.15 -1
+./BuildMac.sh -s -x -a arm64 -t 10.15 -1
 
-readonly APP="$SOURCE_DIR/build/universal/BambuStudio/BambuStudio.app"
+readonly APP="$SOURCE_DIR/build/arm64/BambuStudio/BambuStudio.app"
 readonly BINARY="$APP/Contents/MacOS/BambuStudio"
 
 if [[ ! -x "$BINARY" ]]; then

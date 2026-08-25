@@ -1,4 +1,4 @@
-name: Build macOS dSYM
+name: Build macOS arm64 dSYM
 
 on:
   workflow_dispatch:
@@ -94,7 +94,7 @@ jobs:
         run: |
           source ./scripts/lib/common.sh
           image_version=$(sanitize_cache_component "${ImageVersion:-unknown}")
-          key="bambustudio-deps-macos-15-${RUNNER_ARCH}-${image_version}-cmake-3.31.0-${DEPS_TREE}"
+          key="bambustudio-deps-macos-15-arm64-${RUNNER_ARCH}-${image_version}-cmake-3.31.0-${DEPS_TREE}"
           if [[ "$REBUILD_DEPENDENCIES" == "true" ]]; then
             key="${key}-rebuild-${GITHUB_RUN_ID}"
           fi
@@ -131,7 +131,7 @@ jobs:
           key: ${{ steps.cache-key.outputs.key }}
 
   dsym:
-    name: Build BambuStudio and create dSYM
+    name: Build BambuStudio arm64 and create dSYM
     needs: [resolve, dependencies]
     runs-on: macos-15
     timeout-minutes: 360
@@ -169,7 +169,7 @@ jobs:
       - name: Upload dSYM and provenance
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: bambustudio-macos-dsym-${{ needs.resolve.outputs.short_commit }}
+          name: bambustudio-macos-arm64-dsym-${{ needs.resolve.outputs.short_commit }}
           path: ${{ env.OUTPUT_DIR }}
           if-no-files-found: error
           compression-level: 6
@@ -178,11 +178,11 @@ jobs:
       - name: Summarize artifact
         run: |
           {
-            echo "## Rebuilt macOS dSYM"
+            echo "## Rebuilt macOS arm64 dSYM"
             echo
             echo "- Upstream version: \`$BAMBU_VERSION\`"
             echo "- Commit: \`$BAMBU_COMMIT\`"
-            echo "- Artifact: \`bambustudio-macos-dsym-${{ needs.resolve.outputs.short_commit }}\`"
+            echo "- Artifact: \`bambustudio-macos-arm64-dsym-${{ needs.resolve.outputs.short_commit }}\`"
             echo
             echo "This dSYM matches the rebuilt executable UUIDs recorded in the artifact."
             echo "It is not asserted to match Bambu Lab's released executable UUIDs."

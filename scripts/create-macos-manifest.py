@@ -115,9 +115,15 @@ def main() -> None:
         "build": {
             "configuration": "Release",
             "generator": "Ninja",
-            "architecture": "universal",
+            "architecture": "arm64",
             "deployment_target": "10.15",
             "debug_flags": ["-g", "-fstandalone-debug"],
+            "upstream_workflow_deviation": {
+                "field": "BuildMac.sh architecture",
+                "upstream": "universal",
+                "selected": "arm64",
+                "reason": "Stage 1 targets Apple Silicon ABI layouts only",
+            },
             "upstream_contract_files": build_contract,
             "runner": {
                 "os": os.environ.get("RUNNER_OS", "unknown"),
