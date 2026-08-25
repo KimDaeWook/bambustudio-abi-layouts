@@ -47,16 +47,20 @@ Stage 2 has deliberately not been folded into the initial build workflow. It wil
 
 ### Fast source-layout probe
 
-For member offsets, a full application link and dSYM are not always necessary. The experimental
-`extract-clang-layouts.py` tool compiles tiny translation units that include only reviewed headers,
-forces `sizeof` for selected types, and parses Clang's own record-layout output. This includes private
-data members without changing the upstream headers or constructing any objects.
+For member offsets, a full application link and dSYM are not always necessary. The source probe
+forces the reviewed types to materialize and parses Clang's own record-layout output. Private data
+members are included without changing upstream declarations or constructing any objects.
+
+The default catalog consolidates all current record requirements into one syntax-only translation
+unit, so common headers are parsed once. `Plater::priv` is defined inside `Plater.cpp`; the extractor
+copies the exact source prefix through that complete record definition and does not parse unrelated
+function implementations that follow it. The full-source hash, sliced-prefix hash, and ending line
+are recorded as provenance, and any missing or ambiguous record remains a hard failure.
 
 ```bash
-python3 scripts/extract-clang-layouts.py \
-  --config config/bambustudio-layout-probes.json \
+python3 scripts/extract-bambustudio-abi.py \
   --source-dir /path/to/BambuStudio \
-  --output layouts.json \
+  --output abi-values.json \
   --compiler "$(xcrun --find clang++)" \
   --std c++17 \
   --compiler-arg=-I/path/to/generated/includes \
@@ -69,14 +73,12 @@ files, linking, packaging, or `dsymutil`. The intended runner optimization is th
 small versioned **ABI sysroot** of headers and generated configuration, then execute these probes in
 seconds or minutes. Symbol addresses remain a separate binary-extraction concern.
 
-The checked-in probe list is deliberately incomplete while this path is being validated. Types defined
-only in implementation files and layouts owned by wxWidgets will require their actual translation-unit
-arguments or the matching dependency headers. A missing field or duplicate record is a hard failure;
-the tool never emits a partial layout as if it were valid.
-
-Virtual method indices are a different ABI artifact and are handled by
-`extract-clang-vtables.py`, which parses Clang's Itanium vtable-layout output from a reviewed concrete
-probe. They are not inferred from data-member record layouts.
+`extract-bambustudio-abi.py` starts the single record-layout probe and a much smaller ConfigOption
+vtable probe concurrently, then merges their results into the 34-value catalog in
+`config/bambustudio-abi-values.json`. Keeping vtable generation separate is intentional: enabling
+code generation in the large `Plater.cpp` probe is slower than compiling the tiny `Config.hpp` probe
+alongside the syntax-only record pass. The lower-level `extract-clang-layouts.py` and
+`extract-clang-vtables.py` tools remain independently usable.
 
 ## Running Stage 1
 

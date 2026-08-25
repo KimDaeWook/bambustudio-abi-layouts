@@ -87,9 +87,88 @@ def parse_layout_dump(
     return result
 
 
-def build_probe(headers: list[str], records: list[dict]) -> str:
+def find_record_end(source: str, marker: str) -> int:
+    """Return the byte after a uniquely named record definition's closing brace."""
+    starts = [match.start() for match in re.finditer(re.escape(marker), source)]
+    if len(starts) != 1:
+        raise ValueError(f"expected exactly one source slice marker {marker!r}, found {len(starts)}")
+    opening = source.find("{", starts[0] + len(marker))
+    if opening < 0:
+        raise ValueError(f"missing opening brace after source slice marker {marker!r}")
+
+    depth = 0
+    index = opening
+    state = "code"
+    raw_terminator = ""
+    while index < len(source):
+        char = source[index]
+        following = source[index + 1] if index + 1 < len(source) else ""
+        if state == "line-comment":
+            if char == "\n":
+                state = "code"
+        elif state == "block-comment":
+            if char == "*" and following == "/":
+                state = "code"
+                index += 1
+        elif state in {"string", "character"}:
+            if char == "\\":
+                index += 1
+            elif (state == "string" and char == '"') or (state == "character" and char == "'"):
+                state = "code"
+        elif state == "raw-string":
+            if source.startswith(raw_terminator, index):
+                index += len(raw_terminator) - 1
+                state = "code"
+        else:
+            if char == "/" and following == "/":
+                state = "line-comment"
+                index += 1
+            elif char == "/" and following == "*":
+                state = "block-comment"
+                index += 1
+            elif char == "R" and following == '"':
+                delimiter_end = source.find("(", index + 2, index + 19)
+                if delimiter_end >= 0:
+                    delimiter = source[index + 2:delimiter_end]
+                    raw_terminator = ")" + delimiter + '"'
+                    state = "raw-string"
+                    index = delimiter_end
+            elif char == '"':
+                state = "string"
+            elif char == "'":
+                state = "character"
+            elif char == "{":
+                depth += 1
+            elif char == "}":
+                depth -= 1
+                if depth == 0:
+                    semicolon = source.find(";", index + 1, index + 8)
+                    if semicolon < 0:
+                        raise ValueError(f"missing record terminator after source slice marker {marker!r}")
+                    return semicolon + 1
+        index += 1
+    raise ValueError(f"unterminated record after source slice marker {marker!r}")
+
+
+def source_slice(source_dir: Path, specification: dict) -> tuple[str, dict]:
+    relative_path = Path(specification["path"])
+    path = source_dir / relative_path
+    source = path.read_text(encoding="utf-8")
+    end = find_record_end(source, specification["through_record"])
+    prefix = source[:end]
+    suffix = specification.get("suffix", "")
+    return prefix + suffix, {
+        "path": str(relative_path),
+        "source_sha256": hashlib.sha256(source.encode()).hexdigest(),
+        "slice_sha256": hashlib.sha256(prefix.encode()).hexdigest(),
+        "through_record": specification["through_record"],
+        "ending_line": source.count("\n", 0, end) + 1,
+    }
+
+
+def build_probe(headers: list[str], records: list[dict], sliced_source: str = "") -> str:
     lines = [f'#include "{header}"' for header in headers]
-    lines.append("")
+    lines.extend(["", sliced_source, ""])
     for index, record in enumerate(records):
         lines.append(
             f"static_assert(sizeof({record['type']}) > 0, \"layout probe {index}\");"
@@ -126,7 +205,11 @@ def main() -> int:
         requested_bases = {
             item["type"]: list(item.get("bases", {}).values()) for item in unit["records"]
         }
-        probe = build_probe(unit["headers"], unit["records"])
+        sliced_source = ""
+        slice_provenance = None
+        if "source_slice" in unit:
+            sliced_source, slice_provenance = source_slice(args.source_dir, unit["source_slice"])
+        probe = build_probe(unit["headers"], unit["records"], sliced_source)
         with tempfile.TemporaryDirectory(prefix="bambu-abi-layout-") as temp_dir:
             probe_path = Path(temp_dir) / "probe.cpp"
             probe_path.write_text(probe, encoding="utf-8")
@@ -168,11 +251,14 @@ def main() -> int:
                     for logical, cpp_name in record.get("bases", {}).items()
                 },
             }
-        invocations.append({
+        invocation = {
             "name": unit["name"],
             "probe_sha256": hashlib.sha256(probe.encode()).hexdigest(),
             "arguments": command[1:-1],
-        })
+        }
+        if slice_provenance:
+            invocation["source_slice"] = slice_provenance
+        invocations.append(invocation)
 
     document = {
         "schema_version": 1,

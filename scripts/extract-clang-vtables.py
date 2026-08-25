@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -39,6 +40,13 @@ def parse_vtable_indices(output: str, cpp_type: str, methods: dict[str, str]) ->
     return result
 
 
+def compiler_version(compiler: str) -> str:
+    return subprocess.run(
+        [compiler, "--version"], check=True, text=True,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+    ).stdout.strip()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True, type=Path)
@@ -51,6 +59,7 @@ def main() -> int:
 
     config = json.loads(args.config.read_text(encoding="utf-8"))
     results = {}
+    invocations = []
     for unit in config["translation_units"]:
         source = "\n".join(f'#include "{header}"' for header in unit["headers"])
         source += "\n\n" + unit["probe_code"] + "\n"
@@ -77,11 +86,19 @@ def main() -> int:
                     completed.stdout, record.get("dump_type", record["type"]), record["methods"]
                 ),
             }
+        invocations.append({
+            "name": unit["name"],
+            "probe_sha256": hashlib.sha256(source.encode()).hexdigest(),
+            "arguments": command[1:-3],
+        })
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps({
         "schema_version": 1,
         "generator": "extract-clang-vtables.py",
+        "compiler": compiler_version(args.compiler),
+        "source_dir": str(args.source_dir.resolve()),
+        "invocations": invocations,
         "vtables": results,
     }, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return 0

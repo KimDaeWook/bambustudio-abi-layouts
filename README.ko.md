@@ -47,16 +47,20 @@ GitHub Actions에서 유효한 dSYM이 생성되는 것을 확인하기 전까�
 
 ### 빠른 소스 레이아웃 probe
 
-멤버 offset만 필요하다면 애플리케이션 전체 link와 dSYM이 항상 필요한 것은 아닙니다. 실험용
-`extract-clang-layouts.py`는 검토된 헤더만 포함하는 작은 translation unit을 컴파일하고, 선택한
-타입을 `sizeof`로 강제 구체화한 뒤 Clang 자체 record-layout 출력을 파싱합니다. Upstream 헤더를
+멤버 offset만 필요하다면 애플리케이션 전체 link와 dSYM이 항상 필요한 것은 아닙니다. 소스 probe는
+검토된 타입을 강제로 구체화한 뒤 Clang 자체 record-layout 출력을 파싱합니다. Upstream 선언을
 수정하거나 객체를 생성하지 않고도 private 데이터 멤버를 포함합니다.
 
+기본 catalog는 현재 필요한 모든 record를 하나의 syntax-only translation unit으로 합쳐 공통 헤더를
+한 번만 파싱합니다. `Plater::priv`는 `Plater.cpp` 안에 정의되어 있으므로 extractor가 해당 record의
+완전한 정의가 끝나는 지점까지 정확한 소스 prefix를 복사하고, 그 뒤의 무관한 함수 구현은 파싱하지
+않습니다. 원본 전체 hash, 잘라낸 prefix hash와 종료 줄을 provenance로 기록하며 record가 없거나
+모호하면 hard failure로 처리합니다.
+
 ```bash
-python3 scripts/extract-clang-layouts.py \
-  --config config/bambustudio-layout-probes.json \
+python3 scripts/extract-bambustudio-abi.py \
   --source-dir /path/to/BambuStudio \
-  --output layouts.json \
+  --output abi-values.json \
   --compiler "$(xcrun --find clang++)" \
   --std c++17 \
   --compiler-arg=-I/path/to/generated/includes \
@@ -69,13 +73,11 @@ python3 scripts/extract-clang-layouts.py \
 **ABI sysroot**를 cache하고 이 probe를 수초~수분 안에 실행하는 방향이 적합합니다. Symbol 주소는
 별도의 바이너리 추출 대상으로 유지합니다.
 
-현재 저장된 probe 목록은 이 경로를 검증하는 동안 의도적으로 일부 타입만 포함합니다. 구현
-파일에만 정의된 타입과 wxWidgets 소유 layout은 실제 translation unit 인자 또는 일치하는 dependency
-헤더가 필요합니다. 멤버가 없거나 record가 중복되면 hard failure로 처리하며 불완전한 layout을
-정상 결과처럼 출력하지 않습니다.
-
-가상 메서드 index는 별도의 ABI 산출물이므로 `extract-clang-vtables.py`가 검토된 concrete probe에
-대한 Clang Itanium vtable-layout 출력을 파싱합니다. 데이터 멤버 record layout에서 추측하지 않습니다.
+`extract-bambustudio-abi.py`는 단일 record-layout probe와 훨씬 작은 ConfigOption vtable probe를
+동시에 시작한 뒤 결과를 `config/bambustudio-abi-values.json`의 34개 값으로 병합합니다. vtable 생성을
+분리한 것은 의도적입니다. 큰 `Plater.cpp` probe에 코드 생성을 활성화하는 것보다 syntax-only record
+pass와 작은 `Config.hpp` probe를 나란히 실행하는 편이 더 빠릅니다. 하위 도구인
+`extract-clang-layouts.py`와 `extract-clang-vtables.py`도 각각 독립적으로 사용할 수 있습니다.
 
 ## 1단계 실행 방법
 

@@ -27,6 +27,20 @@ class ClangLayoutTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "missing fields"):
             module.parse_layout_dump(dump, {"Example": ["absent"]})
 
+    def test_source_slice_stops_after_the_selected_record(self):
+        spec = importlib.util.spec_from_file_location("extract_clang_layouts", SCRIPT)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        source = '''const char *ignored = R"tag({ not a brace })tag";
+struct Selected {
+    int value() { return '}'; }
+};
+this trailing text is intentionally invalid
+'''
+        end = module.find_record_end(source, "struct Selected")
+        self.assertEqual(source[:end].rstrip().splitlines()[-1], "};")
+        self.assertNotIn("intentionally invalid", source[:end])
+
     def test_private_members_are_extracted_by_clang(self):
         compiler = shutil.which("clang++")
         if not compiler:

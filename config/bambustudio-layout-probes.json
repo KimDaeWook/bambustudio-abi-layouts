@@ -2,30 +2,33 @@
   "schema_version": 1,
   "translation_units": [
     {
-      "name": "libslic3r-model",
-      "headers": ["src/libslic3r/Model.hpp"],
+      "name": "bambustudio-runtime-requirements",
+      "headers": ["src/slic3r/GUI/I18N.hpp", "src/slic3r/pchheader.hpp"],
+      "compiler_args": ["-fno-access-control"],
+      "source_slice": {
+        "path": "src/slic3r/GUI/Plater.cpp",
+        "through_record": "struct Plater::priv",
+        "suffix": "\n}} // namespace Slic3r::GUI\n"
+      },
       "records": [
-        {"name": "model.model", "type": "Slic3r::Model", "members": {"objects": "objects", "model_info": "model_info"}},
-        {"name": "model.info", "type": "Slic3r::ModelInfo", "members": {"metadata_items": "metadata_items"}},
-        {"name": "model.object", "type": "Slic3r::ModelObject", "members": {"name": "name", "instances": "instances", "volumes": "volumes", "config": "config", "printable": "printable"}},
-        {"name": "model.volume", "type": "Slic3r::ModelVolume", "members": {"name": "name", "mesh": "m_mesh", "transformation": "m_transformation"}},
-        {"name": "model.instance", "type": "Slic3r::ModelInstance", "members": {"transformation": "m_transformation", "printable": "printable"}}
-        ,{"name": "model.config_object", "type": "Slic3r::ModelConfigObject", "members": {}, "bases": {"model_config": "Slic3r::ModelConfig"}}
-        ,{"name": "model.config", "type": "Slic3r::ModelConfig", "members": {"timestamp": "m_timestamp", "data": "m_data"}}
-      ]
-    },
-    {
-      "name": "gui-toolbar",
-      "headers": ["src/slic3r/GUI/GLToolbar.hpp"],
-      "records": [
-        {"name": "gui.toolbar_item_data", "type": "Slic3r::GUI::GLToolbarItem::Data", "members": {"name": "name", "sprite_id": "sprite_id", "left": "left", "icon_filename_callback": "icon_filename_callback"}}
-      ]
-    },
-    {
-      "name": "gui-menu-factory",
-      "headers": ["src/slic3r/GUI/GUI_Factories.hpp"],
-      "records": [
-        {"name": "gui.menu_factory", "type": "Slic3r::GUI::MenuFactory", "members": {"object_menu": "m_object_menu", "part_menu": "m_part_menu"}}
+        {"name":"wx.event","type":"wxEvent","members":{"event_object":"m_eventObject","event_type":"m_eventType"}},
+        {"name":"wx.event_filter","type":"wxEventFilter","members":{"next":"m_next"}},
+        {"name":"wx.book_ctrl_base","type":"wxBookCtrlBase","members":{"pages":"m_pages","bookctrl":"m_bookctrl"}},
+        {"name":"wx.menu_item_base","type":"wxMenuItemBase","members":{"submenu":"m_subMenu"}},
+        {"name":"wx.string","type":"wxString","members":{}},
+        {"name":"gui.printer_web_view","type":"Slic3r::GUI::PrinterWebView","members":{}},
+        {"name":"gui.plater","type":"Slic3r::GUI::Plater","members":{"private":"p"}},
+        {"name":"gui.plater_private","type":"Slic3r::GUI::Plater::priv","members":{"menus":"menus"}},
+        {"name":"gui.menu_factory","type":"Slic3r::GUI::MenuFactory","members":{"object_menu":"m_object_menu","part_menu":"m_part_menu"}},
+        {"name":"gui.toolbar_item_data","type":"Slic3r::GUI::GLToolbarItem::Data","members":{"name":"name","sprite_id":"sprite_id","left":"left","icon_filename_callback":"icon_filename_callback"}},
+        {"name":"gui.toolbar_option","type":"Slic3r::GUI::GLToolbarItem::Data::Option","members":{"action_callback":"action_callback"}},
+        {"name":"model.model","type":"Slic3r::Model","members":{"objects":"objects","model_info":"model_info"}},
+        {"name":"model.info","type":"Slic3r::ModelInfo","members":{"metadata_items":"metadata_items"}},
+        {"name":"model.object","type":"Slic3r::ModelObject","members":{"name":"name","instances":"instances","volumes":"volumes","config":"config"}},
+        {"name":"model.volume","type":"Slic3r::ModelVolume","members":{"name":"name","mesh":"m_mesh"}},
+        {"name":"model.instance","type":"Slic3r::ModelInstance","members":{"transformation":"m_transformation","printable":"printable"}},
+        {"name":"model.config_object","type":"Slic3r::ModelConfigObject","members":{},"bases":{"model_config":"Slic3r::ModelConfig"}},
+        {"name":"model.config","type":"Slic3r::ModelConfig","members":{"timestamp":"m_timestamp","data":"m_data"}}
       ]
     }
   ]
