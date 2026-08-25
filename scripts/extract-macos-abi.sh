@@ -105,7 +105,6 @@ command=(
     --std c++17
     --layout-config "$REQUIREMENTS_DIR/records.json"
     --vtable-config "$REQUIREMENTS_DIR/vtables.json"
-    --values-config "$REQUIREMENTS_DIR/values.json"
 )
 for argument in "${compiler_args[@]}"; do
     command+=( "--compiler-arg=$argument" )
@@ -113,15 +112,15 @@ done
 
 "${command[@]}"
 
-python3 - "$OUTPUT_JSON" "$REQUIREMENTS_DIR/values.json" <<'PY'
+python3 - "$OUTPUT_JSON" "$REQUIREMENTS_DIR/records.json" "$REQUIREMENTS_DIR/vtables.json" <<'PY'
 import json
 import sys
 
 path = sys.argv[1]
 document = json.load(open(path, encoding="utf-8"))
-values = document.get("values", {})
-expected = len(json.load(open(sys.argv[2], encoding="utf-8")).get("values", []))
-if len(values) != expected:
-    raise SystemExit(f"expected {expected} ABI values, found {len(values)}")
-print(f"validated {len(values)} ABI values")
+expected_records = sum(len(unit.get("records", [])) for unit in json.load(open(sys.argv[2]))["translation_units"])
+expected_vtables = sum(len(unit.get("records", [])) for unit in json.load(open(sys.argv[3]))["translation_units"])
+if len(document.get("layouts", {})) != expected_records or len(document.get("vtables", {})) != expected_vtables:
+    raise SystemExit("record/vtable extraction is incomplete")
+print(f"validated {expected_records} records and {expected_vtables} vtables")
 PY

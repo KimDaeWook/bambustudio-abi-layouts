@@ -88,7 +88,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--values-config", type=Path,
-        default=ROOT / "config" / "bambustudio-abi-values.json",
+        default=None,
     )
     parser.add_argument("--compiler", default=os.environ.get("CXX", "clang++"))
     parser.add_argument("--std", default="c++20")
@@ -121,10 +121,12 @@ def main() -> int:
         layout_document = json.loads(layout_output.read_text(encoding="utf-8"))
         vtable_document = json.loads(vtable_output.read_text(encoding="utf-8"))
 
-    values_config = json.loads(args.values_config.read_text(encoding="utf-8"))
     layouts = layout_document["layouts"]
     vtables = vtable_document["vtables"]
-    values = derive_values(values_config, layouts, vtables)
+    values = {}
+    if args.values_config is not None:
+        values_config = json.loads(args.values_config.read_text(encoding="utf-8"))
+        values = derive_values(values_config, layouts, vtables)
     wall_seconds = time.perf_counter() - started
     document = {
         "schema_version": 1,
@@ -147,7 +149,7 @@ def main() -> int:
     temporary.write_text(json.dumps(document, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     temporary.replace(args.output)
     print(
-        f"extracted {len(values)} ABI values in {wall_seconds:.3f}s "
+        f"extracted {len(layouts)} records and {len(vtables)} vtables in {wall_seconds:.3f}s "
         f"(records {timings['record_layouts']:.3f}s, vtables {timings['vtable_layouts']:.3f}s)"
     )
     return 0

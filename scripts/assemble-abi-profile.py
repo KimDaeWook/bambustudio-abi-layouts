@@ -32,17 +32,35 @@ def load(path: Path) -> dict:
     return value
 
 
-def nested_layouts(values: dict[str, int], bindings: list[dict]) -> dict[str, dict[str, dict]]:
-    result: dict[str, dict[str, dict]] = {}
-    by_name = {item["name"]: item for item in bindings}
-    if len(by_name) != len(bindings) or set(by_name) != set(values):
-        raise ValueError("layout bindings must match extracted values exactly")
-    for dotted, value in sorted(values.items()):
-        group, separator, member = dotted.partition(".")
-        if not separator or "." in member or not isinstance(value, int) or value < 0:
-            raise ValueError(f"invalid layout value: {dotted}")
-        descriptor = {key: item for key, item in by_name[dotted].items() if key != "name"}
-        result.setdefault(group, {})[member] = {"value": value, **descriptor}
+def canonical_layouts(probe: dict, requirements: dict) -> dict:
+    result = {}
+    extracted = probe.get("layouts", {})
+    for unit in requirements["records"]["translation_units"]:
+        for specification in unit["records"]:
+            alias, cpp_type = specification["name"], specification["type"]
+            record = extracted[alias]
+            if cpp_type in result:
+                raise ValueError(f"duplicate C++ record requirement: {cpp_type}")
+            result[cpp_type] = {
+                "size": record["size"],
+                "alignment": record["alignment"],
+                "members": {cpp: record["members"][logical] for logical, cpp in specification.get("members", {}).items()},
+                "bases": {cpp: record["bases"][logical] for logical, cpp in specification.get("bases", {}).items()},
+            }
+    return result
+
+
+def canonical_vtables(probe: dict, requirements: dict) -> dict:
+    result = {}
+    extracted = probe.get("vtables", {})
+    for unit in requirements["vtables"]["translation_units"]:
+        for specification in unit["records"]:
+            alias, cpp_type = specification["name"], specification["type"]
+            table = extracted[alias]
+            result[cpp_type] = {"methods": {
+                cpp: table["indices"][logical]
+                for logical, cpp in specification.get("methods", {}).items()
+            }}
     return result
 
 
@@ -69,20 +87,15 @@ def main() -> int:
         raise ValueError("only the validated macos-arm64 profile target is supported")
     if layout_upstream.get("commit") != function_upstream.get("source_commit"):
         raise ValueError("layout source commit and release source commit differ")
-    values = layout.get("values", {})
     requirements = load(args.requirements)
     target_requirements = requirements["targets"]["macos-arm64"]
-    expected_layouts = len(target_requirements["layout"]["values"].get("values", []))
     expected_symbols = len(target_requirements["functions"].get("symbols", []))
-    if len(values) != expected_layouts:
-        raise ValueError(f"expected {expected_layouts} layout values, found {len(values)}")
     analysis = functions.get("analysis", {})
     if analysis.get("resolved") != expected_symbols or len(functions.get("symbols", [])) != expected_symbols:
         raise ValueError("function ABI extraction is incomplete")
 
-    layouts = nested_layouts(values, target_requirements["layout"]["bindings"])
-    for group, metadata in target_requirements.get("profile_metadata", {}).items():
-        layouts.setdefault(group, {}).update(metadata)
+    layouts = canonical_layouts(layout, target_requirements["layout"])
+    vtables = canonical_vtables(layout, target_requirements["layout"])
     symbols = [
         item
         for item in functions["symbols"]
@@ -107,6 +120,7 @@ def main() -> int:
         "symbols": symbols,
         "event_bindings": raw_events["entries"],
         "layouts": layouts,
+        "vtables": vtables,
     }
     version_dir = args.output_root / version
     version_dir.mkdir(parents=True, exist_ok=True)
@@ -132,7 +146,8 @@ def main() -> int:
                 "sha256": sha256(profile_content),
                 "binary_sha256": functions["binary"]["sha256"],
                 "binary_uuid": functions["binary"]["uuid"],
-                "layout_value_count": len(values),
+                "record_count": len(layouts),
+                "vtable_count": len(vtables),
                 "symbol_count": len(symbols),
                 "event_binding_count": len(raw_events["entries"]),
                 "catalog_sha256": catalogs,

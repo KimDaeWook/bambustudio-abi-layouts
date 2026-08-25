@@ -1,1080 +1,660 @@
 {
-    "schema_version": 1,
-    "kind": "bambustudio_abi_requirements",
-    "version": "02.08.02.61",
-    "targets": {
+  "schema_version": 1,
+  "kind": "bambustudio_abi_requirements",
+  "version": "02.08.02.61",
+  "targets": {
     "macos-arm64": {
-      "profile_metadata": {
-        "context_menu": {
-          "native_parents": [
-            {"id": "bambu.add-part", "translation_key": "Add part"},
-            {"id": "bambu.add-negative-part", "translation_key": "Add negative part"},
-            {"id": "bambu.add-modifier", "translation_key": "Add modifier"},
-            {"id": "bambu.add-support-blocker", "translation_key": "Add support blocker"},
-            {"id": "bambu.add-support-enforcer", "translation_key": "Add support enforcer"},
-            {"id": "bambu.add-primitive", "translation_key": "Add Primitive"},
-            {"id": "bambu.cube", "translation_key": "Cube"},
-            {"id": "bambu.bambu-cube", "translation_key": "Bambu Cube"},
-            {"id": "bambu.clone", "translation_key": "Clone"}
+      "layout": {
+        "records": {
+          "schema_version": 1,
+          "translation_units": [
+            {
+              "name": "bambustudio-runtime-requirements",
+              "headers": [
+                "src/slic3r/GUI/I18N.hpp",
+                "src/slic3r/pchheader.hpp"
+              ],
+              "compiler_args": [
+                "-fno-access-control"
+              ],
+              "source_slice": {
+                "path": "src/slic3r/GUI/Plater.cpp",
+                "through_record": "struct Plater::priv",
+                "suffix": "\n}} // namespace Slic3r::GUI\n"
+              },
+              "records": [
+                {
+                  "name": "wx.event",
+                  "type": "wxEvent",
+                  "members": {
+                    "event_object": "m_eventObject",
+                    "event_type": "m_eventType"
+                  }
+                },
+                {
+                  "name": "wx.event_filter",
+                  "type": "wxEventFilter",
+                  "members": {
+                    "next": "m_next"
+                  }
+                },
+                {
+                  "name": "wx.book_ctrl_base",
+                  "type": "wxBookCtrlBase",
+                  "members": {
+                    "pages": "m_pages",
+                    "bookctrl": "m_bookctrl"
+                  }
+                },
+                {
+                  "name": "wx.menu_item_base",
+                  "type": "wxMenuItemBase",
+                  "members": {
+                    "submenu": "m_subMenu"
+                  }
+                },
+                {
+                  "name": "wx.string",
+                  "type": "wxString",
+                  "members": {}
+                },
+                {
+                  "name": "gui.printer_web_view",
+                  "type": "Slic3r::GUI::PrinterWebView",
+                  "members": {}
+                },
+                {
+                  "name": "gui.plater",
+                  "type": "Slic3r::GUI::Plater",
+                  "members": {
+                    "private": "p"
+                  }
+                },
+                {
+                  "name": "gui.plater_private",
+                  "type": "Slic3r::GUI::Plater::priv",
+                  "members": {
+                    "menus": "menus"
+                  }
+                },
+                {
+                  "name": "gui.menu_factory",
+                  "type": "Slic3r::GUI::MenuFactory",
+                  "members": {
+                    "object_menu": "m_object_menu",
+                    "part_menu": "m_part_menu"
+                  }
+                },
+                {
+                  "name": "gui.toolbar_item_data",
+                  "type": "Slic3r::GUI::GLToolbarItem::Data",
+                  "members": {
+                    "name": "name",
+                    "sprite_id": "sprite_id",
+                    "left": "left",
+                    "icon_filename_callback": "icon_filename_callback"
+                  }
+                },
+                {
+                  "name": "gui.toolbar_option",
+                  "type": "Slic3r::GUI::GLToolbarItem::Data::Option",
+                  "members": {
+                    "action_callback": "action_callback"
+                  }
+                },
+                {
+                  "name": "model.model",
+                  "type": "Slic3r::Model",
+                  "members": {
+                    "objects": "objects",
+                    "model_info": "model_info"
+                  }
+                },
+                {
+                  "name": "model.info",
+                  "type": "Slic3r::ModelInfo",
+                  "members": {
+                    "metadata_items": "metadata_items"
+                  }
+                },
+                {
+                  "name": "model.object",
+                  "type": "Slic3r::ModelObject",
+                  "members": {
+                    "name": "name",
+                    "instances": "instances",
+                    "volumes": "volumes",
+                    "config": "config"
+                  }
+                },
+                {
+                  "name": "model.volume",
+                  "type": "Slic3r::ModelVolume",
+                  "members": {
+                    "name": "name",
+                    "mesh": "m_mesh"
+                  }
+                },
+                {
+                  "name": "model.instance",
+                  "type": "Slic3r::ModelInstance",
+                  "members": {
+                    "transformation": "m_transformation",
+                    "printable": "printable"
+                  }
+                },
+                {
+                  "name": "model.config_object",
+                  "type": "Slic3r::ModelConfigObject",
+                  "members": {},
+                  "bases": {
+                    "model_config": "Slic3r::ModelConfig"
+                  }
+                },
+                {
+                  "name": "model.config",
+                  "type": "Slic3r::ModelConfig",
+                  "members": {
+                    "timestamp": "m_timestamp",
+                    "data": "m_data"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "vtables": {
+          "schema_version": 1,
+          "translation_units": [
+            {
+              "name": "config-option",
+              "headers": [
+                "src/libslic3r/Config.hpp"
+              ],
+              "probe_code": "struct ConfigOptionVtableProbe final : Slic3r::ConfigOption { Slic3r::ConfigOptionType type() const override { return Slic3r::coNone; } std::string serialize() const override { return {}; } bool deserialize(const std::string &, bool) override { return false; } ConfigOptionVtableProbe *clone() const override { return nullptr; } void set(const Slic3r::ConfigOption *) override {} bool operator==(const Slic3r::ConfigOption &) const override { return false; } size_t hash() const noexcept override { return 0; } }; ConfigOptionVtableProbe config_option_vtable_probe;",
+              "records": [
+                {
+                  "name": "settings.config_option",
+                  "type": "Slic3r::ConfigOption",
+                  "dump_type": "ConfigOptionVtableProbe",
+                  "methods": {
+                    "type": "ConfigOptionVtableProbe::type() const",
+                    "deserialize": "ConfigOptionVtableProbe::deserialize(const std::string &, bool)"
+                  }
+                }
+              ]
+            }
           ]
         }
       },
-      "layout": {
-                "bindings": [
-                    {
-                        "name": "events.event_type_offset",
-                        "type": "wxEvent",
-                        "member": "m_eventType"
-                    },
-                    {
-                        "name": "events.filter_next_offset",
-                        "type": "wxEventFilter",
-                        "member": "m_next"
-                    },
-                    {
-                        "name": "events.event_object_offset",
-                        "type": "wxEvent",
-                        "member": "m_eventObject"
-                    },
-                    {
-                        "name": "panel.page_count",
-                        "type": "wxBookCtrlBase",
-                        "member": "m_pages"
-                    },
-                    {
-                        "name": "panel.buttons_control",
-                        "type": "wxBookCtrlBase",
-                        "member": "m_bookctrl"
-                    },
-                    {
-                        "name": "panel.printer_web_view_size",
-                        "type": "Slic3r::GUI::PrinterWebView"
-                    },
-                    {
-                        "name": "panel.printer_web_view_alignment",
-                        "type": "Slic3r::GUI::PrinterWebView"
-                    },
-                    {
-                        "name": "context_menu.plater_private",
-                        "type": "Slic3r::GUI::Plater",
-                        "member": "p"
-                    },
-                    {
-                        "name": "context_menu.private_menu_factory",
-                        "type": "Slic3r::GUI::Plater::priv",
-                        "member": "menus"
-                    },
-                    {
-                        "name": "context_menu.menu_factory_object_menu",
-                        "type": "Slic3r::GUI::MenuFactory",
-                        "member": "m_object_menu"
-                    },
-                    {
-                        "name": "context_menu.menu_factory_part_menu",
-                        "type": "Slic3r::GUI::MenuFactory",
-                        "member": "m_part_menu"
-                    },
-                    {
-                        "name": "context_menu.wx_string_size",
-                        "type": "wxString"
-                    },
-                    {
-                        "name": "context_menu.wx_string_alignment",
-                        "type": "wxString"
-                    },
-                    {
-                        "name": "context_menu.wx_menu_item_submenu",
-                        "type": "wxMenuItemBase",
-                        "member": "m_subMenu"
-                    },
-                    {
-                        "name": "toolbar.data_size",
-                        "type": "Slic3r::GUI::GLToolbarItem::Data"
-                    },
-                    {
-                        "name": "toolbar.data_alignment",
-                        "type": "Slic3r::GUI::GLToolbarItem::Data"
-                    },
-                    {
-                        "name": "toolbar.name",
-                        "type": "Slic3r::GUI::GLToolbarItem::Data",
-                        "member": "name"
-                    },
-                    {
-                        "name": "toolbar.sprite_id",
-                        "type": "Slic3r::GUI::GLToolbarItem::Data",
-                        "member": "sprite_id"
-                    },
-                    {
-                        "name": "toolbar.left_action",
-                        "path": [
-                            {
-                                "type": "Slic3r::GUI::GLToolbarItem::Data",
-                                "member": "left"
-                            },
-                            {
-                                "type": "Slic3r::GUI::GLToolbarItem::Data::Option",
-                                "member": "action_callback"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "toolbar.icon_filename_callback",
-                        "type": "Slic3r::GUI::GLToolbarItem::Data",
-                        "member": "icon_filename_callback"
-                    },
-                    {
-                        "name": "model.objects",
-                        "type": "Slic3r::Model",
-                        "member": "objects"
-                    },
-                    {
-                        "name": "model.model_info_shared_ptr",
-                        "type": "Slic3r::Model",
-                        "member": "model_info"
-                    },
-                    {
-                        "name": "model.model_info_metadata_items",
-                        "type": "Slic3r::ModelInfo",
-                        "member": "metadata_items"
-                    },
-                    {
-                        "name": "model.object_name",
-                        "type": "Slic3r::ModelObject",
-                        "member": "name"
-                    },
-                    {
-                        "name": "model.object_instances",
-                        "type": "Slic3r::ModelObject",
-                        "member": "instances"
-                    },
-                    {
-                        "name": "model.object_volumes",
-                        "type": "Slic3r::ModelObject",
-                        "member": "volumes"
-                    },
-                    {
-                        "name": "model.volume_name",
-                        "type": "Slic3r::ModelVolume",
-                        "member": "name"
-                    },
-                    {
-                        "name": "model.volume_mesh_shared_ptr",
-                        "type": "Slic3r::ModelVolume",
-                        "member": "m_mesh"
-                    },
-                    {
-                        "name": "model.object_dynamic_config",
-                        "path": [
-                            {
-                                "type": "Slic3r::ModelObject",
-                                "member": "config"
-                            },
-                            {
-                                "type": "Slic3r::ModelConfigObject",
-                                "base": "Slic3r::ModelConfig"
-                            },
-                            {
-                                "type": "Slic3r::ModelConfig",
-                                "member": "m_data"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "model.object_config_timestamp",
-                        "path": [
-                            {
-                                "type": "Slic3r::ModelObject",
-                                "member": "config"
-                            },
-                            {
-                                "type": "Slic3r::ModelConfigObject",
-                                "base": "Slic3r::ModelConfig"
-                            },
-                            {
-                                "type": "Slic3r::ModelConfig",
-                                "member": "m_timestamp"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "model.instance_transformation",
-                        "type": "Slic3r::ModelInstance",
-                        "member": "m_transformation"
-                    },
-                    {
-                        "name": "model.instance_printable",
-                        "type": "Slic3r::ModelInstance",
-                        "member": "printable"
-                    },
-                    {
-                        "name": "settings.option_type_vtable_index",
-                        "type": "Slic3r::ConfigOption",
-                        "method": "ConfigOptionVtableProbe::type() const"
-                    },
-                    {
-                        "name": "settings.option_deserialize_vtable_index",
-                        "type": "Slic3r::ConfigOption",
-                        "method": "ConfigOptionVtableProbe::deserialize(const std::string &, bool)"
-                    }
-                ],
-                "values": {
-                    "schema_version": 1,
-                    "values": [
-                        {
-                            "name": "events.event_type_offset",
-                            "layout": "wx.event",
-                            "member": "event_type"
-                        },
-                        {
-                            "name": "events.filter_next_offset",
-                            "layout": "wx.event_filter",
-                            "member": "next"
-                        },
-                        {
-                            "name": "events.event_object_offset",
-                            "layout": "wx.event",
-                            "member": "event_object"
-                        },
-                        {
-                            "name": "panel.page_count",
-                            "layout": "wx.book_ctrl_base",
-                            "member": "pages"
-                        },
-                        {
-                            "name": "panel.buttons_control",
-                            "layout": "wx.book_ctrl_base",
-                            "member": "bookctrl"
-                        },
-                        {
-                            "name": "panel.printer_web_view_size",
-                            "layout": "gui.printer_web_view",
-                            "attribute": "size"
-                        },
-                        {
-                            "name": "panel.printer_web_view_alignment",
-                            "layout": "gui.printer_web_view",
-                            "attribute": "alignment"
-                        },
-                        {
-                            "name": "context_menu.plater_private",
-                            "layout": "gui.plater",
-                            "member": "private"
-                        },
-                        {
-                            "name": "context_menu.private_menu_factory",
-                            "layout": "gui.plater_private",
-                            "member": "menus"
-                        },
-                        {
-                            "name": "context_menu.menu_factory_object_menu",
-                            "layout": "gui.menu_factory",
-                            "member": "object_menu"
-                        },
-                        {
-                            "name": "context_menu.menu_factory_part_menu",
-                            "layout": "gui.menu_factory",
-                            "member": "part_menu"
-                        },
-                        {
-                            "name": "context_menu.wx_string_size",
-                            "layout": "wx.string",
-                            "attribute": "size"
-                        },
-                        {
-                            "name": "context_menu.wx_string_alignment",
-                            "layout": "wx.string",
-                            "attribute": "alignment"
-                        },
-                        {
-                            "name": "context_menu.wx_menu_item_submenu",
-                            "layout": "wx.menu_item_base",
-                            "member": "submenu"
-                        },
-                        {
-                            "name": "toolbar.data_size",
-                            "layout": "gui.toolbar_item_data",
-                            "attribute": "size"
-                        },
-                        {
-                            "name": "toolbar.data_alignment",
-                            "layout": "gui.toolbar_item_data",
-                            "attribute": "alignment"
-                        },
-                        {
-                            "name": "toolbar.name",
-                            "layout": "gui.toolbar_item_data",
-                            "member": "name"
-                        },
-                        {
-                            "name": "toolbar.sprite_id",
-                            "layout": "gui.toolbar_item_data",
-                            "member": "sprite_id"
-                        },
-                        {
-                            "name": "toolbar.left_action",
-                            "sum": [
-                                {
-                                    "layout": "gui.toolbar_item_data",
-                                    "member": "left"
-                                },
-                                {
-                                    "layout": "gui.toolbar_option",
-                                    "member": "action_callback"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "toolbar.icon_filename_callback",
-                            "layout": "gui.toolbar_item_data",
-                            "member": "icon_filename_callback"
-                        },
-                        {
-                            "name": "model.objects",
-                            "layout": "model.model",
-                            "member": "objects"
-                        },
-                        {
-                            "name": "model.model_info_shared_ptr",
-                            "layout": "model.model",
-                            "member": "model_info"
-                        },
-                        {
-                            "name": "model.model_info_metadata_items",
-                            "layout": "model.info",
-                            "member": "metadata_items"
-                        },
-                        {
-                            "name": "model.object_name",
-                            "layout": "model.object",
-                            "member": "name"
-                        },
-                        {
-                            "name": "model.object_instances",
-                            "layout": "model.object",
-                            "member": "instances"
-                        },
-                        {
-                            "name": "model.object_volumes",
-                            "layout": "model.object",
-                            "member": "volumes"
-                        },
-                        {
-                            "name": "model.volume_name",
-                            "layout": "model.volume",
-                            "member": "name"
-                        },
-                        {
-                            "name": "model.volume_mesh_shared_ptr",
-                            "layout": "model.volume",
-                            "member": "mesh"
-                        },
-                        {
-                            "name": "model.object_dynamic_config",
-                            "sum": [
-                                {
-                                    "layout": "model.object",
-                                    "member": "config"
-                                },
-                                {
-                                    "layout": "model.config_object",
-                                    "base": "model_config"
-                                },
-                                {
-                                    "layout": "model.config",
-                                    "member": "data"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "model.object_config_timestamp",
-                            "sum": [
-                                {
-                                    "layout": "model.object",
-                                    "member": "config"
-                                },
-                                {
-                                    "layout": "model.config_object",
-                                    "base": "model_config"
-                                },
-                                {
-                                    "layout": "model.config",
-                                    "member": "timestamp"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "model.instance_transformation",
-                            "layout": "model.instance",
-                            "member": "transformation"
-                        },
-                        {
-                            "name": "model.instance_printable",
-                            "layout": "model.instance",
-                            "member": "printable"
-                        },
-                        {
-                            "name": "settings.option_type_vtable_index",
-                            "vtable": "settings.config_option",
-                            "method": "type"
-                        },
-                        {
-                            "name": "settings.option_deserialize_vtable_index",
-                            "vtable": "settings.config_option",
-                            "method": "deserialize"
-                        }
-                    ]
-                },
-                "records": {
-                    "schema_version": 1,
-                    "translation_units": [
-                        {
-                            "name": "bambustudio-runtime-requirements",
-                            "headers": [
-                                "src/slic3r/GUI/I18N.hpp",
-                                "src/slic3r/pchheader.hpp"
-                            ],
-                            "compiler_args": [
-                                "-fno-access-control"
-                            ],
-                            "source_slice": {
-                                "path": "src/slic3r/GUI/Plater.cpp",
-                                "through_record": "struct Plater::priv",
-                                "suffix": "\n}} // namespace Slic3r::GUI\n"
-                            },
-                            "records": [
-                                {
-                                    "name": "wx.event",
-                                    "type": "wxEvent",
-                                    "members": {
-                                        "event_object": "m_eventObject",
-                                        "event_type": "m_eventType"
-                                    }
-                                },
-                                {
-                                    "name": "wx.event_filter",
-                                    "type": "wxEventFilter",
-                                    "members": {
-                                        "next": "m_next"
-                                    }
-                                },
-                                {
-                                    "name": "wx.book_ctrl_base",
-                                    "type": "wxBookCtrlBase",
-                                    "members": {
-                                        "pages": "m_pages",
-                                        "bookctrl": "m_bookctrl"
-                                    }
-                                },
-                                {
-                                    "name": "wx.menu_item_base",
-                                    "type": "wxMenuItemBase",
-                                    "members": {
-                                        "submenu": "m_subMenu"
-                                    }
-                                },
-                                {
-                                    "name": "wx.string",
-                                    "type": "wxString",
-                                    "members": {}
-                                },
-                                {
-                                    "name": "gui.printer_web_view",
-                                    "type": "Slic3r::GUI::PrinterWebView",
-                                    "members": {}
-                                },
-                                {
-                                    "name": "gui.plater",
-                                    "type": "Slic3r::GUI::Plater",
-                                    "members": {
-                                        "private": "p"
-                                    }
-                                },
-                                {
-                                    "name": "gui.plater_private",
-                                    "type": "Slic3r::GUI::Plater::priv",
-                                    "members": {
-                                        "menus": "menus"
-                                    }
-                                },
-                                {
-                                    "name": "gui.menu_factory",
-                                    "type": "Slic3r::GUI::MenuFactory",
-                                    "members": {
-                                        "object_menu": "m_object_menu",
-                                        "part_menu": "m_part_menu"
-                                    }
-                                },
-                                {
-                                    "name": "gui.toolbar_item_data",
-                                    "type": "Slic3r::GUI::GLToolbarItem::Data",
-                                    "members": {
-                                        "name": "name",
-                                        "sprite_id": "sprite_id",
-                                        "left": "left",
-                                        "icon_filename_callback": "icon_filename_callback"
-                                    }
-                                },
-                                {
-                                    "name": "gui.toolbar_option",
-                                    "type": "Slic3r::GUI::GLToolbarItem::Data::Option",
-                                    "members": {
-                                        "action_callback": "action_callback"
-                                    }
-                                },
-                                {
-                                    "name": "model.model",
-                                    "type": "Slic3r::Model",
-                                    "members": {
-                                        "objects": "objects",
-                                        "model_info": "model_info"
-                                    }
-                                },
-                                {
-                                    "name": "model.info",
-                                    "type": "Slic3r::ModelInfo",
-                                    "members": {
-                                        "metadata_items": "metadata_items"
-                                    }
-                                },
-                                {
-                                    "name": "model.object",
-                                    "type": "Slic3r::ModelObject",
-                                    "members": {
-                                        "name": "name",
-                                        "instances": "instances",
-                                        "volumes": "volumes",
-                                        "config": "config"
-                                    }
-                                },
-                                {
-                                    "name": "model.volume",
-                                    "type": "Slic3r::ModelVolume",
-                                    "members": {
-                                        "name": "name",
-                                        "mesh": "m_mesh"
-                                    }
-                                },
-                                {
-                                    "name": "model.instance",
-                                    "type": "Slic3r::ModelInstance",
-                                    "members": {
-                                        "transformation": "m_transformation",
-                                        "printable": "printable"
-                                    }
-                                },
-                                {
-                                    "name": "model.config_object",
-                                    "type": "Slic3r::ModelConfigObject",
-                                    "members": {},
-                                    "bases": {
-                                        "model_config": "Slic3r::ModelConfig"
-                                    }
-                                },
-                                {
-                                    "name": "model.config",
-                                    "type": "Slic3r::ModelConfig",
-                                    "members": {
-                                        "timestamp": "m_timestamp",
-                                        "data": "m_data"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "vtables": {
-                    "schema_version": 1,
-                    "translation_units": [
-                        {
-                            "name": "config-option",
-                            "headers": [
-                                "src/libslic3r/Config.hpp"
-                            ],
-                            "probe_code": "struct ConfigOptionVtableProbe final : Slic3r::ConfigOption { Slic3r::ConfigOptionType type() const override { return Slic3r::coNone; } std::string serialize() const override { return {}; } bool deserialize(const std::string &, bool) override { return false; } ConfigOptionVtableProbe *clone() const override { return nullptr; } void set(const Slic3r::ConfigOption *) override {} bool operator==(const Slic3r::ConfigOption &) const override { return false; } size_t hash() const noexcept override { return 0; } }; ConfigOptionVtableProbe config_option_vtable_probe;",
-                            "records": [
-                                {
-                                    "name": "settings.config_option",
-                                    "type": "Slic3r::ConfigOption",
-                                    "dump_type": "ConfigOptionVtableProbe",
-                                    "methods": {
-                                        "type": "ConfigOptionVtableProbe::type() const",
-                                        "deserialize": "ConfigOptionVtableProbe::deserialize(const std::string &, bool)"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
+      "functions": {
+        "compatibility": {
+          "required_symbols": [
+            "WxGetApp",
+            "AppPlater",
+            "ObjectIndex",
+            "Selection"
+          ]
+        },
+        "events": {
+          "entries": [
+            {
+              "kind": "model",
+              "reason": "history.redo",
+              "symbol": "_ZN6Slic3r3GUI17EVT_GLCANVAS_REDOE"
             },
-            "functions": {
-                "compatibility": {
-                    "required_symbols": [
-                        "WxGetApp",
-                        "AppPlater",
-                        "ObjectIndex",
-                        "Selection"
-                    ]
-                },
-                "events": {
-                    "entries": [
-                        {
-                            "kind": "model",
-                            "reason": "history.redo",
-                            "symbol": "_ZN6Slic3r3GUI17EVT_GLCANVAS_REDOE"
-                        },
-                        {
-                            "kind": "model",
-                            "reason": "history.undo",
-                            "symbol": "_ZN6Slic3r3GUI17EVT_GLCANVAS_UNDOE"
-                        },
-                        {
-                            "kind": "selection",
-                            "reason": "canvas.objectSelect",
-                            "symbol": "_ZN6Slic3r3GUI26EVT_GLCANVAS_OBJECT_SELECTE"
-                        },
-                        {
-                            "kind": "model",
-                            "reason": "object.removed",
-                            "symbol": "_ZN6Slic3r3GUI26EVT_GLCANVAS_REMOVE_OBJECTE"
-                        },
-                        {
-                            "kind": "selection",
-                            "reason": "objectList.objectSelect",
-                            "symbol": "_ZN6Slic3r3GUI26EVT_OBJ_LIST_OBJECT_SELECTE"
-                        },
-                        {
-                            "kind": "model",
-                            "reason": "instance.moved",
-                            "symbol": "_ZN6Slic3r3GUI27EVT_GLCANVAS_INSTANCE_MOVEDE"
-                        },
-                        {
-                            "kind": "model",
-                            "reason": "instance.scaled",
-                            "symbol": "_ZN6Slic3r3GUI28EVT_GLCANVAS_INSTANCE_SCALEDE"
-                        },
-                        {
-                            "kind": "model",
-                            "reason": "geometry.updated",
-                            "symbol": "_ZN6Slic3r3GUI28EVT_GLCANVAS_UPDATE_GEOMETRYE"
-                        },
-                        {
-                            "kind": "model",
-                            "reason": "instance.rotated",
-                            "symbol": "_ZN6Slic3r3GUI29EVT_GLCANVAS_INSTANCE_ROTATEDE"
-                        }
-                    ]
-                },
-                "kind": "bambustudio_function_abi_requirements",
-                "platform": "macos",
-                "schema_version": 1,
-                "symbols": [
-                    {
-                        "logical_name": "WxEventAddFilter",
-                        "symbol": "_ZN12wxEvtHandler9AddFilterEP13wxEventFilter"
-                    },
-                    {
-                        "logical_name": "WxEventRemoveFilter",
-                        "symbol": "_ZN12wxEvtHandler12RemoveFilterEP13wxEventFilter"
-                    },
-                    {
-                        "logical_name": "WxGetApp",
-                        "symbol": "_ZN6Slic3r3GUI8wxGetAppEv"
-                    },
-                    {
-                        "logical_name": "AppPlater",
-                        "symbol": "_ZN6Slic3r3GUI7GUI_App6platerEv"
-                    },
-                    {
-                        "logical_name": "ObjectListSelectedItemIndexes",
-                        "symbol": "_ZN6Slic3r3GUI10ObjectList25get_selected_item_indexesERiS2_RK14wxDataViewItem"
-                    },
-                    {
-                        "logical_name": "WxDataViewSelectionChangedEventType",
-                        "symbol": "wxEVT_DATAVIEW_SELECTION_CHANGED"
-                    },
-                    {
-                        "logical_name": "PlaterDefaultMenu",
-                        "symbol": "__ZN6Slic3r3GUI6Plater12default_menuEv"
-                    },
-                    {
-                        "logical_name": "PlaterPlateMenu",
-                        "symbol": "__ZN6Slic3r3GUI6Plater10plate_menuEv"
-                    },
-                    {
-                        "logical_name": "ObjectListLoadGenericSubobject",
-                        "symbol": "__ZN6Slic3r3GUI10ObjectList22load_generic_subobjectERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEENS_15ModelVolumeTypeE"
-                    },
-                    {
-                        "logical_name": "AppObjectList",
-                        "symbol": "_ZN6Slic3r3GUI7GUI_App8obj_listEv"
-                    },
-                    {
-                        "logical_name": "DarkMode",
-                        "symbol": "_ZN6Slic3r3GUI7GUI_App9dark_modeEv"
-                    },
-                    {
-                        "logical_name": "GlobalPrintSequence",
-                        "symbol": "_ZNK6Slic3r3GUI7GUI_App21global_print_sequenceEv"
-                    },
-                    {
-                        "logical_name": "ObjectIndex",
-                        "symbol": "_ZN6Slic3r3GUI6Plater23get_selected_object_idxEv"
-                    },
-                    {
-                        "logical_name": "Selection",
-                        "symbol": "_ZNK6Slic3r3GUI6Plater13get_selectionEv"
-                    },
-                    {
-                        "logical_name": "InstanceIndex",
-                        "symbol": "_ZNK6Slic3r3GUI9Selection16get_instance_idxEv"
-                    },
-                    {
-                        "logical_name": "SingleObject",
-                        "symbol": "_ZNK6Slic3r3GUI6Plater31is_single_full_object_selectionEv"
-                    },
-                    {
-                        "logical_name": "SingleInstance",
-                        "symbol": "_ZNK6Slic3r3GUI9Selection23is_single_full_instanceEv"
-                    },
-                    {
-                        "logical_name": "MenuItemAt",
-                        "symbol": "_ZNK10wxMenuBase18FindItemByPositionEm"
-                    },
-                    {
-                        "logical_name": "MenuFindItemByLabel",
-                        "symbol": "_ZNK10wxMenuBase8FindItemERK8wxString"
-                    },
-                    {
-                        "logical_name": "MenuFindItemById",
-                        "symbol": "_ZNK10wxMenuBase8FindItemEiPP6wxMenu"
-                    },
-                    {
-                        "logical_name": "MenuRemove",
-                        "symbol": "_ZN10wxMenuBase6RemoveEP10wxMenuItem"
-                    },
-                    {
-                        "logical_name": "MenuInsert",
-                        "symbol": "_ZN10wxMenuBase6InsertEmP10wxMenuItem"
-                    },
-                    {
-                        "logical_name": "PlaterViewCanvas",
-                        "symbol": "_ZN6Slic3r3GUI6Plater19get_view3D_canvas3DEv"
-                    },
-                    {
-                        "logical_name": "CanvasMainToolbar",
-                        "symbol": "_ZNK6Slic3r3GUI10GLCanvas3D16get_main_toolbarEv"
-                    },
-                    {
-                        "logical_name": "ToolbarDataConstruct",
-                        "symbol": "_ZN6Slic3r3GUI13GLToolbarItem4DataC1Ev"
-                    },
-                    {
-                        "logical_name": "ToolbarDataDestroy",
-                        "symbol": "_ZN6Slic3r3GUI13GLToolbarItem4DataD2Ev"
-                    },
-                    {
-                        "logical_name": "ToolbarAddItem",
-                        "symbol": "_ZN6Slic3r3GUI9GLToolbar8add_itemERKNS0_13GLToolbarItem4DataENS2_5ETypeE"
-                    },
-                    {
-                        "logical_name": "ToolbarGetItem",
-                        "symbol": "_ZNK6Slic3r3GUI9GLToolbar8get_itemERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
-                    },
-                    {
-                        "logical_name": "ToolbarGetItemId",
-                        "symbol": "_ZNK6Slic3r3GUI9GLToolbar11get_item_idERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
-                    },
-                    {
-                        "logical_name": "ToolbarSetTooltip",
-                        "symbol": "_ZN6Slic3r3GUI9GLToolbar11set_tooltipEiRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
-                    },
-                    {
-                        "logical_name": "ToolbarItems",
-                        "symbol": "_ZNK6Slic3r3GUI9GLToolbar9get_itemsEv"
-                    },
-                    {
-                        "logical_name": "ToolbarItemData",
-                        "symbol": "_ZNK6Slic3r3GUI13GLToolbarItem8get_dataEv"
-                    },
-                    {
-                        "logical_name": "ToolbarItemSetVisible",
-                        "symbol": "_ZN6Slic3r3GUI13GLToolbarItem11set_visibleEb"
-                    },
-                    {
-                        "logical_name": "ToolbarItemSetState",
-                        "symbol": "_ZN6Slic3r3GUI13GLToolbarItem9set_stateENS1_6EStateE"
-                    },
-                    {
-                        "logical_name": "ToolbarItemIconFilename",
-                        "symbol": "_ZNK6Slic3r3GUI13GLToolbarItem17get_icon_filenameEb"
-                    },
-                    {
-                        "logical_name": "ToolbarSetIconDirty",
-                        "symbol": "_ZN6Slic3r3GUI9GLToolbar14set_icon_dirtyEv"
-                    },
-                    {
-                        "logical_name": "WxStringConstruct",
-                        "symbol": "_ZN8wxStringC2EPKc"
-                    },
-                    {
-                        "logical_name": "WxStringDestroy",
-                        "symbol": "_ZN8wxStringD1Ev"
-                    },
-                    {
-                        "logical_name": "WxMenuCreateObject",
-                        "symbol": "_ZN6wxMenu14wxCreateObjectEv"
-                    },
-                    {
-                        "logical_name": "WxAppTopWindow",
-                        "symbol": "_ZNK9wxAppBase12GetTopWindowEv"
-                    },
-                    {
-                        "logical_name": "AppTabPanel",
-                        "symbol": "_ZNK6Slic3r3GUI7GUI_App9tab_panelEv"
-                    },
-                    {
-                        "logical_name": "WxBookInsertPage",
-                        "symbol": "_ZN14wxBookCtrlBase10InsertPageEmP8wxWindowRK8wxStringbi"
-                    },
-                    {
-                        "logical_name": "WxBookDeletePage",
-                        "symbol": "_ZN14wxBookCtrlBase10DeletePageEm"
-                    },
-                    {
-                        "logical_name": "WxBookFindPage",
-                        "symbol": "_ZNK14wxBookCtrlBase8FindPageEPK8wxWindow"
-                    },
-                    {
-                        "logical_name": "ButtonsInsertPage",
-                        "symbol": "_ZN15ButtonsListCtrl10InsertPageEmRK8wxStringbRKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESB_"
-                    },
-                    {
-                        "logical_name": "PrinterWebViewConstruct",
-                        "symbol": "_ZN6Slic3r3GUI14PrinterWebViewC1EP8wxWindow"
-                    },
-                    {
-                        "logical_name": "PrinterWebViewLoadUrl",
-                        "symbol": "_ZN6Slic3r3GUI14PrinterWebView8load_urlERK8wxString"
-                    },
-                    {
-                        "logical_name": "WxWindowShow",
-                        "symbol": "_ZN8wxWindow4ShowEb"
-                    },
-                    {
-                        "logical_name": "WxDialogCreateObject",
-                        "symbol": "_ZN8wxDialog14wxCreateObjectEv"
-                    },
-                    {
-                        "logical_name": "WxDialogCreate",
-                        "symbol": "_ZN8wxDialog6CreateEP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelS4_"
-                    },
-                    {
-                        "logical_name": "WxDialogShow",
-                        "symbol": "_ZN8wxDialog4ShowEb"
-                    },
-                    {
-                        "logical_name": "WxWindowSetSize",
-                        "symbol": "_ZN8wxWindow9DoSetSizeEiiiii"
-                    },
-                    {
-                        "logical_name": "WxWindowDestroy",
-                        "symbol": "_ZN12wxWindowBase7DestroyEv"
-                    },
-                    {
-                        "logical_name": "WxTopLevelCentre",
-                        "symbol": "_ZN20wxTopLevelWindowBase8DoCentreEi"
-                    },
-                    {
-                        "logical_name": "AppendMenuItem",
-                        "symbol": "_Z16append_menu_itemP6wxMenuiRK8wxStringS3_NSt3__18functionIFvR14wxCommandEventEEERKNS4_12basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEP12wxEvtHandlerNS5_IFbvEEEP8wxWindowi"
-                    },
-                    {
-                        "logical_name": "AppendSubmenu",
-                        "symbol": "_Z14append_submenuP6wxMenuS0_iRK8wxStringS3_RKNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEENS4_8functionIFbvEEEP8wxWindowi"
-                    },
-                    {
-                        "logical_name": "DestroyMenuItem",
-                        "symbol": "_ZN10wxMenuBase7DestroyEP10wxMenuItem"
-                    },
-                    {
-                        "logical_name": "MenuItemSetLabel",
-                        "symbol": "_ZN10wxMenuItem12SetItemLabelERK8wxString"
-                    },
-                    {
-                        "logical_name": "MenuItemEnable",
-                        "symbol": "_ZN10wxMenuItem6EnableEb"
-                    },
-                    {
-                        "logical_name": "ResourcesDir",
-                        "symbol": "_ZN6Slic3r13resources_dirEv"
-                    },
-                    {
-                        "logical_name": "LoadFiles",
-                        "symbol": "_ZN6Slic3r3GUI6Plater10load_filesERKNSt3__16vectorINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEENS7_IS9_EEEENS_12LoadStrategyEb"
-                    },
-                    {
-                        "logical_name": "PlaterModel",
-                        "symbol": "_ZN6Slic3r3GUI6Plater5modelEv"
-                    },
-                    {
-                        "logical_name": "StoreStlObject",
-                        "symbol": "_ZN6Slic3r9store_stlEPKcPNS_11ModelObjectEb"
-                    },
-                    {
-                        "logical_name": "TakeSnapshot",
-                        "symbol": "_ZN6Slic3r3GUI6Plater13take_snapshotERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
-                    },
-                    {
-                        "logical_name": "UpdateObjectName",
-                        "symbol": "_ZNK6Slic3r3GUI10ObjectList19update_name_in_listEii"
-                    },
-                    {
-                        "logical_name": "SaveObjectMesh",
-                        "symbol": "_ZN6Slic3r16save_object_meshERNS_11ModelObjectE"
-                    },
-                    {
-                        "logical_name": "TransformationRotation",
-                        "symbol": "_ZNK6Slic3r8Geometry14Transformation12get_rotationEv"
-                    },
-                    {
-                        "logical_name": "TransformationScaling",
-                        "symbol": "_ZNK6Slic3r8Geometry14Transformation18get_scaling_factorEv"
-                    },
-                    {
-                        "logical_name": "SetTransformationRotation",
-                        "symbol": "_ZN6Slic3r8Geometry14Transformation12set_rotationERKN5Eigen6MatrixIdLi3ELi1ELi2ELi3ELi1EEE"
-                    },
-                    {
-                        "logical_name": "SetTransformationScaling",
-                        "symbol": "_ZN6Slic3r8Geometry14Transformation18set_scaling_factorERKN5Eigen6MatrixIdLi3ELi1ELi2ELi3ELi1EEE"
-                    },
-                    {
-                        "logical_name": "ChangedObject",
-                        "symbol": "_ZN6Slic3r3GUI6Plater14changed_objectERNS_11ModelObjectE"
-                    },
-                    {
-                        "logical_name": "ObjectConfigOptionsChanged",
-                        "symbol": "_ZN6Slic3r3GUI10ObjectList29object_config_options_changedERKNS0_14ObjectVolumeIDE"
-                    },
-                    {
-                        "logical_name": "UpdatePrintableState",
-                        "symbol": "_ZN6Slic3r3GUI10ObjectList22update_printable_stateEii"
-                    },
-                    {
-                        "logical_name": "GetPartplateList",
-                        "symbol": "_ZN6Slic3r3GUI6Plater18get_partplate_listEv"
-                    },
-                    {
-                        "logical_name": "GetPlateCount",
-                        "symbol": "_ZNK6Slic3r3GUI13PartPlateList15get_plate_countEv"
-                    },
-                    {
-                        "logical_name": "NotificationManager",
-                        "symbol": "_ZN6Slic3r3GUI6Plater24get_notification_managerEv"
-                    },
-                    {
-                        "logical_name": "PushNotification",
-                        "symbol": "_ZN6Slic3r3GUI19NotificationManager17push_notificationERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEi"
-                    },
-                    {
-                        "logical_name": "PlaterConfig",
-                        "symbol": "_ZNK6Slic3r3GUI6Plater6configEv"
-                    },
-                    {
-                        "logical_name": "NewConfig",
-                        "symbol": "_ZN6Slic3r18DynamicPrintConfig22new_from_defaults_keysERKNSt3__16vectorINS1_12basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEENS6_IS8_EEEE"
-                    },
-                    {
-                        "logical_name": "ApplyOnly",
-                        "symbol": "_ZN6Slic3r10ConfigBase10apply_onlyERKS0_RKNSt3__16vectorINS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS8_ISA_EEEEb"
-                    },
-                    {
-                        "logical_name": "SerializeOption",
-                        "symbol": "_ZNK6Slic3r10ConfigBase13opt_serializeERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE"
-                    },
-                    {
-                        "logical_name": "SetConfigInteger",
-                        "symbol": "_ZN6Slic3r10ConfigBase3setERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEib"
-                    },
-                    {
-                        "logical_name": "SetConfigNumber",
-                        "symbol": "_ZN6Slic3r10ConfigBase3setERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEdb"
-                    },
-                    {
-                        "logical_name": "MainframeLoadConfig",
-                        "symbol": "_ZN6Slic3r3GUI9MainFrame11load_configERKNS_18DynamicPrintConfigE"
-                    },
-                    {
-                        "logical_name": "ConfigKeys",
-                        "symbol": "_ZNK6Slic3r13DynamicConfig4keysEv"
-                    },
-                    {
-                        "logical_name": "ConfigOptPtr",
-                        "symbol": "_ZNK6Slic3r13DynamicConfig6optptrERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE"
-                    },
-                    {
-                        "logical_name": "SettingsOptions",
-                        "symbol": "_ZN6Slic3r3GUI15SettingsFactory11get_optionsEb"
-                    },
-                    {
-                        "logical_name": "ConfigErase",
-                        "symbol": "__ZN6Slic3r13DynamicConfig5eraseERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE"
-                    },
-                    {
-                        "logical_name": "ModelConfigLastTimestamp",
-                        "symbol": "_ZN6Slic3r11ModelConfig16s_last_timestampE"
-                    },
-                    {
-                        "logical_name": "DeleteConfig",
-                        "symbol": "__ZN6Slic3r18DynamicPrintConfigD0Ev"
-                    },
-                    {
-                        "logical_name": "SelectedSingleVolume",
-                        "symbol": "_ZN6Slic3r3GUI9Selection26get_selected_single_volumeERiS2_"
-                    },
-                    {
-                        "logical_name": "StoreStlMesh",
-                        "symbol": "_ZN6Slic3r9store_stlEPKcPNS_12TriangleMeshEb"
-                    },
-                    {
-                        "logical_name": "ReplaceVolumeWithStl",
-                        "symbol": "_ZN6Slic3r3GUI6Plater4priv23replace_volume_with_stlEiiRKN5boost10filesystem4pathERKNSt3__112basic_stringIcNS8_11char_traitsIcEENS8_9allocatorIcEEEE"
-                    },
-                    {
-                        "logical_name": "TriangleMeshReadStl",
-                        "symbol": "_ZN6Slic3r12TriangleMesh11ReadSTLFileEPKcbNSt3__18functionIFviiRbRNS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESC_SC_SC_SC_EEEi"
-                    },
-                    {
-                        "logical_name": "ModelVolumeSetMeshKeepPaint",
-                        "symbol": "_ZN6Slic3r11ModelVolume19set_mesh_keep_paintEONS_12TriangleMeshERKNSt3__18functionIFviPKcEEERKNS4_IFbvEEE"
-                    },
-                    {
-                        "logical_name": "ModelVolumeCalculateConvexHull",
-                        "symbol": "_ZN6Slic3r11ModelVolume21calculate_convex_hullEv"
-                    },
-                    {
-                        "logical_name": "ModelVolumeEnsurePartGuid",
-                        "symbol": "__ZNK6Slic3r11ModelVolume16ensure_part_guidEb"
-                    },
-                    {
-                        "logical_name": "ModelObjectScaleMeshAfterCreation",
-                        "symbol": "_ZN6Slic3r11ModelObject25scale_mesh_after_creationEf"
-                    },
-                    {
-                        "logical_name": "ModelObjectEnsureOnBed",
-                        "symbol": "__ZN6Slic3r11ModelObject13ensure_on_bedEb"
-                    },
-                    {
-                        "logical_name": "ModelVolumeAssignNewUniqueIdsRecursive",
-                        "symbol": "__ZN6Slic3r11ModelVolume31assign_new_unique_ids_recursiveEv"
-                    },
-                    {
-                        "logical_name": "ChangedMesh",
-                        "symbol": "_ZN6Slic3r3GUI6Plater12changed_meshEi"
-                    }
-                ]
+            {
+              "kind": "model",
+              "reason": "history.undo",
+              "symbol": "_ZN6Slic3r3GUI17EVT_GLCANVAS_UNDOE"
+            },
+            {
+              "kind": "selection",
+              "reason": "canvas.objectSelect",
+              "symbol": "_ZN6Slic3r3GUI26EVT_GLCANVAS_OBJECT_SELECTE"
+            },
+            {
+              "kind": "model",
+              "reason": "object.removed",
+              "symbol": "_ZN6Slic3r3GUI26EVT_GLCANVAS_REMOVE_OBJECTE"
+            },
+            {
+              "kind": "selection",
+              "reason": "objectList.objectSelect",
+              "symbol": "_ZN6Slic3r3GUI26EVT_OBJ_LIST_OBJECT_SELECTE"
+            },
+            {
+              "kind": "model",
+              "reason": "instance.moved",
+              "symbol": "_ZN6Slic3r3GUI27EVT_GLCANVAS_INSTANCE_MOVEDE"
+            },
+            {
+              "kind": "model",
+              "reason": "instance.scaled",
+              "symbol": "_ZN6Slic3r3GUI28EVT_GLCANVAS_INSTANCE_SCALEDE"
+            },
+            {
+              "kind": "model",
+              "reason": "geometry.updated",
+              "symbol": "_ZN6Slic3r3GUI28EVT_GLCANVAS_UPDATE_GEOMETRYE"
+            },
+            {
+              "kind": "model",
+              "reason": "instance.rotated",
+              "symbol": "_ZN6Slic3r3GUI29EVT_GLCANVAS_INSTANCE_ROTATEDE"
             }
-        }
+          ]
+        },
+        "kind": "bambustudio_function_abi_requirements",
+        "platform": "macos",
+        "schema_version": 1,
+        "symbols": [
+          {
+            "logical_name": "WxEventAddFilter",
+            "symbol": "_ZN12wxEvtHandler9AddFilterEP13wxEventFilter"
+          },
+          {
+            "logical_name": "WxEventRemoveFilter",
+            "symbol": "_ZN12wxEvtHandler12RemoveFilterEP13wxEventFilter"
+          },
+          {
+            "logical_name": "WxGetApp",
+            "symbol": "_ZN6Slic3r3GUI8wxGetAppEv"
+          },
+          {
+            "logical_name": "AppPlater",
+            "symbol": "_ZN6Slic3r3GUI7GUI_App6platerEv"
+          },
+          {
+            "logical_name": "ObjectListSelectedItemIndexes",
+            "symbol": "_ZN6Slic3r3GUI10ObjectList25get_selected_item_indexesERiS2_RK14wxDataViewItem"
+          },
+          {
+            "logical_name": "WxDataViewSelectionChangedEventType",
+            "symbol": "wxEVT_DATAVIEW_SELECTION_CHANGED"
+          },
+          {
+            "logical_name": "PlaterDefaultMenu",
+            "symbol": "__ZN6Slic3r3GUI6Plater12default_menuEv"
+          },
+          {
+            "logical_name": "PlaterPlateMenu",
+            "symbol": "__ZN6Slic3r3GUI6Plater10plate_menuEv"
+          },
+          {
+            "logical_name": "ObjectListLoadGenericSubobject",
+            "symbol": "__ZN6Slic3r3GUI10ObjectList22load_generic_subobjectERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEENS_15ModelVolumeTypeE"
+          },
+          {
+            "logical_name": "AppObjectList",
+            "symbol": "_ZN6Slic3r3GUI7GUI_App8obj_listEv"
+          },
+          {
+            "logical_name": "DarkMode",
+            "symbol": "_ZN6Slic3r3GUI7GUI_App9dark_modeEv"
+          },
+          {
+            "logical_name": "GlobalPrintSequence",
+            "symbol": "_ZNK6Slic3r3GUI7GUI_App21global_print_sequenceEv"
+          },
+          {
+            "logical_name": "ObjectIndex",
+            "symbol": "_ZN6Slic3r3GUI6Plater23get_selected_object_idxEv"
+          },
+          {
+            "logical_name": "Selection",
+            "symbol": "_ZNK6Slic3r3GUI6Plater13get_selectionEv"
+          },
+          {
+            "logical_name": "InstanceIndex",
+            "symbol": "_ZNK6Slic3r3GUI9Selection16get_instance_idxEv"
+          },
+          {
+            "logical_name": "SingleObject",
+            "symbol": "_ZNK6Slic3r3GUI6Plater31is_single_full_object_selectionEv"
+          },
+          {
+            "logical_name": "SingleInstance",
+            "symbol": "_ZNK6Slic3r3GUI9Selection23is_single_full_instanceEv"
+          },
+          {
+            "logical_name": "MenuItemAt",
+            "symbol": "_ZNK10wxMenuBase18FindItemByPositionEm"
+          },
+          {
+            "logical_name": "MenuFindItemByLabel",
+            "symbol": "_ZNK10wxMenuBase8FindItemERK8wxString"
+          },
+          {
+            "logical_name": "MenuFindItemById",
+            "symbol": "_ZNK10wxMenuBase8FindItemEiPP6wxMenu"
+          },
+          {
+            "logical_name": "MenuRemove",
+            "symbol": "_ZN10wxMenuBase6RemoveEP10wxMenuItem"
+          },
+          {
+            "logical_name": "MenuInsert",
+            "symbol": "_ZN10wxMenuBase6InsertEmP10wxMenuItem"
+          },
+          {
+            "logical_name": "PlaterViewCanvas",
+            "symbol": "_ZN6Slic3r3GUI6Plater19get_view3D_canvas3DEv"
+          },
+          {
+            "logical_name": "CanvasMainToolbar",
+            "symbol": "_ZNK6Slic3r3GUI10GLCanvas3D16get_main_toolbarEv"
+          },
+          {
+            "logical_name": "ToolbarDataConstruct",
+            "symbol": "_ZN6Slic3r3GUI13GLToolbarItem4DataC1Ev"
+          },
+          {
+            "logical_name": "ToolbarDataDestroy",
+            "symbol": "_ZN6Slic3r3GUI13GLToolbarItem4DataD2Ev"
+          },
+          {
+            "logical_name": "ToolbarAddItem",
+            "symbol": "_ZN6Slic3r3GUI9GLToolbar8add_itemERKNS0_13GLToolbarItem4DataENS2_5ETypeE"
+          },
+          {
+            "logical_name": "ToolbarGetItem",
+            "symbol": "_ZNK6Slic3r3GUI9GLToolbar8get_itemERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
+          },
+          {
+            "logical_name": "ToolbarGetItemId",
+            "symbol": "_ZNK6Slic3r3GUI9GLToolbar11get_item_idERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
+          },
+          {
+            "logical_name": "ToolbarSetTooltip",
+            "symbol": "_ZN6Slic3r3GUI9GLToolbar11set_tooltipEiRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
+          },
+          {
+            "logical_name": "ToolbarItems",
+            "symbol": "_ZNK6Slic3r3GUI9GLToolbar9get_itemsEv"
+          },
+          {
+            "logical_name": "ToolbarItemData",
+            "symbol": "_ZNK6Slic3r3GUI13GLToolbarItem8get_dataEv"
+          },
+          {
+            "logical_name": "ToolbarItemSetVisible",
+            "symbol": "_ZN6Slic3r3GUI13GLToolbarItem11set_visibleEb"
+          },
+          {
+            "logical_name": "ToolbarItemSetState",
+            "symbol": "_ZN6Slic3r3GUI13GLToolbarItem9set_stateENS1_6EStateE"
+          },
+          {
+            "logical_name": "ToolbarItemIconFilename",
+            "symbol": "_ZNK6Slic3r3GUI13GLToolbarItem17get_icon_filenameEb"
+          },
+          {
+            "logical_name": "ToolbarSetIconDirty",
+            "symbol": "_ZN6Slic3r3GUI9GLToolbar14set_icon_dirtyEv"
+          },
+          {
+            "logical_name": "WxStringConstruct",
+            "symbol": "_ZN8wxStringC2EPKc"
+          },
+          {
+            "logical_name": "WxStringDestroy",
+            "symbol": "_ZN8wxStringD1Ev"
+          },
+          {
+            "logical_name": "WxMenuCreateObject",
+            "symbol": "_ZN6wxMenu14wxCreateObjectEv"
+          },
+          {
+            "logical_name": "WxAppTopWindow",
+            "symbol": "_ZNK9wxAppBase12GetTopWindowEv"
+          },
+          {
+            "logical_name": "AppTabPanel",
+            "symbol": "_ZNK6Slic3r3GUI7GUI_App9tab_panelEv"
+          },
+          {
+            "logical_name": "WxBookInsertPage",
+            "symbol": "_ZN14wxBookCtrlBase10InsertPageEmP8wxWindowRK8wxStringbi"
+          },
+          {
+            "logical_name": "WxBookDeletePage",
+            "symbol": "_ZN14wxBookCtrlBase10DeletePageEm"
+          },
+          {
+            "logical_name": "WxBookFindPage",
+            "symbol": "_ZNK14wxBookCtrlBase8FindPageEPK8wxWindow"
+          },
+          {
+            "logical_name": "ButtonsInsertPage",
+            "symbol": "_ZN15ButtonsListCtrl10InsertPageEmRK8wxStringbRKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESB_"
+          },
+          {
+            "logical_name": "PrinterWebViewConstruct",
+            "symbol": "_ZN6Slic3r3GUI14PrinterWebViewC1EP8wxWindow"
+          },
+          {
+            "logical_name": "PrinterWebViewLoadUrl",
+            "symbol": "_ZN6Slic3r3GUI14PrinterWebView8load_urlERK8wxString"
+          },
+          {
+            "logical_name": "WxWindowShow",
+            "symbol": "_ZN8wxWindow4ShowEb"
+          },
+          {
+            "logical_name": "WxDialogCreateObject",
+            "symbol": "_ZN8wxDialog14wxCreateObjectEv"
+          },
+          {
+            "logical_name": "WxDialogCreate",
+            "symbol": "_ZN8wxDialog6CreateEP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelS4_"
+          },
+          {
+            "logical_name": "WxDialogShow",
+            "symbol": "_ZN8wxDialog4ShowEb"
+          },
+          {
+            "logical_name": "WxWindowSetSize",
+            "symbol": "_ZN8wxWindow9DoSetSizeEiiiii"
+          },
+          {
+            "logical_name": "WxWindowDestroy",
+            "symbol": "_ZN12wxWindowBase7DestroyEv"
+          },
+          {
+            "logical_name": "WxTopLevelCentre",
+            "symbol": "_ZN20wxTopLevelWindowBase8DoCentreEi"
+          },
+          {
+            "logical_name": "AppendMenuItem",
+            "symbol": "_Z16append_menu_itemP6wxMenuiRK8wxStringS3_NSt3__18functionIFvR14wxCommandEventEEERKNS4_12basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEP12wxEvtHandlerNS5_IFbvEEEP8wxWindowi"
+          },
+          {
+            "logical_name": "AppendSubmenu",
+            "symbol": "_Z14append_submenuP6wxMenuS0_iRK8wxStringS3_RKNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEENS4_8functionIFbvEEEP8wxWindowi"
+          },
+          {
+            "logical_name": "DestroyMenuItem",
+            "symbol": "_ZN10wxMenuBase7DestroyEP10wxMenuItem"
+          },
+          {
+            "logical_name": "MenuItemSetLabel",
+            "symbol": "_ZN10wxMenuItem12SetItemLabelERK8wxString"
+          },
+          {
+            "logical_name": "MenuItemEnable",
+            "symbol": "_ZN10wxMenuItem6EnableEb"
+          },
+          {
+            "logical_name": "ResourcesDir",
+            "symbol": "_ZN6Slic3r13resources_dirEv"
+          },
+          {
+            "logical_name": "LoadFiles",
+            "symbol": "_ZN6Slic3r3GUI6Plater10load_filesERKNSt3__16vectorINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEENS7_IS9_EEEENS_12LoadStrategyEb"
+          },
+          {
+            "logical_name": "PlaterModel",
+            "symbol": "_ZN6Slic3r3GUI6Plater5modelEv"
+          },
+          {
+            "logical_name": "StoreStlObject",
+            "symbol": "_ZN6Slic3r9store_stlEPKcPNS_11ModelObjectEb"
+          },
+          {
+            "logical_name": "TakeSnapshot",
+            "symbol": "_ZN6Slic3r3GUI6Plater13take_snapshotERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
+          },
+          {
+            "logical_name": "UpdateObjectName",
+            "symbol": "_ZNK6Slic3r3GUI10ObjectList19update_name_in_listEii"
+          },
+          {
+            "logical_name": "SaveObjectMesh",
+            "symbol": "_ZN6Slic3r16save_object_meshERNS_11ModelObjectE"
+          },
+          {
+            "logical_name": "TransformationRotation",
+            "symbol": "_ZNK6Slic3r8Geometry14Transformation12get_rotationEv"
+          },
+          {
+            "logical_name": "TransformationScaling",
+            "symbol": "_ZNK6Slic3r8Geometry14Transformation18get_scaling_factorEv"
+          },
+          {
+            "logical_name": "SetTransformationRotation",
+            "symbol": "_ZN6Slic3r8Geometry14Transformation12set_rotationERKN5Eigen6MatrixIdLi3ELi1ELi2ELi3ELi1EEE"
+          },
+          {
+            "logical_name": "SetTransformationScaling",
+            "symbol": "_ZN6Slic3r8Geometry14Transformation18set_scaling_factorERKN5Eigen6MatrixIdLi3ELi1ELi2ELi3ELi1EEE"
+          },
+          {
+            "logical_name": "ChangedObject",
+            "symbol": "_ZN6Slic3r3GUI6Plater14changed_objectERNS_11ModelObjectE"
+          },
+          {
+            "logical_name": "ObjectConfigOptionsChanged",
+            "symbol": "_ZN6Slic3r3GUI10ObjectList29object_config_options_changedERKNS0_14ObjectVolumeIDE"
+          },
+          {
+            "logical_name": "UpdatePrintableState",
+            "symbol": "_ZN6Slic3r3GUI10ObjectList22update_printable_stateEii"
+          },
+          {
+            "logical_name": "GetPartplateList",
+            "symbol": "_ZN6Slic3r3GUI6Plater18get_partplate_listEv"
+          },
+          {
+            "logical_name": "GetPlateCount",
+            "symbol": "_ZNK6Slic3r3GUI13PartPlateList15get_plate_countEv"
+          },
+          {
+            "logical_name": "NotificationManager",
+            "symbol": "_ZN6Slic3r3GUI6Plater24get_notification_managerEv"
+          },
+          {
+            "logical_name": "PushNotification",
+            "symbol": "_ZN6Slic3r3GUI19NotificationManager17push_notificationERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEi"
+          },
+          {
+            "logical_name": "PlaterConfig",
+            "symbol": "_ZNK6Slic3r3GUI6Plater6configEv"
+          },
+          {
+            "logical_name": "NewConfig",
+            "symbol": "_ZN6Slic3r18DynamicPrintConfig22new_from_defaults_keysERKNSt3__16vectorINS1_12basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEENS6_IS8_EEEE"
+          },
+          {
+            "logical_name": "ApplyOnly",
+            "symbol": "_ZN6Slic3r10ConfigBase10apply_onlyERKS0_RKNSt3__16vectorINS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS8_ISA_EEEEb"
+          },
+          {
+            "logical_name": "SerializeOption",
+            "symbol": "_ZNK6Slic3r10ConfigBase13opt_serializeERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE"
+          },
+          {
+            "logical_name": "SetConfigInteger",
+            "symbol": "_ZN6Slic3r10ConfigBase3setERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEib"
+          },
+          {
+            "logical_name": "SetConfigNumber",
+            "symbol": "_ZN6Slic3r10ConfigBase3setERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEdb"
+          },
+          {
+            "logical_name": "MainframeLoadConfig",
+            "symbol": "_ZN6Slic3r3GUI9MainFrame11load_configERKNS_18DynamicPrintConfigE"
+          },
+          {
+            "logical_name": "ConfigKeys",
+            "symbol": "_ZNK6Slic3r13DynamicConfig4keysEv"
+          },
+          {
+            "logical_name": "ConfigOptPtr",
+            "symbol": "_ZNK6Slic3r13DynamicConfig6optptrERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE"
+          },
+          {
+            "logical_name": "SettingsOptions",
+            "symbol": "_ZN6Slic3r3GUI15SettingsFactory11get_optionsEb"
+          },
+          {
+            "logical_name": "ConfigErase",
+            "symbol": "__ZN6Slic3r13DynamicConfig5eraseERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE"
+          },
+          {
+            "logical_name": "ModelConfigLastTimestamp",
+            "symbol": "_ZN6Slic3r11ModelConfig16s_last_timestampE"
+          },
+          {
+            "logical_name": "DeleteConfig",
+            "symbol": "__ZN6Slic3r18DynamicPrintConfigD0Ev"
+          },
+          {
+            "logical_name": "SelectedSingleVolume",
+            "symbol": "_ZN6Slic3r3GUI9Selection26get_selected_single_volumeERiS2_"
+          },
+          {
+            "logical_name": "StoreStlMesh",
+            "symbol": "_ZN6Slic3r9store_stlEPKcPNS_12TriangleMeshEb"
+          },
+          {
+            "logical_name": "ReplaceVolumeWithStl",
+            "symbol": "_ZN6Slic3r3GUI6Plater4priv23replace_volume_with_stlEiiRKN5boost10filesystem4pathERKNSt3__112basic_stringIcNS8_11char_traitsIcEENS8_9allocatorIcEEEE"
+          },
+          {
+            "logical_name": "TriangleMeshReadStl",
+            "symbol": "_ZN6Slic3r12TriangleMesh11ReadSTLFileEPKcbNSt3__18functionIFviiRbRNS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESC_SC_SC_SC_EEEi"
+          },
+          {
+            "logical_name": "ModelVolumeSetMeshKeepPaint",
+            "symbol": "_ZN6Slic3r11ModelVolume19set_mesh_keep_paintEONS_12TriangleMeshERKNSt3__18functionIFviPKcEEERKNS4_IFbvEEE"
+          },
+          {
+            "logical_name": "ModelVolumeCalculateConvexHull",
+            "symbol": "_ZN6Slic3r11ModelVolume21calculate_convex_hullEv"
+          },
+          {
+            "logical_name": "ModelVolumeEnsurePartGuid",
+            "symbol": "__ZNK6Slic3r11ModelVolume16ensure_part_guidEb"
+          },
+          {
+            "logical_name": "ModelObjectScaleMeshAfterCreation",
+            "symbol": "_ZN6Slic3r11ModelObject25scale_mesh_after_creationEf"
+          },
+          {
+            "logical_name": "ModelObjectEnsureOnBed",
+            "symbol": "__ZN6Slic3r11ModelObject13ensure_on_bedEb"
+          },
+          {
+            "logical_name": "ModelVolumeAssignNewUniqueIdsRecursive",
+            "symbol": "__ZN6Slic3r11ModelVolume31assign_new_unique_ids_recursiveEv"
+          },
+          {
+            "logical_name": "ChangedMesh",
+            "symbol": "_ZN6Slic3r3GUI6Plater12changed_meshEi"
+          }
+        ]
+      }
     }
+  }
 }

@@ -20,7 +20,6 @@ def main() -> int:
     try:
         target = document["targets"][args.target]
         outputs = {
-            "values.json": target["layout"]["values"],
             "records.json": target["layout"]["records"],
             "vtables.json": target["layout"]["vtables"],
             "functions.json": target["functions"],
@@ -30,7 +29,7 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     for name, value in outputs.items():
         (args.output_dir / name).write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    count = len(outputs["values.json"].get("values", []))
+    count = sum(len(unit.get("records", [])) for unit in outputs["records.json"].get("translation_units", []))
     symbols = len(outputs["functions.json"].get("symbols", []))
     print(f"materialized {args.target}: {count} layout values, {symbols} function symbols")
     return 0
