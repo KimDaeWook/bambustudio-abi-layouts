@@ -103,6 +103,20 @@ jobs:
               output.write("\n")
           PY
 
+      - name: Package repository layout
+        env:
+          OUTPUT_DIR: ${{ github.workspace }}/artifacts/macos-abi
+        run: |
+          python3 ./scripts/package-abi-layout.py \
+            --input "$OUTPUT_DIR/abi-values.json" \
+            --output-root "$OUTPUT_DIR/abi-layouts" \
+            --platform macos \
+            --architecture arm64 \
+            --project-commit "$GITHUB_SHA" \
+            --extractor-commit "$GITHUB_SHA" \
+            --workflow-run-id "$GITHUB_RUN_ID" \
+            --workflow-run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
       - name: Upload ABI values and provenance
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:

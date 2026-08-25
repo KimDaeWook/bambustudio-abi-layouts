@@ -84,6 +84,12 @@ pass와 작은 `Config.hpp` probe를 나란히 실행하는 편이 더 빠릅니
 dependency 빌드를 암묵적으로 시작하지 않고 실패합니다. 업로드 artifact에는 34개 값과 함께 해석된
 upstream commit, dependency tree, runner image, compiler, probe 인자와 소스 slice hash가 들어갑니다.
 
+검토가 끝난 결과는 `abi-layouts/<BambuStudio-version>/` 아래에 저장합니다. `macos-arm64.json` 같은
+target 파일에는 런타임에 필요한 그룹별 숫자 값만 들어갑니다. 같은 위치의 `manifest.json`은 target
+파일 SHA-256을 upstream commit과 dependency tree, catalog·probe hash, compiler, runner image, source
+slice, generator commit 및 workflow run에 결합합니다. 추출에 성공한 target만 추가하며 지원하지 않는
+플랫폼의 빈 placeholder 파일은 만들지 않습니다.
+
 ## 1단계 실행 방법
 
 **Actions → Build macOS dSYM → Run workflow**에서 다음 값을 입력합니다.

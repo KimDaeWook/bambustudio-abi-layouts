@@ -86,6 +86,12 @@ miss rather than silently starting a long dependency build. The uploaded artifac
 values together with the resolved upstream commit, dependency tree, runner image, compiler, probe
 arguments, and source-slice hashes.
 
+Reviewed outputs are stored under `abi-layouts/<BambuStudio-version>/`. A target file such as
+`macos-arm64.json` contains only the grouped numeric values needed by a runtime. Its neighboring
+`manifest.json` binds that file's SHA-256 to the upstream commit and dependency tree, catalog and
+probe hashes, compiler, runner image, source slice, generator commit, and workflow run. A target file
+is added only after extraction succeeds; unsupported platforms do not receive empty placeholders.
+
 ## Running Stage 1
 
 Open **Actions → Build macOS dSYM → Run workflow** and provide:
