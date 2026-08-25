@@ -13,6 +13,8 @@ readonly TEMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/bambu-abi-generated.XXXXXX")
 readonly SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
 trap 'rm -rf -- "$TEMP_DIR"' EXIT
 
+mkdir -p "$TEMP_DIR/src/slic3r/GUI" "$TEMP_DIR/src/libslic3r"
+
 if [[ ! -d "$SOURCE_DIR/src" ]]; then
     echo "BambuStudio source directory is incomplete: $SOURCE_DIR" >&2
     exit 1
@@ -24,7 +26,7 @@ fi
 
 version=$(sed -n 's/^[[:space:]]*set(SLIC3R_VERSION[[:space:]]*"\([^"]*\)".*/\1/p' "$SOURCE_DIR/version.inc" | head -n 1)
 commit=$(git -C "$SOURCE_DIR" rev-parse HEAD)
-cat >"$TEMP_DIR/libslic3r_version.h" <<EOF
+cat >"$TEMP_DIR/src/libslic3r/libslic3r_version.h" <<EOF
 #ifndef __SLIC3R_VERSION_H
 #define __SLIC3R_VERSION_H
 #define SLIC3R_APP_NAME "BambuStudio"
@@ -47,7 +49,8 @@ compiler_args=(
     -D__WXMAC__
     -D__WXOSX__
     -pthread
-    -I"$TEMP_DIR"
+    -I"$TEMP_DIR/src/slic3r/GUI"
+    -I"$TEMP_DIR/src/libslic3r"
     -I"$DEPENDENCY_PREFIX/include"
     -I"$SOURCE_DIR/src"
     -I"$SOURCE_DIR/src/eigen"
