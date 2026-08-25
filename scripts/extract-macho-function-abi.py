@@ -13,6 +13,7 @@ import json
 import shutil
 import struct
 import subprocess
+import sys
 import uuid
 from pathlib import Path
 
@@ -103,9 +104,15 @@ def find_symbol(table: dict[str, int], requested: str) -> int | None:
 
 
 def demangled_index(table: dict[str, int]) -> dict[str, list[str]]:
-    executable = shutil.which("llvm-cxxfilt") or shutil.which("c++filt")
+    llvm_candidates = ["llvm-cxxfilt"] + [f"llvm-cxxfilt-{version}" for version in range(22, 13, -1)]
+    executable = next((path for name in llvm_candidates if (path := shutil.which(name))), None)
     if not executable:
-        raise ValueError("llvm-cxxfilt or c++filt is required to resolve C++ names")
+        executable = next((str(path) for path in sorted(Path("/usr/bin").glob("llvm-cxxfilt-*"), reverse=True)), None)
+    if not executable and sys.platform == "darwin" and shutil.which("xcrun"):
+        lookup = subprocess.run(["xcrun", "--find", "llvm-cxxfilt"], text=True, capture_output=True)
+        executable = lookup.stdout.strip() if lookup.returncode == 0 else None
+    if not executable:
+        raise ValueError("LLVM llvm-cxxfilt is required to resolve Apple libc++ C++ names")
     raw_names = list(table)
     # Mach-O adds one leading underscore to external Itanium symbols.
     inputs = [name[1:] if name.startswith("__Z") else name for name in raw_names]
