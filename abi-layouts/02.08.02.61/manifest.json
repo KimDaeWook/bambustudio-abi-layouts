@@ -1,0 +1,56 @@
+{
+  "kind": "bambustudio_abi_layout_manifest",
+  "schema_version": 1,
+  "targets": {
+    "macos-arm64": {
+      "catalogs": {
+        "record_probes": {
+          "path": "config/bambustudio-layout-probes.json",
+          "sha256": "f62958da3b202479baf1131d9666b63426fa9bd09b26aa909138d1af3941d644"
+        },
+        "values": {
+          "path": "config/bambustudio-abi-values.json",
+          "sha256": "41c8bcaba053e59c462e7cb4563bff257ba8288f411622b71ca30b1f78d059ff"
+        },
+        "vtable_probes": {
+          "path": "config/bambustudio-vtable-probes.json",
+          "sha256": "8f27b27922b6ab02cae96767b21c1adde98ada134a8e7401074aedbb0e9461b3"
+        }
+      },
+      "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+      "file": "macos-arm64.json",
+      "generator": {
+        "extractor": "scripts/extract-bambustudio-abi.py",
+        "extractor_commit": "7878d16d453c27c7b2e68b0cfecaa6f103ce1046",
+        "packager": "scripts/package-abi-layout.py",
+        "packager_commit": "cf4f5c1bc68bc833d40ed0e88a9ee280b11f8ba0"
+      },
+      "runner": {
+        "architecture": "ARM64",
+        "dependency_cache_key": "bambustudio-deps-macos-15-arm64-ARM64-20260727.0256.1-cmake-3.31.0-ff281d41e59773ecd48419d60b101529790735fa",
+        "image": "macos15",
+        "image_version": "20260727.0256.1"
+      },
+      "sha256": "ae632670bc103cb32dc0dd716a30afe9e53cc9d3cfb126a4a5be3df69e917840",
+      "source_slice": {
+        "ending_line": 7239,
+        "path": "src/slic3r/GUI/Plater.cpp",
+        "slice_sha256": "9158efc4163cd41ce1b361242473305b6b321951653578667c01c14a9041ef12",
+        "source_sha256": "521679fa86a6407f016bcd69c3ec4f4d1f2c7124714aceeb43e7d59709ecadd2",
+        "through_record": "struct Plater::priv"
+      },
+      "value_count": 34,
+      "workflow": {
+        "run_id": "32818977111",
+        "url": "https://github.com/KimDaeWook/bambustudio-abi-layouts/actions/runs/32818977111"
+      }
+    }
+  },
+  "upstream": {
+    "commit": "926a7192574bcb9b3a732e1ec59a46d79cb45466",
+    "deps_tree": "ff281d41e59773ecd48419d60b101529790735fa",
+    "repository": "https://github.com/bambulab/BambuStudio.git",
+    "version": "02.08.02.61"
+  },
+  "version": "02.08.02.61"
+}

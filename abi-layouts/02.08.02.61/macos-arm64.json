@@ -1,0 +1,48 @@
+{
+  "context_menu": {
+    "menu_factory_object_menu": 8,
+    "menu_factory_part_menu": 264,
+    "plater_private": 768,
+    "private_menu_factory": 1112,
+    "wx_menu_item_submenu": 32,
+    "wx_string_alignment": 8,
+    "wx_string_size": 40
+  },
+  "events": {
+    "event_object_offset": 16,
+    "event_type_offset": 24,
+    "filter_next_offset": 8
+  },
+  "model": {
+    "instance_printable": 747,
+    "instance_transformation": 16,
+    "model_info_metadata_items": 144,
+    "model_info_shared_ptr": 328,
+    "object_config_timestamp": 160,
+    "object_dynamic_config": 168,
+    "object_instances": 88,
+    "object_name": 16,
+    "object_volumes": 112,
+    "objects": 40,
+    "volume_mesh_shared_ptr": 1392,
+    "volume_name": 16
+  },
+  "panel": {
+    "buttons_control": 816,
+    "page_count": 792,
+    "printer_web_view_alignment": 8,
+    "printer_web_view_size": 776
+  },
+  "settings": {
+    "option_deserialize_vtable_index": 4,
+    "option_type_vtable_index": 2
+  },
+  "toolbar": {
+    "data_alignment": 8,
+    "data_size": 720,
+    "icon_filename_callback": 648,
+    "left_action": 408,
+    "name": 0,
+    "sprite_id": 392
+  }
+}
