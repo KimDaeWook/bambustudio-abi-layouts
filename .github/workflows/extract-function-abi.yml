@@ -44,7 +44,7 @@ jobs:
           python3 scripts/materialize-abi-requirements.py \
             --requirements 'abi-layouts/${{ steps.release.outputs.version }}/requirements.json' \
             --target macos-arm64 --output-dir "$GITHUB_WORKSPACE/.work/requirements"
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: ${{ github.workspace }}/.work/releases
           key: bambustudio-release-macos-${{ inputs.bambu_ref }}
