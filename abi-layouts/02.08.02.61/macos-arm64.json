@@ -2,148 +2,312 @@
   "architecture": "arm64",
   "binary": {
     "sha256": "1a79017b9f86fb6db92987f4a4c4a4834ac540cf36703d49c7c91ed1959c2026",
-    "uuids": {
-      "arm64": "45e7bf14-5642-37e6-b6c8-6805711cae15"
+    "uuid": "45e7bf14-5642-37e6-b6c8-6805711cae15"
+  },
+  "event_bindings": [
+    {
+      "address": "0x1056d1cb4",
+      "kind": "model",
+      "reason": "history.redo",
+      "symbol": "_ZN6Slic3r3GUI17EVT_GLCANVAS_REDOE"
+    },
+    {
+      "address": "0x1056d1cb0",
+      "kind": "model",
+      "reason": "history.undo",
+      "symbol": "_ZN6Slic3r3GUI17EVT_GLCANVAS_UNDOE"
+    },
+    {
+      "address": "0x1056d1c38",
+      "kind": "selection",
+      "reason": "canvas.objectSelect",
+      "symbol": "_ZN6Slic3r3GUI26EVT_GLCANVAS_OBJECT_SELECTE"
+    },
+    {
+      "address": "0x1056d1c50",
+      "kind": "model",
+      "reason": "object.removed",
+      "symbol": "_ZN6Slic3r3GUI26EVT_GLCANVAS_REMOVE_OBJECTE"
+    },
+    {
+      "address": "0x1056d25b0",
+      "kind": "selection",
+      "reason": "objectList.objectSelect",
+      "symbol": "_ZN6Slic3r3GUI26EVT_OBJ_LIST_OBJECT_SELECTE"
+    },
+    {
+      "address": "0x1056d1c78",
+      "kind": "model",
+      "reason": "instance.moved",
+      "symbol": "_ZN6Slic3r3GUI27EVT_GLCANVAS_INSTANCE_MOVEDE"
+    },
+    {
+      "address": "0x1056d1c80",
+      "kind": "model",
+      "reason": "instance.scaled",
+      "symbol": "_ZN6Slic3r3GUI28EVT_GLCANVAS_INSTANCE_SCALEDE"
+    },
+    {
+      "address": "0x1056d1c8c",
+      "kind": "model",
+      "reason": "geometry.updated",
+      "symbol": "_ZN6Slic3r3GUI28EVT_GLCANVAS_UPDATE_GEOMETRYE"
+    },
+    {
+      "address": "0x1056d1c7c",
+      "kind": "model",
+      "reason": "instance.rotated",
+      "symbol": "_ZN6Slic3r3GUI29EVT_GLCANVAS_INSTANCE_ROTATEDE"
     }
-  },
-  "events": {
-    "add_filter_addresses": {
-      "arm64": "0x104258298"
-    },
-    "add_filter_symbol": "_ZN12wxEvtHandler9AddFilterEP13wxEventFilter",
-    "entries": [
-      {
-        "addresses": {
-          "arm64": "0x1056d1cb4"
-        },
-        "kind": "model",
-        "reason": "history.redo",
-        "symbol": "_ZN6Slic3r3GUI17EVT_GLCANVAS_REDOE"
-      },
-      {
-        "addresses": {
-          "arm64": "0x1056d1cb0"
-        },
-        "kind": "model",
-        "reason": "history.undo",
-        "symbol": "_ZN6Slic3r3GUI17EVT_GLCANVAS_UNDOE"
-      },
-      {
-        "addresses": {
-          "arm64": "0x1056d1c38"
-        },
-        "kind": "selection",
-        "reason": "canvas.objectSelect",
-        "symbol": "_ZN6Slic3r3GUI26EVT_GLCANVAS_OBJECT_SELECTE"
-      },
-      {
-        "addresses": {
-          "arm64": "0x1056d1c50"
-        },
-        "kind": "model",
-        "reason": "object.removed",
-        "symbol": "_ZN6Slic3r3GUI26EVT_GLCANVAS_REMOVE_OBJECTE"
-      },
-      {
-        "addresses": {
-          "arm64": "0x1056d25b0"
-        },
-        "kind": "selection",
-        "reason": "objectList.objectSelect",
-        "symbol": "_ZN6Slic3r3GUI26EVT_OBJ_LIST_OBJECT_SELECTE"
-      },
-      {
-        "addresses": {
-          "arm64": "0x1056d1c78"
-        },
-        "kind": "model",
-        "reason": "instance.moved",
-        "symbol": "_ZN6Slic3r3GUI27EVT_GLCANVAS_INSTANCE_MOVEDE"
-      },
-      {
-        "addresses": {
-          "arm64": "0x1056d1c80"
-        },
-        "kind": "model",
-        "reason": "instance.scaled",
-        "symbol": "_ZN6Slic3r3GUI28EVT_GLCANVAS_INSTANCE_SCALEDE"
-      },
-      {
-        "addresses": {
-          "arm64": "0x1056d1c8c"
-        },
-        "kind": "model",
-        "reason": "geometry.updated",
-        "symbol": "_ZN6Slic3r3GUI28EVT_GLCANVAS_UPDATE_GEOMETRYE"
-      },
-      {
-        "addresses": {
-          "arm64": "0x1056d1c7c"
-        },
-        "kind": "model",
-        "reason": "instance.rotated",
-        "symbol": "_ZN6Slic3r3GUI29EVT_GLCANVAS_INSTANCE_ROTATEDE"
-      }
-    ],
-    "event_object_offset": 16,
-    "event_type_offset": 24,
-    "expected_counts": {
-      "arm64": 9
-    },
-    "filter_next_offset": 8,
-    "remove_filter_addresses": {
-      "arm64": "0x1042582b0"
-    },
-    "remove_filter_symbol": "_ZN12wxEvtHandler12RemoveFilterEP13wxEventFilter"
-  },
+  ],
   "id": "macos-02.08.02.61-arm64-1a79017b9f86",
   "kind": "studio_generated_profile",
   "layouts": {
     "context_menu": {
-      "menu_factory_object_menu": 8,
-      "menu_factory_part_menu": 264,
-      "plater_private": 768,
-      "private_menu_factory": 1112,
-      "wx_menu_item_submenu": 32,
-      "wx_string_alignment": 8,
-      "wx_string_size": 40
+      "menu_factory_object_menu": {
+        "member": "m_object_menu",
+        "type": "Slic3r::GUI::MenuFactory",
+        "value": 8
+      },
+      "menu_factory_part_menu": {
+        "member": "m_part_menu",
+        "type": "Slic3r::GUI::MenuFactory",
+        "value": 264
+      },
+      "native_parents": [
+        {
+          "id": "bambu.add-part",
+          "translation_key": "Add part"
+        },
+        {
+          "id": "bambu.add-negative-part",
+          "translation_key": "Add negative part"
+        },
+        {
+          "id": "bambu.add-modifier",
+          "translation_key": "Add modifier"
+        },
+        {
+          "id": "bambu.add-support-blocker",
+          "translation_key": "Add support blocker"
+        },
+        {
+          "id": "bambu.add-support-enforcer",
+          "translation_key": "Add support enforcer"
+        },
+        {
+          "id": "bambu.add-primitive",
+          "translation_key": "Add Primitive"
+        },
+        {
+          "id": "bambu.cube",
+          "translation_key": "Cube"
+        },
+        {
+          "id": "bambu.bambu-cube",
+          "translation_key": "Bambu Cube"
+        },
+        {
+          "id": "bambu.clone",
+          "translation_key": "Clone"
+        }
+      ],
+      "plater_private": {
+        "member": "p",
+        "type": "Slic3r::GUI::Plater",
+        "value": 768
+      },
+      "private_menu_factory": {
+        "member": "menus",
+        "type": "Slic3r::GUI::Plater::priv",
+        "value": 1112
+      },
+      "wx_menu_item_submenu": {
+        "member": "m_subMenu",
+        "type": "wxMenuItemBase",
+        "value": 32
+      },
+      "wx_string_alignment": {
+        "type": "wxString",
+        "value": 8
+      },
+      "wx_string_size": {
+        "type": "wxString",
+        "value": 40
+      }
     },
     "events": {
-      "event_object_offset": 16,
-      "event_type_offset": 24,
-      "filter_next_offset": 8
+      "event_object_offset": {
+        "member": "m_eventObject",
+        "type": "wxEvent",
+        "value": 16
+      },
+      "event_type_offset": {
+        "member": "m_eventType",
+        "type": "wxEvent",
+        "value": 24
+      },
+      "filter_next_offset": {
+        "member": "m_next",
+        "type": "wxEventFilter",
+        "value": 8
+      }
     },
     "model": {
-      "instance_printable": 747,
-      "instance_transformation": 16,
-      "model_info_metadata_items": 144,
-      "model_info_shared_ptr": 328,
-      "object_config_timestamp": 160,
-      "object_dynamic_config": 168,
-      "object_instances": 88,
-      "object_name": 16,
-      "object_volumes": 112,
-      "objects": 40,
-      "volume_mesh_shared_ptr": 1392,
-      "volume_name": 16
+      "instance_printable": {
+        "member": "printable",
+        "type": "Slic3r::ModelInstance",
+        "value": 747
+      },
+      "instance_transformation": {
+        "member": "m_transformation",
+        "type": "Slic3r::ModelInstance",
+        "value": 16
+      },
+      "model_info_metadata_items": {
+        "member": "metadata_items",
+        "type": "Slic3r::ModelInfo",
+        "value": 144
+      },
+      "model_info_shared_ptr": {
+        "member": "model_info",
+        "type": "Slic3r::Model",
+        "value": 328
+      },
+      "object_config_timestamp": {
+        "path": [
+          {
+            "member": "config",
+            "type": "Slic3r::ModelObject"
+          },
+          {
+            "base": "Slic3r::ModelConfig",
+            "type": "Slic3r::ModelConfigObject"
+          },
+          {
+            "member": "m_timestamp",
+            "type": "Slic3r::ModelConfig"
+          }
+        ],
+        "value": 160
+      },
+      "object_dynamic_config": {
+        "path": [
+          {
+            "member": "config",
+            "type": "Slic3r::ModelObject"
+          },
+          {
+            "base": "Slic3r::ModelConfig",
+            "type": "Slic3r::ModelConfigObject"
+          },
+          {
+            "member": "m_data",
+            "type": "Slic3r::ModelConfig"
+          }
+        ],
+        "value": 168
+      },
+      "object_instances": {
+        "member": "instances",
+        "type": "Slic3r::ModelObject",
+        "value": 88
+      },
+      "object_name": {
+        "member": "name",
+        "type": "Slic3r::ModelObject",
+        "value": 16
+      },
+      "object_volumes": {
+        "member": "volumes",
+        "type": "Slic3r::ModelObject",
+        "value": 112
+      },
+      "objects": {
+        "member": "objects",
+        "type": "Slic3r::Model",
+        "value": 40
+      },
+      "volume_mesh_shared_ptr": {
+        "member": "m_mesh",
+        "type": "Slic3r::ModelVolume",
+        "value": 1392
+      },
+      "volume_name": {
+        "member": "name",
+        "type": "Slic3r::ModelVolume",
+        "value": 16
+      }
     },
     "panel": {
-      "buttons_control": 816,
-      "page_count": 792,
-      "printer_web_view_alignment": 8,
-      "printer_web_view_size": 776
+      "buttons_control": {
+        "member": "m_bookctrl",
+        "type": "wxBookCtrlBase",
+        "value": 816
+      },
+      "page_count": {
+        "member": "m_pages",
+        "type": "wxBookCtrlBase",
+        "value": 792
+      },
+      "printer_web_view_alignment": {
+        "type": "Slic3r::GUI::PrinterWebView",
+        "value": 8
+      },
+      "printer_web_view_size": {
+        "type": "Slic3r::GUI::PrinterWebView",
+        "value": 776
+      }
     },
     "settings": {
-      "option_deserialize_vtable_index": 4,
-      "option_type_vtable_index": 2
+      "option_deserialize_vtable_index": {
+        "method": "ConfigOptionVtableProbe::deserialize(const std::string &, bool)",
+        "type": "Slic3r::ConfigOption",
+        "value": 4
+      },
+      "option_type_vtable_index": {
+        "method": "ConfigOptionVtableProbe::type() const",
+        "type": "Slic3r::ConfigOption",
+        "value": 2
+      }
     },
     "toolbar": {
-      "data_alignment": 8,
-      "data_size": 720,
-      "icon_filename_callback": 648,
-      "left_action": 408,
-      "name": 0,
-      "sprite_id": 392
+      "data_alignment": {
+        "type": "Slic3r::GUI::GLToolbarItem::Data",
+        "value": 8
+      },
+      "data_size": {
+        "type": "Slic3r::GUI::GLToolbarItem::Data",
+        "value": 720
+      },
+      "icon_filename_callback": {
+        "member": "icon_filename_callback",
+        "type": "Slic3r::GUI::GLToolbarItem::Data",
+        "value": 648
+      },
+      "left_action": {
+        "path": [
+          {
+            "member": "left",
+            "type": "Slic3r::GUI::GLToolbarItem::Data"
+          },
+          {
+            "member": "action_callback",
+            "type": "Slic3r::GUI::GLToolbarItem::Data::Option"
+          }
+        ],
+        "value": 408
+      },
+      "name": {
+        "member": "name",
+        "type": "Slic3r::GUI::GLToolbarItem::Data",
+        "value": 0
+      },
+      "sprite_id": {
+        "member": "sprite_id",
+        "type": "Slic3r::GUI::GLToolbarItem::Data",
+        "value": 392
+      }
     }
   },
   "platform": "macos",
@@ -156,695 +320,507 @@
   "status": "generated_complete",
   "symbols": [
     {
-      "addresses": {
-        "arm64": "0x1013a31e4"
-      },
+      "address": "0x104258298",
+      "logical_name": "WxEventAddFilter",
+      "symbol": "_ZN12wxEvtHandler9AddFilterEP13wxEventFilter"
+    },
+    {
+      "address": "0x1042582b0",
+      "logical_name": "WxEventRemoveFilter",
+      "symbol": "_ZN12wxEvtHandler12RemoveFilterEP13wxEventFilter"
+    },
+    {
+      "address": "0x1013a31e4",
       "logical_name": "WxGetApp",
       "symbol": "_ZN6Slic3r3GUI8wxGetAppEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1013a3d54"
-      },
+      "address": "0x1013a3d54",
       "logical_name": "AppPlater",
       "symbol": "_ZN6Slic3r3GUI7GUI_App6platerEv"
     },
     {
-      "addresses": {
-        "arm64": "0x10162170c"
-      },
+      "address": "0x10162170c",
       "logical_name": "ObjectListSelectedItemIndexes",
       "symbol": "_ZN6Slic3r3GUI10ObjectList25get_selected_item_indexesERiS2_RK14wxDataViewItem"
     },
     {
-      "addresses": {
-        "arm64": "0x1056e6cc0"
-      },
+      "address": "0x1056e6cc0",
       "logical_name": "WxDataViewSelectionChangedEventType",
       "symbol": "wxEVT_DATAVIEW_SELECTION_CHANGED"
     },
     {
-      "addresses": {
-        "arm64": "0x1015244b8"
-      },
+      "address": "0x1015244b8",
       "logical_name": "PlaterDefaultMenu",
       "symbol": "__ZN6Slic3r3GUI6Plater12default_menuEv"
     },
     {
-      "addresses": {
-        "arm64": "0x101524464"
-      },
+      "address": "0x101524464",
       "logical_name": "PlaterPlateMenu",
       "symbol": "__ZN6Slic3r3GUI6Plater10plate_menuEv"
     },
     {
-      "addresses": {
-        "arm64": "0x101632df4"
-      },
+      "address": "0x101632df4",
       "logical_name": "ObjectListLoadGenericSubobject",
       "symbol": "__ZN6Slic3r3GUI10ObjectList22load_generic_subobjectERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEENS_15ModelVolumeTypeE"
     },
     {
-      "addresses": {
-        "arm64": "0x1013babb8"
-      },
+      "address": "0x1013babb8",
       "logical_name": "AppObjectList",
       "symbol": "_ZN6Slic3r3GUI7GUI_App8obj_listEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1013b88b4"
-      },
+      "address": "0x1013b88b4",
       "logical_name": "DarkMode",
       "symbol": "_ZN6Slic3r3GUI7GUI_App9dark_modeEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1013beba0"
-      },
+      "address": "0x1013beba0",
       "logical_name": "GlobalPrintSequence",
       "symbol": "_ZNK6Slic3r3GUI7GUI_App21global_print_sequenceEv"
     },
     {
-      "addresses": {
-        "arm64": "0x10151a398"
-      },
+      "address": "0x10151a398",
       "logical_name": "ObjectIndex",
       "symbol": "_ZN6Slic3r3GUI6Plater23get_selected_object_idxEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1014eb76c"
-      },
+      "address": "0x1014eb76c",
       "logical_name": "Selection",
       "symbol": "_ZNK6Slic3r3GUI6Plater13get_selectionEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1011598c8"
-      },
+      "address": "0x1011598c8",
       "logical_name": "InstanceIndex",
       "symbol": "_ZNK6Slic3r3GUI9Selection16get_instance_idxEv"
     },
     {
-      "addresses": {
-        "arm64": "0x10151a3c8"
-      },
+      "address": "0x10151a3c8",
       "logical_name": "SingleObject",
       "symbol": "_ZNK6Slic3r3GUI6Plater31is_single_full_object_selectionEv"
     },
     {
-      "addresses": {
-        "arm64": "0x10115ff00"
-      },
+      "address": "0x10115ff00",
       "logical_name": "SingleInstance",
       "symbol": "_ZNK6Slic3r3GUI9Selection23is_single_full_instanceEv"
     },
     {
-      "addresses": {
-        "arm64": "0x104028a90"
-      },
+      "address": "0x104028a90",
       "logical_name": "MenuItemAt",
       "symbol": "_ZNK10wxMenuBase18FindItemByPositionEm"
     },
     {
-      "addresses": {
-        "arm64": "0x1040287a8"
-      },
+      "address": "0x1040287a8",
       "logical_name": "MenuFindItemByLabel",
       "symbol": "_ZNK10wxMenuBase8FindItemERK8wxString"
     },
     {
-      "addresses": {
-        "arm64": "0x104028968"
-      },
+      "address": "0x104028968",
       "logical_name": "MenuFindItemById",
       "symbol": "_ZNK10wxMenuBase8FindItemEiPP6wxMenu"
     },
     {
-      "addresses": {
-        "arm64": "0x104028584"
-      },
+      "address": "0x104028584",
       "logical_name": "MenuRemove",
       "symbol": "_ZN10wxMenuBase6RemoveEP10wxMenuItem"
     },
     {
-      "addresses": {
-        "arm64": "0x1040284d4"
-      },
+      "address": "0x1040284d4",
       "logical_name": "MenuInsert",
       "symbol": "_ZN10wxMenuBase6InsertEmP10wxMenuItem"
     },
     {
-      "addresses": {
-        "arm64": "0x10147f9f8"
-      },
+      "address": "0x10147f9f8",
       "logical_name": "PlaterViewCanvas",
       "symbol": "_ZN6Slic3r3GUI6Plater19get_view3D_canvas3DEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1010d2244"
-      },
+      "address": "0x1010d2244",
       "logical_name": "CanvasMainToolbar",
       "symbol": "_ZNK6Slic3r3GUI10GLCanvas3D16get_main_toolbarEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1012ea1e8"
-      },
+      "address": "0x1012ea1e8",
       "logical_name": "ToolbarDataConstruct",
       "symbol": "_ZN6Slic3r3GUI13GLToolbarItem4DataC1Ev"
     },
     {
-      "addresses": {
-        "arm64": "0x10111ce8c"
-      },
+      "address": "0x10111ce8c",
       "logical_name": "ToolbarDataDestroy",
       "symbol": "_ZN6Slic3r3GUI13GLToolbarItem4DataD2Ev"
     },
     {
-      "addresses": {
-        "arm64": "0x1012ebe2c"
-      },
+      "address": "0x1012ebe2c",
       "logical_name": "ToolbarAddItem",
       "symbol": "_ZN6Slic3r3GUI9GLToolbar8add_itemERKNS0_13GLToolbarItem4DataENS2_5ETypeE"
     },
     {
-      "addresses": {
-        "arm64": "0x1012eca20"
-      },
+      "address": "0x1012eca20",
       "logical_name": "ToolbarGetItem",
       "symbol": "_ZNK6Slic3r3GUI9GLToolbar8get_itemERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x1012ec698"
-      },
+      "address": "0x1012ec698",
       "logical_name": "ToolbarGetItemId",
       "symbol": "_ZNK6Slic3r3GUI9GLToolbar11get_item_idERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x1012ec924"
-      },
+      "address": "0x1012ec924",
       "logical_name": "ToolbarSetTooltip",
       "symbol": "_ZN6Slic3r3GUI9GLToolbar11set_tooltipEiRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x1012ee108"
-      },
+      "address": "0x1012ee108",
       "logical_name": "ToolbarItems",
       "symbol": "_ZNK6Slic3r3GUI9GLToolbar9get_itemsEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1012ea1ec"
-      },
+      "address": "0x1012ea1ec",
       "logical_name": "ToolbarItemData",
       "symbol": "_ZNK6Slic3r3GUI13GLToolbarItem8get_dataEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1012ea1f4"
-      },
+      "address": "0x1012ea1f4",
       "logical_name": "ToolbarItemSetVisible",
       "symbol": "_ZN6Slic3r3GUI13GLToolbarItem11set_visibleEb"
     },
     {
-      "addresses": {
-        "arm64": "0x1012ea370"
-      },
+      "address": "0x1012ea370",
       "logical_name": "ToolbarItemSetState",
       "symbol": "_ZN6Slic3r3GUI13GLToolbarItem9set_stateENS1_6EStateE"
     },
     {
-      "addresses": {
-        "arm64": "0x1012eaa48"
-      },
+      "address": "0x1012eaa48",
       "logical_name": "ToolbarItemIconFilename",
       "symbol": "_ZNK6Slic3r3GUI13GLToolbarItem17get_icon_filenameEb"
     },
     {
-      "addresses": {
-        "arm64": "0x1012ebda0"
-      },
+      "address": "0x1012ebda0",
       "logical_name": "ToolbarSetIconDirty",
       "symbol": "_ZN6Slic3r3GUI9GLToolbar14set_icon_dirtyEv"
     },
     {
-      "addresses": {
-        "arm64": "0x100080fa8"
-      },
+      "address": "0x100080fa8",
       "logical_name": "WxStringConstruct",
       "symbol": "_ZN8wxStringC2EPKc"
     },
     {
-      "addresses": {
-        "arm64": "0x100008e64"
-      },
+      "address": "0x100008e64",
       "logical_name": "WxStringDestroy",
       "symbol": "_ZN8wxStringD1Ev"
     },
     {
-      "addresses": {
-        "arm64": "0x104027a18"
-      },
+      "address": "0x104027a18",
       "logical_name": "WxMenuCreateObject",
       "symbol": "_ZN6wxMenu14wxCreateObjectEv"
     },
     {
-      "addresses": {
-        "arm64": "0x103f9fef0"
-      },
+      "address": "0x103f9fef0",
       "logical_name": "WxAppTopWindow",
       "symbol": "_ZNK9wxAppBase12GetTopWindowEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1013d53c8"
-      },
+      "address": "0x1013d53c8",
       "logical_name": "AppTabPanel",
       "symbol": "_ZNK6Slic3r3GUI7GUI_App9tab_panelEv"
     },
     {
-      "addresses": {
-        "arm64": "0x103fa6354"
-      },
+      "address": "0x103fa6354",
       "logical_name": "WxBookInsertPage",
       "symbol": "_ZN14wxBookCtrlBase10InsertPageEmP8wxWindowRK8wxStringbi"
     },
     {
-      "addresses": {
-        "arm64": "0x103fa6478"
-      },
+      "address": "0x103fa6478",
       "logical_name": "WxBookDeletePage",
       "symbol": "_ZN14wxBookCtrlBase10DeletePageEm"
     },
     {
-      "addresses": {
-        "arm64": "0x103fa6320"
-      },
+      "address": "0x103fa6320",
       "logical_name": "WxBookFindPage",
       "symbol": "_ZNK14wxBookCtrlBase8FindPageEPK8wxWindow"
     },
     {
-      "addresses": {
-        "arm64": "0x101b503f8"
-      },
+      "address": "0x101b503f8",
       "logical_name": "ButtonsInsertPage",
       "symbol": "_ZN15ButtonsListCtrl10InsertPageEmRK8wxStringbRKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESB_"
     },
     {
-      "addresses": {
-        "arm64": "0x1017fe5f0"
-      },
+      "address": "0x1017fe5f0",
       "logical_name": "PrinterWebViewConstruct",
       "symbol": "_ZN6Slic3r3GUI14PrinterWebViewC1EP8wxWindow"
     },
     {
-      "addresses": {
-        "arm64": "0x1017fe7e4"
-      },
+      "address": "0x1017fe7e4",
       "logical_name": "PrinterWebViewLoadUrl",
       "symbol": "_ZN6Slic3r3GUI14PrinterWebView8load_urlERK8wxString"
     },
     {
-      "addresses": {
-        "arm64": "0x10411ae34"
-      },
+      "address": "0x10411ae34",
       "logical_name": "WxWindowShow",
       "symbol": "_ZN8wxWindow4ShowEb"
     },
     {
-      "addresses": {
-        "arm64": "0x103fc2914"
-      },
+      "address": "0x103fc2914",
       "logical_name": "WxDialogCreateObject",
       "symbol": "_ZN8wxDialog14wxCreateObjectEv"
     },
     {
-      "addresses": {
-        "arm64": "0x104112248"
-      },
+      "address": "0x104112248",
       "logical_name": "WxDialogCreate",
       "symbol": "_ZN8wxDialog6CreateEP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelS4_"
     },
     {
-      "addresses": {
-        "arm64": "0x1041123f4"
-      },
+      "address": "0x1041123f4",
       "logical_name": "WxDialogShow",
       "symbol": "_ZN8wxDialog4ShowEb"
     },
     {
-      "addresses": {
-        "arm64": "0x10411a948"
-      },
+      "address": "0x10411a948",
       "logical_name": "WxWindowSetSize",
       "symbol": "_ZN8wxWindow9DoSetSizeEiiiii"
     },
     {
-      "addresses": {
-        "arm64": "0x104064fd8"
-      },
+      "address": "0x104064fd8",
       "logical_name": "WxWindowDestroy",
       "symbol": "_ZN12wxWindowBase7DestroyEv"
     },
     {
-      "addresses": {
-        "arm64": "0x10405dc40"
-      },
+      "address": "0x10405dc40",
       "logical_name": "WxTopLevelCentre",
       "symbol": "_ZN20wxTopLevelWindowBase8DoCentreEi"
     },
     {
-      "addresses": {
-        "arm64": "0x101932124"
-      },
+      "address": "0x101932124",
       "logical_name": "AppendMenuItem",
       "symbol": "_Z16append_menu_itemP6wxMenuiRK8wxStringS3_NSt3__18functionIFvR14wxCommandEventEEERKNS4_12basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEEP12wxEvtHandlerNS5_IFbvEEEP8wxWindowi"
     },
     {
-      "addresses": {
-        "arm64": "0x101932590"
-      },
+      "address": "0x101932590",
       "logical_name": "AppendSubmenu",
       "symbol": "_Z14append_submenuP6wxMenuS0_iRK8wxStringS3_RKNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEENS4_8functionIFbvEEEP8wxWindowi"
     },
     {
-      "addresses": {
-        "arm64": "0x104028700"
-      },
+      "address": "0x104028700",
       "logical_name": "DestroyMenuItem",
       "symbol": "_ZN10wxMenuBase7DestroyEP10wxMenuItem"
     },
     {
-      "addresses": {
-        "arm64": "0x104136f04"
-      },
+      "address": "0x104136f04",
       "logical_name": "MenuItemSetLabel",
       "symbol": "_ZN10wxMenuItem12SetItemLabelERK8wxString"
     },
     {
-      "addresses": {
-        "arm64": "0x104136a88"
-      },
+      "address": "0x104136a88",
       "logical_name": "MenuItemEnable",
       "symbol": "_ZN10wxMenuItem6EnableEb"
     },
     {
-      "addresses": {
-        "arm64": "0x100bd38a0"
-      },
+      "address": "0x100bd38a0",
       "logical_name": "ResourcesDir",
       "symbol": "_ZN6Slic3r13resources_dirEv"
     },
     {
-      "addresses": {
-        "arm64": "0x101506620"
-      },
+      "address": "0x101506620",
       "logical_name": "LoadFiles",
       "symbol": "_ZN6Slic3r3GUI6Plater10load_filesERKNSt3__16vectorINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEENS7_IS9_EEEENS_12LoadStrategyEb"
     },
     {
-      "addresses": {
-        "arm64": "0x101477cbc"
-      },
+      "address": "0x101477cbc",
       "logical_name": "PlaterModel",
       "symbol": "_ZN6Slic3r3GUI6Plater5modelEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1003a75b0"
-      },
+      "address": "0x1003a75b0",
       "logical_name": "StoreStlObject",
       "symbol": "_ZN6Slic3r9store_stlEPKcPNS_11ModelObjectEb"
     },
     {
-      "addresses": {
-        "arm64": "0x1014bcecc"
-      },
+      "address": "0x1014bcecc",
       "logical_name": "TakeSnapshot",
       "symbol": "_ZN6Slic3r3GUI6Plater13take_snapshotERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x101628f94"
-      },
+      "address": "0x101628f94",
       "logical_name": "UpdateObjectName",
       "symbol": "_ZNK6Slic3r3GUI10ObjectList19update_name_in_listEii"
     },
     {
-      "addresses": {
-        "arm64": "0x100369588"
-      },
+      "address": "0x100369588",
       "logical_name": "SaveObjectMesh",
       "symbol": "_ZN6Slic3r16save_object_meshERNS_11ModelObjectE"
     },
     {
-      "addresses": {
-        "arm64": "0x10063f8dc"
-      },
+      "address": "0x10063f8dc",
       "logical_name": "TransformationRotation",
       "symbol": "_ZNK6Slic3r8Geometry14Transformation12get_rotationEv"
     },
     {
-      "addresses": {
-        "arm64": "0x100640280"
-      },
+      "address": "0x100640280",
       "logical_name": "TransformationScaling",
       "symbol": "_ZNK6Slic3r8Geometry14Transformation18get_scaling_factorEv"
     },
     {
-      "addresses": {
-        "arm64": "0x10063ff40"
-      },
+      "address": "0x10063ff40",
       "logical_name": "SetTransformationRotation",
       "symbol": "_ZN6Slic3r8Geometry14Transformation12set_rotationERKN5Eigen6MatrixIdLi3ELi1ELi2ELi3ELi1EEE"
     },
     {
-      "addresses": {
-        "arm64": "0x100640368"
-      },
+      "address": "0x100640368",
       "logical_name": "SetTransformationScaling",
       "symbol": "_ZN6Slic3r8Geometry14Transformation18set_scaling_factorERKN5Eigen6MatrixIdLi3ELi1ELi2ELi3ELi1EEE"
     },
     {
-      "addresses": {
-        "arm64": "0x10151abec"
-      },
+      "address": "0x10151abec",
       "logical_name": "ChangedObject",
       "symbol": "_ZN6Slic3r3GUI6Plater14changed_objectERNS_11ModelObjectE"
     },
     {
-      "addresses": {
-        "arm64": "0x101627064"
-      },
+      "address": "0x101627064",
       "logical_name": "ObjectConfigOptionsChanged",
       "symbol": "_ZN6Slic3r3GUI10ObjectList29object_config_options_changedERKNS0_14ObjectVolumeIDE"
     },
     {
-      "addresses": {
-        "arm64": "0x10164c030"
-      },
+      "address": "0x10164c030",
       "logical_name": "UpdatePrintableState",
       "symbol": "_ZN6Slic3r3GUI10ObjectList22update_printable_stateEii"
     },
     {
-      "addresses": {
-        "arm64": "0x10146f024"
-      },
+      "address": "0x10146f024",
       "logical_name": "GetPartplateList",
       "symbol": "_ZN6Slic3r3GUI6Plater18get_partplate_listEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1015837a0"
-      },
+      "address": "0x1015837a0",
       "logical_name": "GetPlateCount",
       "symbol": "_ZNK6Slic3r3GUI13PartPlateList15get_plate_countEv"
     },
     {
-      "addresses": {
-        "arm64": "0x10145c8d0"
-      },
+      "address": "0x10145c8d0",
       "logical_name": "NotificationManager",
       "symbol": "_ZN6Slic3r3GUI6Plater24get_notification_managerEv"
     },
     {
-      "addresses": {
-        "arm64": "0x101b96bfc"
-      },
+      "address": "0x101b96bfc",
       "logical_name": "PushNotification",
       "symbol": "_ZN6Slic3r3GUI19NotificationManager17push_notificationERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEi"
     },
     {
-      "addresses": {
-        "arm64": "0x10151a638"
-      },
+      "address": "0x10151a638",
       "logical_name": "PlaterConfig",
       "symbol": "_ZNK6Slic3r3GUI6Plater6configEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1009af304"
-      },
+      "address": "0x1009af304",
       "logical_name": "NewConfig",
       "symbol": "_ZN6Slic3r18DynamicPrintConfig22new_from_defaults_keysERKNSt3__16vectorINS1_12basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEENS6_IS8_EEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x100174b3c"
-      },
+      "address": "0x100174b3c",
       "logical_name": "ApplyOnly",
       "symbol": "_ZN6Slic3r10ConfigBase10apply_onlyERKS0_RKNSt3__16vectorINS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS8_ISA_EEEEb"
     },
     {
-      "addresses": {
-        "arm64": "0x1001754a0"
-      },
+      "address": "0x1001754a0",
       "logical_name": "SerializeOption",
       "symbol": "_ZNK6Slic3r10ConfigBase13opt_serializeERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x100175d4c"
-      },
+      "address": "0x100175d4c",
       "logical_name": "SetConfigInteger",
       "symbol": "_ZN6Slic3r10ConfigBase3setERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEib"
     },
     {
-      "addresses": {
-        "arm64": "0x100175eac"
-      },
+      "address": "0x100175eac",
       "logical_name": "SetConfigNumber",
       "symbol": "_ZN6Slic3r10ConfigBase3setERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEdb"
     },
     {
-      "addresses": {
-        "arm64": "0x101414b98"
-      },
+      "address": "0x101414b98",
       "logical_name": "MainframeLoadConfig",
       "symbol": "_ZN6Slic3r3GUI9MainFrame11load_configERKNS_18DynamicPrintConfigE"
     },
     {
-      "addresses": {
-        "arm64": "0x100180b5c"
-      },
+      "address": "0x100180b5c",
       "logical_name": "ConfigKeys",
       "symbol": "_ZNK6Slic3r13DynamicConfig4keysEv"
     },
     {
-      "addresses": {
-        "arm64": "0x10017f7b4"
-      },
+      "address": "0x10017f7b4",
       "logical_name": "ConfigOptPtr",
       "symbol": "_ZNK6Slic3r13DynamicConfig6optptrERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x1015f0814"
-      },
+      "address": "0x1015f0814",
       "logical_name": "SettingsOptions",
       "symbol": "_ZN6Slic3r3GUI15SettingsFactory11get_optionsEb"
     },
     {
-      "addresses": {
-        "arm64": "0x10006daf0"
-      },
+      "address": "0x10006daf0",
       "logical_name": "ConfigErase",
       "symbol": "__ZN6Slic3r13DynamicConfig5eraseERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x105612b78"
-      },
+      "address": "0x105612b78",
       "logical_name": "ModelConfigLastTimestamp",
       "symbol": "_ZN6Slic3r11ModelConfig16s_last_timestampE"
     },
     {
-      "addresses": {
-        "arm64": "0x100082064"
-      },
+      "address": "0x100082064",
       "logical_name": "DeleteConfig",
       "symbol": "__ZN6Slic3r18DynamicPrintConfigD0Ev"
     },
     {
-      "addresses": {
-        "arm64": "0x10115bf84"
-      },
+      "address": "0x10115bf84",
       "logical_name": "SelectedSingleVolume",
       "symbol": "_ZN6Slic3r3GUI9Selection26get_selected_single_volumeERiS2_"
     },
     {
-      "addresses": {
-        "arm64": "0x1003a7578"
-      },
+      "address": "0x1003a7578",
       "logical_name": "StoreStlMesh",
       "symbol": "_ZN6Slic3r9store_stlEPKcPNS_12TriangleMeshEb"
     },
     {
-      "addresses": {
-        "arm64": "0x1014bbe24"
-      },
+      "address": "0x1014bbe24",
       "logical_name": "ReplaceVolumeWithStl",
       "symbol": "_ZN6Slic3r3GUI6Plater4priv23replace_volume_with_stlEiiRKN5boost10filesystem4pathERKNSt3__112basic_stringIcNS8_11char_traitsIcEENS8_9allocatorIcEEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x100b8e494"
-      },
+      "address": "0x100b8e494",
       "logical_name": "TriangleMeshReadStl",
       "symbol": "_ZN6Slic3r12TriangleMesh11ReadSTLFileEPKcbNSt3__18functionIFviiRbRNS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESC_SC_SC_SC_EEEi"
     },
     {
-      "addresses": {
-        "arm64": "0x1006baaa8"
-      },
+      "address": "0x1006baaa8",
       "logical_name": "ModelVolumeSetMeshKeepPaint",
       "symbol": "_ZN6Slic3r11ModelVolume19set_mesh_keep_paintEONS_12TriangleMeshERKNSt3__18functionIFviPKcEEERKNS4_IFbvEEE"
     },
     {
-      "addresses": {
-        "arm64": "0x1006bc2f0"
-      },
+      "address": "0x1006bc2f0",
       "logical_name": "ModelVolumeCalculateConvexHull",
       "symbol": "_ZN6Slic3r11ModelVolume21calculate_convex_hullEv"
     },
     {
-      "addresses": {
-        "arm64": "0x1006af80c"
-      },
+      "address": "0x1006af80c",
       "logical_name": "ModelVolumeEnsurePartGuid",
       "symbol": "__ZNK6Slic3r11ModelVolume16ensure_part_guidEb"
     },
     {
-      "addresses": {
-        "arm64": "0x1006a63e0"
-      },
+      "address": "0x1006a63e0",
       "logical_name": "ModelObjectScaleMeshAfterCreation",
       "symbol": "_ZN6Slic3r11ModelObject25scale_mesh_after_creationEf"
     },
     {
-      "addresses": {
-        "arm64": "0x1006ad38c"
-      },
+      "address": "0x1006ad38c",
       "logical_name": "ModelObjectEnsureOnBed",
       "symbol": "__ZN6Slic3r11ModelObject13ensure_on_bedEb"
     },
     {
-      "addresses": {
-        "arm64": "0x1006aa854"
-      },
+      "address": "0x1006aa854",
       "logical_name": "ModelVolumeAssignNewUniqueIdsRecursive",
       "symbol": "__ZN6Slic3r11ModelVolume31assign_new_unique_ids_recursiveEv"
     },
     {
-      "addresses": {
-        "arm64": "0x10151ab54"
-      },
+      "address": "0x10151ab54",
       "logical_name": "ChangedMesh",
       "symbol": "_ZN6Slic3r3GUI6Plater12changed_meshEi"
     }
