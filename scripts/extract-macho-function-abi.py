@@ -106,33 +106,14 @@ def resolve(binary: Path, requirements: dict, architecture: str) -> dict:
         raise ValueError(f"release binary has no {architecture} Mach-O slice")
     selected = parsed[architecture]
     table = selected["symbols"]
-    methods = []
-    for method in requirements["symbols"]:
-        address = find_symbol(table, method["symbol"])
+    methods = {}
+    for cpp_name, mangled in requirements["symbols"].items():
+        address = find_symbol(table, mangled)
         if address is not None:
-            methods.append({**method, "address": f"0x{address:x}"})
+            methods[cpp_name] = f"0x{address:x}"
     if len(methods) != len(requirements["symbols"]):
-        resolved_names = {item["logical_name"] for item in methods}
-        missing = [item["logical_name"] for item in requirements["symbols"] if item["logical_name"] not in resolved_names]
+        missing = [name for name in requirements["symbols"] if name not in methods]
         raise ValueError("reviewed function ABI symbols are unavailable: " + ", ".join(missing))
-    by_logical_name = {item["logical_name"] for item in methods}
-    missing_anchors = [
-        name for name in requirements["compatibility"].get("required_symbols", [])
-        if name not in by_logical_name
-    ]
-    if missing_anchors:
-        raise ValueError("required ABI anchors are unavailable: " + ", ".join(missing_anchors))
-
-    event_requirements = requirements["events"]
-    def required_address(symbol: str) -> str:
-        address = find_symbol(table, symbol)
-        if address is None:
-            raise ValueError(f"required event ABI symbol is unavailable: {symbol}")
-        return f"0x{address:x}"
-
-    events = {"entries": []}
-    for entry in event_requirements["entries"]:
-        events["entries"].append({**entry, "address": required_address(entry["symbol"])})
     return {
         "schema_version": 1,
         "kind": "bambustudio_function_abi",
@@ -140,12 +121,9 @@ def resolve(binary: Path, requirements: dict, architecture: str) -> dict:
         "architecture": architecture,
         "binary": {"sha256": sha256_file(binary), "uuid": selected["uuid"]},
         "symbols": methods,
-        "events": events,
         "analysis": {
             "reviewed": len(requirements["symbols"]),
             "resolved": len(methods),
-            "required_anchors": len(requirements["compatibility"].get("required_symbols", [])),
-            "required_events": len(events["entries"]),
         },
     }
 

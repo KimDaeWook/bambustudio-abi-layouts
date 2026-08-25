@@ -35,32 +35,20 @@ def load(path: Path) -> dict:
 def canonical_layouts(probe: dict, requirements: dict) -> dict:
     result = {}
     extracted = probe.get("layouts", {})
-    for unit in requirements["records"]["translation_units"]:
-        for specification in unit["records"]:
-            alias, cpp_type = specification["name"], specification["type"]
-            record = extracted[alias]
-            if cpp_type in result:
-                raise ValueError(f"duplicate C++ record requirement: {cpp_type}")
-            result[cpp_type] = {
-                "size": record["size"],
-                "alignment": record["alignment"],
-                "members": {cpp: record["members"][logical] for logical, cpp in specification.get("members", {}).items()},
-                "bases": {cpp: record["bases"][logical] for logical, cpp in specification.get("bases", {}).items()},
-            }
+    for cpp_type, specification in requirements["layouts"].items():
+        record = extracted[cpp_type]
+        result[cpp_type] = {"size": record["size"], "alignment": record["alignment"],
+            "members": {name: record["members"][name] for name in specification.get("members", [])},
+            "bases": {name: record["bases"][name] for name in specification.get("bases", [])}}
     return result
 
 
 def canonical_vtables(probe: dict, requirements: dict) -> dict:
     result = {}
     extracted = probe.get("vtables", {})
-    for unit in requirements["vtables"]["translation_units"]:
-        for specification in unit["records"]:
-            alias, cpp_type = specification["name"], specification["type"]
-            table = extracted[alias]
-            result[cpp_type] = {"methods": {
-                cpp: table["indices"][logical]
-                for logical, cpp in specification.get("methods", {}).items()
-            }}
+    for cpp_type, specification in requirements["vtables"].items():
+        table = extracted[cpp_type]
+        result[cpp_type] = {"methods": {name: table["indices"][name] for name in specification["methods"]}}
     return result
 
 
@@ -89,18 +77,14 @@ def main() -> int:
         raise ValueError("layout source commit and release source commit differ")
     requirements = load(args.requirements)
     target_requirements = requirements["targets"]["macos-arm64"]
-    expected_symbols = len(target_requirements["functions"].get("symbols", []))
+    expected_symbols = len(target_requirements.get("symbols", {}))
     analysis = functions.get("analysis", {})
-    if analysis.get("resolved") != expected_symbols or len(functions.get("symbols", [])) != expected_symbols:
+    if analysis.get("resolved") != expected_symbols or len(functions.get("symbols", {})) != expected_symbols:
         raise ValueError("function ABI extraction is incomplete")
 
-    layouts = canonical_layouts(layout, target_requirements["layout"])
-    vtables = canonical_vtables(layout, target_requirements["layout"])
-    symbols = [
-        item
-        for item in functions["symbols"]
-    ]
-    raw_events = functions["events"]
+    layouts = canonical_layouts(layout, target_requirements)
+    vtables = canonical_vtables(layout, target_requirements)
+    symbols = functions["symbols"]
     profile = {
         "schema_version": 1,
         "kind": "studio_generated_profile",
@@ -118,7 +102,6 @@ def main() -> int:
             "asset": function_upstream["release_asset"],
         },
         "symbols": symbols,
-        "event_bindings": raw_events["entries"],
         "layouts": layouts,
         "vtables": vtables,
     }
@@ -149,7 +132,6 @@ def main() -> int:
                 "record_count": len(layouts),
                 "vtable_count": len(vtables),
                 "symbol_count": len(symbols),
-                "event_binding_count": len(raw_events["entries"]),
                 "catalog_sha256": catalogs,
                 "generator_commit": args.project_commit,
                 "workflow": {"run_id": args.workflow_run_id, "url": args.workflow_run_url},

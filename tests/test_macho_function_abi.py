@@ -30,21 +30,14 @@ class MachoFunctionAbiTests(unittest.TestCase):
         symtab_command = struct.pack("<IIIIII", 0x2, 24, symbol_offset, 1, string_offset, len(strings))
         nlist = struct.pack("<IBBHQ", 1, 0x0F, 1, 0, 0x100004000)
         requirements = {
-            "compatibility": {"required_symbols": ["Test"]},
-            "symbols": [{"logical_name": "Test", "symbol": symbol}],
-            "events": {
-                "add_filter_symbol": symbol,
-                "remove_filter_symbol": symbol,
-                "entries": [{"symbol": symbol, "kind": "test", "reason": "fixture"}],
-            },
+            "symbols": {"test()": symbol},
         }
         with tempfile.TemporaryDirectory(prefix="bse-macho-test-") as temporary:
             binary = Path(temporary) / "fixture"
             binary.write_bytes(header + uuid_command + symtab_command + nlist + strings)
             result = self.module.resolve(binary, requirements, "arm64")
         self.assertEqual(result["binary"]["uuid"], str(expected_uuid))
-        self.assertEqual(result["symbols"][0]["address"], "0x100004000")
-        self.assertEqual(result["events"]["entries"][0]["address"], "0x100004000")
+        self.assertEqual(result["symbols"]["test()"], "0x100004000")
 
 if __name__ == "__main__":
     unittest.main()
