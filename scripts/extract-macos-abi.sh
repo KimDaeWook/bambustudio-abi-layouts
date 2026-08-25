@@ -10,6 +10,7 @@ readonly DEPENDENCY_PREFIX=${2:?usage: extract-macos-abi.sh <BambuStudio-source>
 readonly OUTPUT_JSON=${3:?usage: extract-macos-abi.sh <BambuStudio-source> <dependency-prefix> <output-json>}
 readonly SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 readonly TEMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/bambu-abi-generated.XXXXXX")
+readonly SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
 trap 'rm -rf -- "$TEMP_DIR"' EXIT
 
 if [[ ! -d "$SOURCE_DIR/src" ]]; then
@@ -40,6 +41,7 @@ EOF
 compiler_args=(
     -w
     -arch arm64
+    -isysroot "$SDK_ROOT"
     -mmacosx-version-min=10.15
     -D__WXOSX_COCOA__
     -D__WXMAC__
