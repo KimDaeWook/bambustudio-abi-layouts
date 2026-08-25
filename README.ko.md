@@ -79,6 +79,11 @@ python3 scripts/extract-bambustudio-abi.py \
 pass와 작은 `Config.hpp` probe를 나란히 실행하는 편이 더 빠릅니다. 하위 도구인
 `extract-clang-layouts.py`와 `extract-clang-vtables.py`도 각각 독립적으로 사용할 수 있습니다.
 
+수동 **Extract macOS arm64 ABI layouts** workflow는 1단계에서 cache한 정확한 dependency prefix를
+복원하고 BambuStudio를 빌드하거나 link하지 않은 채 이 소스 probe를 실행합니다. Cache miss 시 긴
+dependency 빌드를 암묵적으로 시작하지 않고 실패합니다. 업로드 artifact에는 34개 값과 함께 해석된
+upstream commit, dependency tree, runner image, compiler, probe 인자와 소스 slice hash가 들어갑니다.
+
 ## 1단계 실행 방법
 
 **Actions → Build macOS dSYM → Run workflow**에서 다음 값을 입력합니다.

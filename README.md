@@ -80,6 +80,12 @@ code generation in the large `Plater.cpp` probe is slower than compiling the tin
 alongside the syntax-only record pass. The lower-level `extract-clang-layouts.py` and
 `extract-clang-vtables.py` tools remain independently usable.
 
+The manual **Extract macOS arm64 ABI layouts** workflow restores the exact dependency prefix cached
+by Stage 1 and runs this source probe without building or linking BambuStudio. It fails on a cache
+miss rather than silently starting a long dependency build. The uploaded artifact contains the 34
+values together with the resolved upstream commit, dependency tree, runner image, compiler, probe
+arguments, and source-slice hashes.
+
 ## Running Stage 1
 
 Open **Actions → Build macOS dSYM → Run workflow** and provide:

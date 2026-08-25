@@ -1,0 +1,135 @@
+name: Extract macOS arm64 ABI layouts
+
+on:
+  workflow_dispatch:
+    inputs:
+      bambu_ref:
+        description: Upstream BambuStudio tag, branch, or full commit
+        required: true
+        type: string
+        default: v02.08.02.61
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macos-abi-${{ inputs.bambu_ref }}
+  cancel-in-progress: false
+
+env:
+  BAMBU_SOURCE_DIR: ${{ github.workspace }}/.work/BambuStudio
+  BAMBU_REQUIRE_GIT_LFS: "0"
+  BAMBU_SKIP_SUBMODULES: "1"
+
+jobs:
+  extract:
+    name: Extract 34 macOS arm64 ABI values
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - name: Check out this project
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Check out and resolve BambuStudio
+        id: upstream
+        env:
+          BAMBU_REF: ${{ inputs.bambu_ref }}
+        run: ./scripts/checkout-bambustudio.sh "$BAMBU_REF" "$BAMBU_SOURCE_DIR"
+
+      - name: Verify supported upstream macOS build contract
+        run: ./scripts/verify-upstream-build-contract.sh "$BAMBU_SOURCE_DIR"
+
+      - name: Create exact dependency cache key
+        id: cache-key
+        shell: bash
+        env:
+          DEPS_TREE: ${{ steps.upstream.outputs.deps_tree }}
+        run: |
+          source ./scripts/lib/common.sh
+          image_version=$(sanitize_cache_component "${ImageVersion:-unknown}")
+          key="bambustudio-deps-macos-15-arm64-${RUNNER_ARCH}-${image_version}-cmake-3.31.0-${DEPS_TREE}"
+          echo "key=$key" >>"$GITHUB_OUTPUT"
+
+      - name: Restore prebuilt dependency headers
+        id: deps-cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: ${{ env.BAMBU_SOURCE_DIR }}/deps/build
+          key: ${{ steps.cache-key.outputs.key }}
+          fail-on-cache-miss: true
+
+      - name: Extract source-derived ABI values
+        env:
+          OUTPUT_DIR: ${{ github.workspace }}/artifacts/macos-abi
+        run: |
+          dependency_prefix="$BAMBU_SOURCE_DIR/deps/build/arm64/BambuStudio_deps/usr/local"
+          mkdir -p "$OUTPUT_DIR"
+          ./scripts/extract-macos-abi.sh \
+            "$BAMBU_SOURCE_DIR" \
+            "$dependency_prefix" \
+            "$OUTPUT_DIR/abi-values.json"
+
+      - name: Add upstream provenance
+        env:
+          OUTPUT_DIR: ${{ github.workspace }}/artifacts/macos-abi
+          BAMBU_COMMIT: ${{ steps.upstream.outputs.commit }}
+          BAMBU_DEPS_TREE: ${{ steps.upstream.outputs.deps_tree }}
+          BAMBU_VERSION: ${{ steps.upstream.outputs.version }}
+          CACHE_KEY: ${{ steps.cache-key.outputs.key }}
+        run: |
+          python3 - "$OUTPUT_DIR/abi-values.json" <<'PY'
+          import json
+          import os
+          import sys
+
+          path = sys.argv[1]
+          document = json.load(open(path, encoding="utf-8"))
+          document["upstream"] = {
+              "repository": "https://github.com/bambulab/BambuStudio.git",
+              "commit": os.environ["BAMBU_COMMIT"],
+              "deps_tree": os.environ["BAMBU_DEPS_TREE"],
+              "version": os.environ["BAMBU_VERSION"],
+          }
+          document["runner"] = {
+              "image": os.environ.get("ImageOS", ""),
+              "image_version": os.environ.get("ImageVersion", ""),
+              "architecture": os.environ.get("RUNNER_ARCH", ""),
+              "dependency_cache_key": os.environ["CACHE_KEY"],
+          }
+          with open(path, "w", encoding="utf-8") as output:
+              json.dump(document, output, indent=2, sort_keys=True)
+              output.write("\n")
+          PY
+
+      - name: Upload ABI values and provenance
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: bambustudio-macos-arm64-abi-${{ steps.upstream.outputs.short_commit }}
+          path: ${{ github.workspace }}/artifacts/macos-abi
+          if-no-files-found: error
+          compression-level: 9
+          retention-days: 30
+
+      - name: Summarize extraction
+        env:
+          OUTPUT: ${{ github.workspace }}/artifacts/macos-abi/abi-values.json
+          BAMBU_COMMIT: ${{ steps.upstream.outputs.commit }}
+          BAMBU_VERSION: ${{ steps.upstream.outputs.version }}
+        run: |
+          python3 - "$OUTPUT" >>"$GITHUB_STEP_SUMMARY" <<'PY'
+          import json
+          import os
+          import sys
+
+          document = json.load(open(sys.argv[1], encoding="utf-8"))
+          timing = document["extraction"]
+          print("## macOS arm64 ABI extraction")
+          print()
+          print(f"- Upstream version: `{os.environ['BAMBU_VERSION']}`")
+          print(f"- Commit: `{os.environ['BAMBU_COMMIT']}`")
+          print(f"- Values: `{len(document['values'])}`")
+          print(f"- Extractor wall time: `{timing['wall_seconds']:.3f} s`")
+          print("- Dependency cache: exact hit")
+          PY
