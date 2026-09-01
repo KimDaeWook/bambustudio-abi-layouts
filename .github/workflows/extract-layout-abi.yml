@@ -44,7 +44,7 @@ jobs:
           image_version=$(sanitize_cache_component "${ImageVersion:-unknown}")
           echo "key=bambustudio-deps-macos-15-arm64-${RUNNER_ARCH}-${image_version}-cmake-3.31.0-${DEPS_TREE}" >>"$GITHUB_OUTPUT"
       - id: deps-cache
-        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: ${{ env.BAMBU_SOURCE_DIR }}/deps/build
           key: ${{ steps.cache-key.outputs.key }}
